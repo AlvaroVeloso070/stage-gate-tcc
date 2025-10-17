@@ -1,6 +1,6 @@
 package com.ufg.stage.gate.tcc.models.entities;
 
-import com.ufg.stage.gate.tcc.models.enums.UserType;
+import com.ufg.stage.gate.tcc.models.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +16,18 @@ public class User {
 
     @Id
     private UUID id;
+
     private String name;
+
+    private String email;
+
     @Enumerated(EnumType.STRING)
-    private UserType type;
-    @ManyToMany
-    @JoinTable(
-            name = "project_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private List<Project> projects;
-    @OneToMany(mappedBy = "advisor")
-    private List<Project> advisorProjects;
+    private UserTypeEnum type;
+
+    @ManyToMany(mappedBy = "participants")
+    private List<Meeting> meetings;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 }

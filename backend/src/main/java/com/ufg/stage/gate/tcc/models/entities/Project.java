@@ -1,9 +1,11 @@
 package com.ufg.stage.gate.tcc.models.entities;
 
+import com.ufg.stage.gate.tcc.models.enums.ProjectStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,16 +16,21 @@ public class Project {
 
     @Id
     private UUID id;
-    private String title;
-    private String format;
-    @ManyToOne
-    @JoinColumn(name = "advisor_user_id")
-    private User advisor;
-    @ManyToMany(mappedBy = "projects")
+
+    @OneToMany(mappedBy = "project")
     private List<User> groupMembers;
+
+    @OneToMany(mappedBy = "project")
+    private List<Meeting> meetings;
+
+    private String title;
+
     private String researchQuestion;
-    @OneToMany(mappedBy = "project")
-    private List<ProjectFeedback> projectFeedbacks;
-    @OneToMany(mappedBy = "project")
-    private List<Stage> stages;
+
+    @Enumerated(EnumType.STRING)
+    private ProjectStatusEnum status;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 }

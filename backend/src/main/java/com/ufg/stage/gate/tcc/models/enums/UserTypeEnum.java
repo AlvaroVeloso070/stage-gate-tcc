@@ -1,7 +1,7 @@
 package com.ufg.stage.gate.tcc.models.enums;
 
-public enum UserType {
+public enum UserTypeEnum {
     STUDENT,
-    ADVISOR,
+    PROFESSOR,
     COORDINATOR
 }
