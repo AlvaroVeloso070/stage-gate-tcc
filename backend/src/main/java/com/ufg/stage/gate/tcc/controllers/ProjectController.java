@@ -5,6 +5,7 @@ import com.ufg.stage.gate.tcc.models.dtos.CreateMeetingReportDTO;
 import com.ufg.stage.gate.tcc.models.dtos.CreateProjectDTO;
 import com.ufg.stage.gate.tcc.models.dtos.MeetingDTO;
 import com.ufg.stage.gate.tcc.models.dtos.ProjectDTO;
+import com.ufg.stage.gate.tcc.models.dtos.ProjectListDTO;
 import com.ufg.stage.gate.tcc.services.MeetingService;
 import com.ufg.stage.gate.tcc.services.ProjectService;
 import org.springframework.http.HttpStatus;

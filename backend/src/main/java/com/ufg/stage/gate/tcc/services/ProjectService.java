@@ -2,9 +2,11 @@ package com.ufg.stage.gate.tcc.services;
 
 import com.ufg.stage.gate.tcc.models.dtos.CreateProjectDTO;
 import com.ufg.stage.gate.tcc.models.dtos.ProjectDTO;
+import com.ufg.stage.gate.tcc.models.dtos.ProjectListDTO;
 import com.ufg.stage.gate.tcc.models.entities.Gate;
 import com.ufg.stage.gate.tcc.models.entities.Project;
 import com.ufg.stage.gate.tcc.models.entities.User;
+import com.ufg.stage.gate.tcc.models.enums.DueDateStatus;
 import com.ufg.stage.gate.tcc.models.enums.GateNameEnum;
 import com.ufg.stage.gate.tcc.models.enums.ProjectStatusEnum;
 import com.ufg.stage.gate.tcc.repositories.GateRepository;
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,44 @@ public class ProjectService {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.gateRepository = gateRepository;
+    }
+
+    public List<ProjectListDTO> listAllProjects() {
+        List<Project> projects = projectRepository.findAll();
+        return projects.stream().map(this::mapToProjectListDTO).collect(Collectors.toList());
+    }
+
+    private ProjectListDTO mapToProjectListDTO(Project project) {
+        Optional<Gate> currentGateOpt = gateRepository.findFirstByProjectIdAndIsApprovedFalseOrderByNumberAsc(project.getId());
+        int currentGateNumber = currentGateOpt.map(Gate::getNumber).orElse((short)0);
+        LocalDate dueDate = currentGateOpt.map(Gate::getDueDate).orElse(null);
+        DueDateStatus dueDateStatus = calculateDueDateStatus(dueDate);
+
+        List<String> groupMemberNames = project.getGroupMembers().stream()
+                .map(User::getName)
+                .collect(Collectors.toList());
+
+        return new ProjectListDTO(
+                project.getTitle(),
+                groupMemberNames,
+                currentGateNumber,
+                dueDate,
+                dueDateStatus
+        );
+    }
+
+    private DueDateStatus calculateDueDateStatus(LocalDate dueDate) {
+        if (dueDate == null) {
+            return null;
+        }
+        long daysUntilDue = ChronoUnit.DAYS.between(LocalDate.now(), dueDate);
+        if (daysUntilDue < 0) {
+            return DueDateStatus.OVERDUE;
+        }
+        if (daysUntilDue <= 7) {
+            return DueDateStatus.WARNING;
+        }
+        return DueDateStatus.ON_TIME;
     }
 
     public ProjectDTO findProjectById(String projectId) {

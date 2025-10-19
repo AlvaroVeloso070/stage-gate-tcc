@@ -109,3 +109,51 @@ INSERT INTO gate (id, project_id, number, name, is_approved, due_date) VALUES
 (RANDOM_UUID(), '00000000-0000-0001-0008-000000000003', 1, 'GATE_1', true, '2023-11-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000003', 2, 'GATE_2', true, '2023-12-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000003', 3, 'GATE_3', true, '2024-01-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000003', 4, 'GATE_4', true, '2024-02-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000003', 5, 'GATE_5', true, '2024-03-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000003', 6, 'GATE_6', false, DATEADD('DAY', 1, CURRENT_DATE)),
 (RANDOM_UUID(), '00000000-0000-0001-0008-000000000004', 1, 'GATE_1', true, '2023-11-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000004', 2, 'GATE_2', true, '2023-12-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000004', 3, 'GATE_3', true, '2024-01-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000004', 4, 'GATE_4', true, '2024-02-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000004', 5, 'GATE_5', true, '2024-03-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000004', 6, 'GATE_6', false, DATEADD('DAY', 15, CURRENT_DATE)),
 (RANDOM_UUID(), '00000000-0000-0001-0008-000000000005', 1, 'GATE_1', true, '2023-11-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000005', 2, 'GATE_2', true, '2023-12-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000005', 3, 'GATE_3', true, '2024-01-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000005', 4, 'GATE_4', true, '2024-02-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000005', 5, 'GATE_5', true, '2024-03-01'), (RANDOM_UUID(), '00000000-0000-0001-0008-000000000005', 6, 'GATE_6', false, DATEADD('DAY', 18, CURRENT_DATE));
+
+-- === USERS ===
+INSERT INTO app_user (id, name, email, type) VALUES
+('00000000-0000-0000-0000-000000000001', 'Coordinator User', 'coordinator@ufg.br', 'COORDINATOR'),
+('00000000-2222-0000-0000-000000000002', 'Professor 1', 'professor1@ufg.br', 'PROFESSOR'),
+('00000000-2222-0000-0000-000000000003', 'Professor 2', 'professor2@ufg.br', 'PROFESSOR');
+
+-- Assign a student to each project
+INSERT INTO app_user (id, name, email, type, project_id)
+SELECT
+    RANDOM_UUID(),
+    'Student for ' || p.title,
+    'student.' || REPLACE(LOWER(p.title), ' ', '') || '@ufg.br',
+    'STUDENT',
+    p.id
+FROM project p;
+
+-- === MEETINGS AND MEETING REPORTS ===
+
+-- Meeting for a project in Gate 1, scheduled
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000001', '00000000-0000-0001-0003-000000000002', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 3, CURRENT_DATE), 'GATE', 'SCHEDULED', 1);
+
+-- Meeting for a project in Gate 2, completed and approved
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000002', '00000000-0000-0001-0004-000000000003', '00000000-2222-0000-0000-000000000002', DATEADD('HOUR', -12, CURRENT_TIMESTAMP), 'GATE', 'SCHEDULED', 2);
+INSERT INTO meeting_report (id, meeting_id, feedback, report_date, gate_result) VALUES
+(RANDOM_UUID(), '00000000-0000-0002-0001-000000000002', 'Excellent progress, gate 2 approved.', CURRENT_DATE, 'APPROVED');
+
+-- Meeting for a project in Gate 3, completed and rejected
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000003', (SELECT id FROM project WHERE title = 'In-Progress G3-Late Project 1'), '00000000-2222-0000-0000-000000000002', DATEADD('DAY', -5, CURRENT_DATE), 'GATE', 'SCHEDULED', 3);
+INSERT INTO meeting_report (id, meeting_id, feedback, report_date, gate_result) VALUES
+(RANDOM_UUID(), '00000000-0000-0002-0001-000000000003', 'More work is needed before approval.', CURRENT_DATE, 'REJECTED');
+
+-- Meeting for a project in Gate 4, scheduled (alignment meeting)
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000004', '00000000-0000-0001-0006-000000000001', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 1, CURRENT_DATE), 'STAGE', 'SCHEDULED', 4);
+
+-- Meeting for a project in Gate 5, canceled
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000005', '00000000-0000-0001-0007-000000000002', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 2, CURRENT_DATE), 'GATE', 'CANCELLED', 5);
+
+-- Meeting for a project in Gate 6, completed and approved, project should be completed
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000006', '00000000-0000-0001-0008-000000000003', '00000000-2222-0000-0000-000000000002', CURRENT_DATE, 'GATE', 'COMPLETED', 6);
+INSERT INTO meeting_report (id, meeting_id, feedback, report_date, gate_result) VALUES
+(RANDOM_UUID(), '00000000-0000-0002-0001-000000000006', 'Final gate approved. Project completed.', CURRENT_DATE, 'APPROVED');

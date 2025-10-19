@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
 
     public List<Meeting> findByProjectId(UUID projectId);
+    public List<Meeting> findAllByOrderByScheduleDateDesc();
 }

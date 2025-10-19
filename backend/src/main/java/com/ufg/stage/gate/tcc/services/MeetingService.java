@@ -10,6 +10,7 @@ import com.ufg.stage.gate.tcc.models.enums.GateNameEnum;
 import com.ufg.stage.gate.tcc.models.enums.GateResultEnum;
 import com.ufg.stage.gate.tcc.models.enums.MeetingStatusEnum;
 import com.ufg.stage.gate.tcc.models.enums.MeetingTypeEnum;
+import com.ufg.stage.gate.tcc.models.enums.ProjectStatusEnum;
 import com.ufg.stage.gate.tcc.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -104,6 +105,10 @@ public class MeetingService {
                     newGate.setNumber(nextGateNumber);
                     newGate.setName(GateNameEnum.valueOf("GATE_" + nextGateNumber));
                     gateRepository.save(newGate);
+                } else if (currentGateNumber == 6) {
+                    var project = meeting.getProject();
+                    project.setStatus(ProjectStatusEnum.COMPLETED);
+                    projectRepository.save(project);
                 }
             }
         }
