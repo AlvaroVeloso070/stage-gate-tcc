@@ -16,18 +16,19 @@ import java.util.UUID;
 public class Meeting {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Enumerated(EnumType.STRING)
     private MeetingTypeEnum type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor_id")
     private User professor;
 
     private short stageGateNumber;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "meeting_participant",
             joinColumns = @JoinColumn(name = "meeting_id"),
@@ -35,7 +36,7 @@ public class Meeting {
     )
     private List<User> participants;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
@@ -44,6 +45,6 @@ public class Meeting {
     @Enumerated(EnumType.STRING)
     private MeetingStatusEnum status;
 
-    @OneToOne(mappedBy = "meeting")
+    @OneToOne(mappedBy = "meeting", fetch = FetchType.LAZY)
     private MeetingReport report;
 }

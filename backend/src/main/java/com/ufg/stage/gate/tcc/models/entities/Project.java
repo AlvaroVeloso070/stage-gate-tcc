@@ -15,13 +15,17 @@ import java.util.UUID;
 public class Project {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<User> groupMembers;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Meeting> meetings;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<Gate> gates;
 
     private String title;
 

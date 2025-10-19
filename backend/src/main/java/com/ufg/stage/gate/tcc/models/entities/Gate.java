@@ -15,6 +15,7 @@ import java.util.UUID;
 public class Gate {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private short number;
