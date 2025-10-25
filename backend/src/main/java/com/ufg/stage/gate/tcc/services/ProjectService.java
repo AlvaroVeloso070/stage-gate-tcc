@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -104,8 +105,17 @@ public class ProjectService {
 
         gateRepository.save(gate);
 
-        savedProject.setGroupMembers(groupMembers);
+        savedProject.setGroupMembers(new HashSet<>(groupMembers));
 
         return ProjectDTO.fromEntity(savedProject);
+    }
+
+    public List<Project> findProjectsWithUpcomingUnapprovedGates() {
+        LocalDate sevenDaysFromNow = LocalDate.now().plusDays(7);
+        return projectRepository.findProjectsWithUnapprovedGatesDueWithin(sevenDaysFromNow, LocalDate.now());
+    }
+
+    public List<Project> findProjectsNotApprovedPastDueDate() {
+        return projectRepository.findProjectsWithUnapprovedGatesPastDueDate(LocalDate.now());
     }
 }

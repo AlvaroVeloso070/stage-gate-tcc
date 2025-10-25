@@ -29,7 +29,7 @@ public class MeetingDTO {
     private MeetingReportDTO report;
 
     public static MeetingDTO fromEntity(Meeting meeting) {
-        List<UserDTO> participantDTOs = Optional.ofNullable(meeting.getParticipants()).orElse(Collections.emptyList()).stream()
+        List<UserDTO> participantDTOs = Optional.ofNullable(meeting.getParticipants()).orElse(Collections.emptySet()).stream()
                 .map(UserDTO::fromEntity)
                 .collect(Collectors.toList());
 

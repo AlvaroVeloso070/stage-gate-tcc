@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,13 +19,13 @@ public class Project {
     private UUID id;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    private List<User> groupMembers;
+    private Set<User> groupMembers;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    private List<Meeting> meetings;
+    private Set<Meeting> meetings;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    private List<Gate> gates;
+    private Set<Gate> gates;
 
     private String title;
 

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -26,7 +26,7 @@ public class User {
     private UserTypeEnum type;
 
     @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
-    private List<Meeting> meetings;
+    private Set<Meeting> meetings;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")

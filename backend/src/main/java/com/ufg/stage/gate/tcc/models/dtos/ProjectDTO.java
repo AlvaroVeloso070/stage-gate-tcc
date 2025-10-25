@@ -28,11 +28,11 @@ public class ProjectDTO {
     private List<GateDTO> gates;
 
     public static ProjectDTO fromEntity(Project project) {
-        List<UserDTO> memberDTOs = Optional.ofNullable(project.getGroupMembers()).orElse(Collections.emptyList()).stream()
+        List<UserDTO> memberDTOs = Optional.ofNullable(project.getGroupMembers()).orElse(Collections.emptySet()).stream()
                 .map(UserDTO::fromEntity)
                 .collect(Collectors.toList());
 
-        List<GateDTO> gateDTOs = Optional.ofNullable(project.getGates()).orElse(Collections.emptyList()).stream()
+        List<GateDTO> gateDTOs = Optional.ofNullable(project.getGates()).orElse(Collections.emptySet()).stream()
                 .map(GateDTO::fromEntity)
                 .collect(Collectors.toList());
 

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -78,7 +79,7 @@ public class MeetingService {
         }
 
         var participants = userRepository.findAllById(reportDTO.getParticipantIds().stream().map(UUID::fromString).collect(Collectors.toList()));
-        meeting.setParticipants(participants);
+        meeting.setParticipants(Set.copyOf(participants));
 
         MeetingReport report = new MeetingReport();
         report.setFeedback(reportDTO.getFeedback());
@@ -137,5 +138,10 @@ public class MeetingService {
         Meeting updatedMeeting = meetingRepository.save(meeting);
 
         return MeetingDTO.fromEntity(updatedMeeting);
+    }
+
+    public List<Meeting> findOverdueMeetingsWithoutReport() {
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
+        return meetingRepository.findMeetingsWithProfessorByStatusAndScheduleDateBeforeAndReportIsNull(MeetingStatusEnum.SCHEDULED, twentyFourHoursAgo);
     }
 }

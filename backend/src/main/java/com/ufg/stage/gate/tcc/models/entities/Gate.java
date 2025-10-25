@@ -31,4 +31,10 @@ public class Gate {
     private boolean isApproved;
 
     private LocalDate dueDate;
+
+    @Column(name = "is_close_due_date_reminder_sent", columnDefinition = "boolean default false")
+    private boolean isCloseDueDateReminderSent;
+
+    @Column(name = "is_past_due_date_warning_sent", columnDefinition = "boolean default false")
+    private boolean isPastDueDateWarningSent;
 }
