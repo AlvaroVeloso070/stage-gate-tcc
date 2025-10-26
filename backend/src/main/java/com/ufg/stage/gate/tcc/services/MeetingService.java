@@ -6,6 +6,7 @@ import com.ufg.stage.gate.tcc.models.dtos.MeetingDTO;
 import com.ufg.stage.gate.tcc.models.entities.Gate;
 import com.ufg.stage.gate.tcc.models.entities.Meeting;
 import com.ufg.stage.gate.tcc.models.entities.MeetingReport;
+import com.ufg.stage.gate.tcc.models.entities.User;
 import com.ufg.stage.gate.tcc.models.enums.GateNameEnum;
 import com.ufg.stage.gate.tcc.models.enums.GateResultEnum;
 import com.ufg.stage.gate.tcc.models.enums.MeetingStatusEnum;
@@ -13,6 +14,7 @@ import com.ufg.stage.gate.tcc.models.enums.MeetingTypeEnum;
 import com.ufg.stage.gate.tcc.models.enums.ProjectStatusEnum;
 import com.ufg.stage.gate.tcc.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,7 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
+    @SneakyThrows
     @Transactional
     public MeetingDTO createMeeting(String projectId, CreateMeetingDTO createMeetingDTO) {
         var project = projectRepository.findById(UUID.fromString(projectId))
@@ -53,8 +56,14 @@ public class MeetingService {
         var professor = userRepository.findById(UUID.fromString(createMeetingDTO.getProfessorId()))
                 .orElseThrow(() -> new EntityNotFoundException("Professor not found"));
 
-        var currentGate = gateRepository.findFirstByProjectIdAndIsApprovedFalseOrderByNumberAsc(project.getId())
-                .orElseThrow(() -> new IllegalStateException("No open gates found for this project"));
+        var projectGates = gateRepository.findAllByProjectId(project.getId());
+
+        var currentGate = projectGates.stream()
+                .filter(g -> !g.isApproved())
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("No unapproved gate found for this project."));
+
+        validateMinimumDifferentApproverProfessors(createMeetingDTO, projectGates, professor, currentGate);
 
         Meeting meeting = new Meeting();
         meeting.setProject(project);
@@ -93,24 +102,8 @@ public class MeetingService {
             report.setGateResult(reportDTO.getGateResult());
 
             if (reportDTO.getGateResult() == GateResultEnum.APPROVED) {
-                var gate = gateRepository.findByProjectIdAndNumber(meeting.getProject().getId(), meeting.getStageGateNumber())
-                        .orElseThrow(() -> new EntityNotFoundException("Associated gate not found."));
-                gate.setApproved(true);
-                gateRepository.save(gate);
-
-                short currentGateNumber = gate.getNumber();
-                if (currentGateNumber < 6) {
-                    Gate newGate = new Gate();
-                    short nextGateNumber = (short) (currentGateNumber + 1);
-                    newGate.setProject(meeting.getProject());
-                    newGate.setNumber(nextGateNumber);
-                    newGate.setName(GateNameEnum.valueOf("GATE_" + nextGateNumber));
-                    gateRepository.save(newGate);
-                } else if (currentGateNumber == 6) {
-                    var project = meeting.getProject();
-                    project.setStatus(ProjectStatusEnum.COMPLETED);
-                    projectRepository.save(project);
-                }
+                var gate = updateApprovedGate(meeting);
+                createNextGateOrFinishProject(meeting, gate);
             }
         }
 
@@ -143,5 +136,53 @@ public class MeetingService {
     public List<Meeting> findOverdueMeetingsWithoutReport() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
         return meetingRepository.findMeetingsWithProfessorByStatusAndScheduleDateBeforeAndReportIsNull(MeetingStatusEnum.SCHEDULED, twentyFourHoursAgo);
+    }
+
+    private void createNextGateOrFinishProject(Meeting meeting, Gate gate) {
+        short currentGateNumber = gate.getNumber();
+        if (currentGateNumber < 6) {
+            Gate newGate = new Gate();
+            short nextGateNumber = (short) (currentGateNumber + 1);
+            newGate.setProject(meeting.getProject());
+            newGate.setNumber(nextGateNumber);
+            newGate.setName(GateNameEnum.valueOf("GATE_" + nextGateNumber));
+            gateRepository.save(newGate);
+        } else if (currentGateNumber == 6) {
+            var project = meeting.getProject();
+            project.setStatus(ProjectStatusEnum.COMPLETED);
+            projectRepository.save(project);
+        }
+    }
+
+    private Gate updateApprovedGate(Meeting meeting) {
+        var gate = gateRepository
+                .findByProjectIdAndNumber(meeting.getProject().getId(), meeting.getStageGateNumber())
+                .orElseThrow(() -> new EntityNotFoundException("Associated gate not found."));
+        gate.setApproved(true);
+        gate.setApproverProfessor(meeting.getProfessor());
+        gateRepository.save(gate);
+        return gate;
+    }
+
+    @SneakyThrows
+    private void validateMinimumDifferentApproverProfessors(CreateMeetingDTO createMeetingDTO, List<Gate> projectGates, User professor, Gate currentGate) {
+        if (createMeetingDTO.getType() == MeetingTypeEnum.GATE) {
+            var distinctApproverProfessors = projectGates.stream()
+                    .filter(Gate::isApproved)
+                    .map(Gate::getApproverProfessor)
+                    .distinct()
+                    .toList();
+
+            var maxDifferentProfessors = distinctApproverProfessors.size();
+            if (!distinctApproverProfessors.contains(professor)) {
+                maxDifferentProfessors++;
+            }
+
+            maxDifferentProfessors += (6 - currentGate.getNumber());
+
+            if (maxDifferentProfessors < 3) {
+                throw new Exception("Cannot the gate meeting because it would not have the minimum of 3 different professors by the end of all gates");
+            }
+        }
     }
 }

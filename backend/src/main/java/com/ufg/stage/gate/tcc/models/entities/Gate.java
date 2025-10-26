@@ -37,4 +37,8 @@ public class Gate {
 
     @Column(name = "is_past_due_date_warning_sent", columnDefinition = "boolean default false")
     private boolean isPastDueDateWarningSent;
+
+    @ManyToOne
+    @JoinColumn(name = "approver_professor_id")
+    private User approverProfessor;
 }

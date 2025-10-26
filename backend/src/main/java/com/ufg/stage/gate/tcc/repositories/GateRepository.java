@@ -17,4 +17,6 @@ public interface GateRepository extends JpaRepository<Gate, UUID> {
     Optional<Gate> findByProjectIdAndNumber(UUID projectId, short number);
 
     List<Gate> findAllByIsApprovedFalseAndProjectStatus(ProjectStatusEnum status);
+
+    List<Gate> findAllByProjectId(UUID projectId);
 }
