@@ -47,4 +47,7 @@ public class Meeting {
 
     @OneToOne(mappedBy = "meeting", fetch = FetchType.LAZY)
     private MeetingReport report;
+
+    @Column(name = "is_report_reminder_sent", columnDefinition = "boolean default false")
+    private boolean isReportReminderSent;
 }

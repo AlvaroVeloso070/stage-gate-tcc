@@ -1,6 +1,8 @@
 package com.ufg.stage.gate.tcc.services;
 
 import com.ufg.stage.gate.tcc.models.entities.User;
+import com.ufg.stage.gate.tcc.repositories.GateRepository;
+import com.ufg.stage.gate.tcc.repositories.MeetingRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +15,16 @@ public class ReminderService {
     private final ProjectService projectService;
     private final EmailService emailService;
     private final MeetingService meetingService;
+    private final GateRepository gateRepository;
+    private final MeetingRepository meetingRepository;
 
 
-    public ReminderService(ProjectService projectService, EmailService emailService, MeetingService meetingService) {
+    public ReminderService(ProjectService projectService, EmailService emailService, MeetingService meetingService, GateRepository gateRepository, MeetingRepository meetingRepository) {
         this.projectService = projectService;
         this.emailService = emailService;
         this.meetingService = meetingService;
+        this.gateRepository = gateRepository;
+        this.meetingRepository = meetingRepository;
     }
 
     @Scheduled(cron = "0 0 9 * * *") // Every day at 9 AM
@@ -27,7 +33,7 @@ public class ReminderService {
         var projects = projectService.findProjectsWithUpcomingUnapprovedGates();
         for (var project : projects) {
             System.out.println("REMINDER FOR Project: " + project.getTitle());
-            var gate = project.getGates().stream().filter(g -> !g.isApproved()).findFirst().orElse(null);
+            var gate = project.getGates().stream().filter(g -> !g.isApproved() && !g.isCloseDueDateReminderSent()).findFirst().orElse(null);
             if (gate == null) {
                 System.out.println("No not approved gate found for project");
                 continue;
@@ -47,6 +53,8 @@ public class ReminderService {
                         )
                 );
             }
+            gate.setCloseDueDateReminderSent(true);
+            gateRepository.save(gate);
         }
     }
 
@@ -56,7 +64,7 @@ public class ReminderService {
         var projects = projectService.findProjectsNotApprovedPastDueDate();
         for (var project : projects) {
             System.out.println("Past due date warning for Project: " + project.getTitle());
-            var gate = project.getGates().stream().filter(g -> !g.isApproved()).findFirst().orElse(null);
+            var gate = project.getGates().stream().filter(g -> !g.isApproved() && !g.isPastDueDateWarningSent()).findFirst().orElse(null);
             if (gate == null) {
                 System.out.println("No not approved gate found for project");
                 continue;
@@ -76,6 +84,8 @@ public class ReminderService {
                         )
                 );
             }
+            gate.setPastDueDateWarningSent(true);
+            gateRepository.save(gate);
         }
     }
 
@@ -96,6 +106,8 @@ public class ReminderService {
                             "scheduleDate", meeting.getScheduleDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
                     )
             );
+            meeting.setReportReminderSent(true);
+            meetingRepository.save(meeting);
         }
     }
 }
