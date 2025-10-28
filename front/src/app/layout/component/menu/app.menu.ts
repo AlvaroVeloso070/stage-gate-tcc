@@ -8,12 +8,7 @@ import { AppMenuitem } from './app.menuitem';
     selector: 'app-menu',
     standalone: true,
     imports: [CommonModule, AppMenuitem, RouterModule],
-    template: `<ul class="layout-menu">
-        <ng-container *ngFor="let item of model; let i = index">
-            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-            <li *ngIf="item.separator" class="menu-separator"></li>
-        </ng-container>
-    </ul> `
+    templateUrl: './app.menu.html',
 })
 export class AppMenu implements OnInit{
     model: MenuItem[] = [];
