@@ -43,6 +43,7 @@ export class Dashboard {
         completedProjects: 8,
         cancelledProjects: 2,
         inProgressProjects: 40,
-        totalProjects: 50
+        totalProjects: 50,
+        meetingsToday: 3
     }
 }

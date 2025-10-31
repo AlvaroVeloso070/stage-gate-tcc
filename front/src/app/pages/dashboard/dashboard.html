@@ -1,7 +1,9 @@
-<div class="content-wrapper">
-    <dashboard-coordination-metrics [coordinationMetrics]="coordinationMetrics"></dashboard-coordination-metrics>
+<div class="content-wrapper flex flex-col gap-8">
+    <div>
+        <dashboard-coordination-metrics [coordinationMetrics]="coordinationMetrics"></dashboard-coordination-metrics>
+    </div>
 
-    <div class="flex gap-8 mt-8">
+    <div class="grid grid-cols-2 gap-8 ">
         <dashboard-chart-projects-per-gate [coordinationMetrics]="coordinationMetrics"></dashboard-chart-projects-per-gate>
         <dashboard-chart-projects-status [coordinationMetrics]="coordinationMetrics"></dashboard-chart-projects-status>
     </div>

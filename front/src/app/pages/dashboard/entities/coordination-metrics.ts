@@ -20,4 +20,5 @@ export interface CoordinationMetrics {
     cancelledProjects: number;
     inProgressProjects: number;
     totalProjects: number;
+    meetingsToday: number;
 }
