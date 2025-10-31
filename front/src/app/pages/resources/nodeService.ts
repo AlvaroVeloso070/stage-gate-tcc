@@ -7,70 +7,71 @@ export class NodeService {
         return [
             {
                 key: '0',
-                label: 'Documents',
-                data: 'Documents Folder',
-                icon: 'pi pi-fw pi-inbox',
+                label: 'Normas e Diretrizes',
+                data: 'Normas e Diretrizes',
+                icon: 'pi pi-fw pi-folder',
                 children: [
-                    {
-                        key: '0-0',
-                        label: 'Work',
-                        data: 'Work Folder',
-                        icon: 'pi pi-fw pi-cog',
-                        children: [
-                            { key: '0-0-0', label: 'Expenses.doc', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                            { key: '0-0-1', label: 'Resume.doc', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                        ]
-                    },
-                    {
-                        key: '0-1',
-                        label: 'Home',
-                        data: 'Home Folder',
-                        icon: 'pi pi-fw pi-home',
-                        children: [{ key: '0-1-0', label: 'Invoices.txt', icon: 'pi pi-fw pi-file', data: 'Invoices for this month' }]
-                    }
+                    { key: '0-0', label: 'Normas ABNT.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Normas ABNT' },
+                    { key: '0-1', label: 'Guia Integridade UFG.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Guia de Integridade Acadêmica UFG' },
+                    { key: '0-2', label: 'LGPD - Guia ANPD.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'LGPD - Guia ANPD' },
+                    { key: '0-3', label: 'Resoluções CNS.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Resoluções CNS' }
                 ]
             },
             {
                 key: '1',
-                label: 'Events',
-                data: 'Events Folder',
-                icon: 'pi pi-fw pi-calendar',
+                label: 'EQUATOR Network',
+                data: 'EQUATOR Network',
+                icon: 'pi pi-fw pi-folder',
                 children: [
-                    { key: '1-0', label: 'Meeting', icon: 'pi pi-fw pi-calendar-plus', data: 'Meeting' },
-                    { key: '1-1', label: 'Product Launch', icon: 'pi pi-fw pi-calendar-plus', data: 'Product Launch' },
-                    { key: '1-2', label: 'Report Review', icon: 'pi pi-fw pi-calendar-plus', data: 'Report Review' }
+                    { key: '1-0', label: 'CONSORT.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'CONSORT Guidelines' },
+                    { key: '1-1', label: 'STROBE.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'STROBE Guidelines' },
+                    { key: '1-2', label: 'PRISMA.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'PRISMA Guidelines' },
+                    { key: '1-3', label: 'CARE.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'CARE Guidelines' }
                 ]
             },
             {
                 key: '2',
-                label: 'Movies',
-                data: 'Movies Folder',
-                icon: 'pi pi-fw pi-star-fill',
+                label: 'Métodos de Pesquisa',
+                data: 'Métodos de Pesquisa',
+                icon: 'pi pi-fw pi-folder',
+                children: [
+                    { key: '2-0', label: 'Revisões Sistemáticas.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Revisões Sistemáticas' },
+                    { key: '2-1', label: 'Pesquisa Documental.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Pesquisa Documental' },
+                    { key: '2-2', label: 'Pesquisa Observacional.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Pesquisa Observacional' },
+                    { key: '2-3', label: 'Benchmarking.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Benchmarking' }
+                ]
+            },
+            {
+                key: '3',
+                label: 'Templates',
+                data: 'Templates Folder',
+                icon: 'pi pi-fw pi-folder',
                 children: [
                     {
-                        key: '2-0',
-                        icon: 'pi pi-fw pi-star-fill',
-                        label: 'Al Pacino',
-                        data: 'Pacino Movies',
+                        key: '3-0',
+                        label: 'Artigo Científico',
+                        data: 'Templates Artigo Científico',
+                        icon: 'pi pi-fw pi-folder',
                         children: [
-                            { key: '2-0-0', label: 'Scarface', icon: 'pi pi-fw pi-video', data: 'Scarface Movie' },
-                            { key: '2-0-1', label: 'Serpico', icon: 'pi pi-fw pi-video', data: 'Serpico Movie' }
+                            { key: '3-0-0', label: 'Template Metodologia.docx', icon: 'pi pi-fw pi-file-word', data: 'Template de Metodologia' },
+                            { key: '3-0-1', label: 'Estrutura Completa.docx', icon: 'pi pi-fw pi-file-word', data: 'Estrutura Completa Artigo' }
                         ]
                     },
                     {
-                        key: '2-1',
-                        label: 'Robert De Niro',
-                        icon: 'pi pi-fw pi-star-fill',
-                        data: 'De Niro Movies',
+                        key: '3-1',
+                        label: 'Relatório Técnico',
+                        data: 'Templates Relatório Técnico',
+                        icon: 'pi pi-fw pi-folder',
                         children: [
-                            { key: '2-1-0', label: 'Goodfellas', icon: 'pi pi-fw pi-video', data: 'Goodfellas Movie' },
-                            { key: '2-1-1', label: 'Untouchables', icon: 'pi pi-fw pi-video', data: 'Untouchables Movie' }
+                            { key: '3-1-0', label: 'Template Planejamento.docx', icon: 'pi pi-fw pi-file-word', data: 'Template de Planejamento' },
+                            { key: '3-1-1', label: 'Estrutura Completa.docx', icon: 'pi pi-fw pi-file-word', data: 'Estrutura Completa Relatório Técnico' }
                         ]
                     }
                 ]
             }
         ];
     }
+
 
     getTreeTableNodesData() {
         return [
@@ -425,363 +426,8 @@ export class NodeService {
         ];
     }
 
-    getLazyNodesData() {
-        return [
-            {
-                "label": "Lazy Node 0",
-                "data": "Node 0",
-                "expandedIcon": "pi pi-folder-open",
-                "collapsedIcon": "pi pi-folder",
-                "leaf": false
-            },
-            {
-                "label": "Lazy Node 1",
-                "data": "Node 1",
-                "expandedIcon": "pi pi-folder-open",
-                "collapsedIcon": "pi pi-folder",
-                "leaf": false
-            },
-            {
-                "label": "Lazy Node 1",
-                "data": "Node 2",
-                "expandedIcon": "pi pi-folder-open",
-                "collapsedIcon": "pi pi-folder",
-                "leaf": false
-            }
-        ]
-    }
-
-    getFileSystemNodesData() {
-        return [
-            {
-                "data":{
-                    "name":"Applications",
-                    "size":"200mb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"Angular",
-                            "size":"25mb",
-                            "type":"Folder"
-                        },
-                        "children":[
-                            {
-                                "data":{
-                                    "name":"angular.app",
-                                    "size":"10mb",
-                                    "type":"Application"
-                                }
-                            },
-                            {
-                                "data":{
-                                    "name":"cli.app",
-                                    "size":"10mb",
-                                    "type":"Application"
-                                }
-                            },
-                            {
-                                "data":{
-                                    "name":"mobile.app",
-                                    "size":"5mb",
-                                    "type":"Application"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "data":{
-                            "name":"editor.app",
-                            "size":"25mb",
-                            "type":"Application"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"settings.app",
-                            "size":"50mb",
-                            "type":"Application"
-                        }
-                    }
-                ]
-            },
-            {
-                "data":{
-                    "name":"Cloud",
-                    "size":"20mb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"backup-1.zip",
-                            "size":"10mb",
-                            "type":"Zip"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"backup-2.zip",
-                            "size":"10mb",
-                            "type":"Zip"
-                        }
-                    }
-                ]
-            },
-            {
-                "data": {
-                    "name":"Desktop",
-                    "size":"150kb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"note-meeting.txt",
-                            "size":"50kb",
-                            "type":"Text"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"note-todo.txt",
-                            "size":"100kb",
-                            "type":"Text"
-                        }
-                    }
-                ]
-            },
-            {
-                "data":{
-                    "name":"Documents",
-                    "size":"75kb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"Work",
-                            "size":"55kb",
-                            "type":"Folder"
-                        },
-                        "children":[
-                            {
-                                "data":{
-                                    "name":"Expenses.doc",
-                                    "size":"30kb",
-                                    "type":"Document"
-                                }
-                            },
-                            {
-                                "data":{
-                                    "name":"Resume.doc",
-                                    "size":"25kb",
-                                    "type":"Resume"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "data":{
-                            "name":"Home",
-                            "size":"20kb",
-                            "type":"Folder"
-                        },
-                        "children":[
-                            {
-                                "data":{
-                                    "name":"Invoices",
-                                    "size":"20kb",
-                                    "type":"Text"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "data": {
-                    "name":"Downloads",
-                    "size":"25mb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data": {
-                            "name":"Spanish",
-                            "size":"10mb",
-                            "type":"Folder"
-                        },
-                        "children":[
-                            {
-                                "data":{
-                                    "name":"tutorial-a1.txt",
-                                    "size":"5mb",
-                                    "type":"Text"
-                                }
-                            },
-                            {
-                                "data":{
-                                    "name":"tutorial-a2.txt",
-                                    "size":"5mb",
-                                    "type":"Text"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "data":{
-                            "name":"Travel",
-                            "size":"15mb",
-                            "type":"Text"
-                        },
-                        "children":[
-                            {
-                                "data":{
-                                    "name":"Hotel.pdf",
-                                    "size":"10mb",
-                                    "type":"PDF"
-                                }
-                            },
-                            {
-                                "data":{
-                                    "name":"Flight.pdf",
-                                    "size":"5mb",
-                                    "type":"PDF"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "data": {
-                    "name":"Main",
-                    "size":"50mb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"bin",
-                            "size":"50kb",
-                            "type":"Link"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"etc",
-                            "size":"100kb",
-                            "type":"Link"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"var",
-                            "size":"100kb",
-                            "type":"Link"
-                        }
-                    }
-                ]
-            },
-            {
-                "data":{
-                    "name":"Other",
-                    "size":"5mb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"todo.txt",
-                            "size":"3mb",
-                            "type":"Text"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"logo.png",
-                            "size":"2mb",
-                            "type":"Picture"
-                        }
-                    }
-                ]
-            },
-            {
-                "data":{
-                    "name":"Pictures",
-                    "size":"150kb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"barcelona.jpg",
-                            "size":"90kb",
-                            "type":"Picture"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"primeng.png",
-                            "size":"30kb",
-                            "type":"Picture"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"prime.jpg",
-                            "size":"30kb",
-                            "type":"Picture"
-                        }
-                    }
-                ]
-            },
-            {
-                "data":{
-                    "name":"Videos",
-                    "size":"1500mb",
-                    "type":"Folder"
-                },
-                "children":[
-                    {
-                        "data":{
-                            "name":"primefaces.mkv",
-                            "size":"1000mb",
-                            "type":"Video"
-                        }
-                    },
-                    {
-                        "data":{
-                            "name":"intro.avi",
-                            "size":"500mb",
-                            "type":"Video"
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-
-    getTreeTableNodes() {
-        return Promise.resolve(this.getTreeTableNodesData());
-    }
-
-    getTreeNodes() {
-        return Promise.resolve(this.getTreeNodesData());
-    }
-
     getFiles() {
         return Promise.resolve(this.getTreeNodesData());
-    }
-
-    getLazyFiles() {
-        return Promise.resolve(this.getLazyNodesData());
-    }
-
-    getFilesystem() {
-        return Promise.resolve(this.getFileSystemNodesData());
     }
 
 }
