@@ -18,9 +18,20 @@ export class AppMenu implements OnInit{
             {
                 label: 'Home',
                 items: [
-                    {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/']}
+                    {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/']},
+                    {label: 'Projetos', icon: 'pi pi-fw pi-briefcase', routerLink: ['/pages/projects']},
+                    {label: 'Reuniões', icon: 'pi pi-fw pi-video', routerLink: ['/pages/meetings']},
+                    {label: 'Recursos', icon: 'pi pi-fw pi-book', routerLink: ['/pages/resources']},
+                    {label: 'Orientadores', icon: 'pi pi-fw pi-graduation-cap', routerLink: ['/pages/resources']}
                 ]
             },
+            {
+                label: 'Administração',
+                items: [
+                    {label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/users']},
+                    {label: 'Configurações', icon: 'pi pi-fw pi-cog', routerLink: ['/pages/settings']}
+                ]
+            }
         ];
     }
 }

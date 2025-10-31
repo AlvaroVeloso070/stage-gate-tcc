@@ -15,4 +15,8 @@ export class CoordinationMetric {
     public metricValue : InputSignal<number> = input.required<number>();
     public icon : InputSignal<string> = input.required<string>();
     public iconColor : InputSignal<string> = input.required<string>();
+
+    protected onViewDetails() {
+
+    }
 }

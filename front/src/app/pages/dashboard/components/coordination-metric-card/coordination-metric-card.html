@@ -1,5 +1,5 @@
-<div class="card mb-0 h-full">
-    <div class="flex justify-between mb-4 h-full">
+<div class="card mb-0 h-full cursor-pointer flex flex-col gap-4" (click)="onViewDetails()">
+    <div class="flex justify-between mb-2 h-full">
         <div>
             <span class="block text-muted-color font-medium mb-4">{{ metricName() }}</span>
             <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
@@ -40,5 +40,10 @@
                     'pi-exclamation-triangle': icon() === 'exclamation-triangle'
                 }"></i>
         </div>
+    </div>
+    <div class="border-t border-surface-200 dark:border-surface-700">
+        <span class="text-sm font-medium text-muted-color">
+            Clique para ver
+        </span>
     </div>
 </div>
