@@ -6,6 +6,7 @@ import com.ufg.stage.gate.tcc.repositories.MeetingRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
@@ -33,9 +34,12 @@ public class ReminderService {
         var projects = projectService.findProjectsWithUpcomingUnapprovedGates();
         for (var project : projects) {
             System.out.println("REMINDER FOR Project: " + project.getTitle());
-            var gate = project.getGates().stream().filter(g -> !g.isApproved() && !g.isCloseDueDateReminderSent()).findFirst().orElse(null);
+            var gate = project.getGates().stream()
+                    .filter(g -> !g.isApproved() && !g.isCloseDueDateReminderSent())
+                    .findFirst()
+                    .orElse(null);
             if (gate == null) {
-                System.out.println("No not approved gate found for project");
+                System.out.println("No not approved gate found for project or reminder already sent");
                 continue;
             }
             var dueDate = gate.getDueDate();
@@ -64,9 +68,12 @@ public class ReminderService {
         var projects = projectService.findProjectsNotApprovedPastDueDate();
         for (var project : projects) {
             System.out.println("Past due date warning for Project: " + project.getTitle());
-            var gate = project.getGates().stream().filter(g -> !g.isApproved() && !g.isPastDueDateWarningSent()).findFirst().orElse(null);
+            var gate = project.getGates().stream()
+                    .filter(g -> !g.isApproved() && !g.isPastDueDateWarningSent())
+                    .findFirst()
+                    .orElse(null);
             if (gate == null) {
-                System.out.println("No not approved gate found for project");
+                System.out.println("No not approved gate found for project or reminder already sent");
                 continue;
             }
             var dueDate = gate.getDueDate();
@@ -94,8 +101,12 @@ public class ReminderService {
         System.out.println("Sending meeting report creation reminder...");
         var meetings = meetingService.findOverdueMeetingsWithoutReport();
         for (var meeting : meetings) {
+            if (meeting.isReportReminderSent()) {
+                continue;
+            }
             var professor = meeting.getProfessor();
             System.out.println("Sending meeting report reminder to professor: " + professor.getName());
+            var scheduledTime = LocalDateTime.of(meeting.getScheduleDate(), meeting.getStartTime());
             emailService.sendEmail(
                     professor.getEmail(),
                     "Lembrete de preenchimento de ata da reunião stage gate",
@@ -103,7 +114,7 @@ public class ReminderService {
                     Map.of(
                             "userName", professor.getName(),
                             "projectName", meeting.getProject().getTitle(),
-                            "scheduleDate", meeting.getScheduleDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                            "scheduleDate", scheduledTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
                     )
             );
             meeting.setReportReminderSent(true);

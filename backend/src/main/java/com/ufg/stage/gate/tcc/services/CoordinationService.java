@@ -96,6 +96,8 @@ public class CoordinationService {
         dto.setProjectTitle(meeting.getProject().getTitle());
         dto.setProfessorName(meeting.getProfessor().getName());
         dto.setScheduleDate(meeting.getScheduleDate());
+        dto.setStartTime(meeting.getStartTime());
+        dto.setEndTime(meeting.getEndTime());
         dto.setType(meeting.getType());
         dto.setStageGateNumber(meeting.getStageGateNumber());
         dto.setStatus(determineStatus(meeting));
@@ -111,11 +113,12 @@ public class CoordinationService {
         }
 
         LocalDateTime now = LocalDateTime.now();
-        if (meeting.getScheduleDate().isAfter(now)) {
+        LocalDateTime scheduledEndTime = LocalDateTime.of(meeting.getScheduleDate(), meeting.getEndTime());
+        if (scheduledEndTime.isAfter(now)) {
             return MeetingStatusCoordinationEnum.PENDING;
         }
 
-        if (meeting.getScheduleDate().isBefore(now) && meeting.getScheduleDate().plusHours(24).isAfter(now)) {
+        if (scheduledEndTime.isBefore(now) && scheduledEndTime.plusHours(24).isAfter(now)) {
             return MeetingStatusCoordinationEnum.PENDING_FEEDBACK;
         }
 

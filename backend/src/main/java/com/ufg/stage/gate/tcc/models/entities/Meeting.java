@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,7 +42,11 @@ public class Meeting {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    private LocalDateTime scheduleDate;
+    private LocalDate scheduleDate;
+
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)
     private MeetingStatusEnum status;

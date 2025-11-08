@@ -3,10 +3,8 @@ package com.ufg.stage.gate.tcc.services;
 import com.ufg.stage.gate.tcc.models.dtos.CreateMeetingDTO;
 import com.ufg.stage.gate.tcc.models.dtos.CreateMeetingReportDTO;
 import com.ufg.stage.gate.tcc.models.dtos.MeetingDTO;
-import com.ufg.stage.gate.tcc.models.entities.Gate;
-import com.ufg.stage.gate.tcc.models.entities.Meeting;
-import com.ufg.stage.gate.tcc.models.entities.MeetingReport;
-import com.ufg.stage.gate.tcc.models.entities.User;
+import com.ufg.stage.gate.tcc.models.dtos.TimeSlotDTO;
+import com.ufg.stage.gate.tcc.models.entities.*;
 import com.ufg.stage.gate.tcc.models.enums.GateNameEnum;
 import com.ufg.stage.gate.tcc.models.enums.GateResultEnum;
 import com.ufg.stage.gate.tcc.models.enums.MeetingStatusEnum;
@@ -18,7 +16,9 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,13 +32,15 @@ public class MeetingService {
     private final UserRepository userRepository;
     private final GateRepository gateRepository;
     private final MeetingReportRepository meetingReportRepository;
+    private final RecurrentTimeSlotRepository timeSlotRepository;
 
-    public MeetingService(MeetingRepository meetingRepository, ProjectRepository projectRepository, UserRepository userRepository, GateRepository gateRepository, MeetingReportRepository meetingReportRepository) {
+    public MeetingService(MeetingRepository meetingRepository, ProjectRepository projectRepository, UserRepository userRepository, GateRepository gateRepository, MeetingReportRepository meetingReportRepository, RecurrentTimeSlotRepository timeSlotRepository) {
         this.meetingRepository = meetingRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.gateRepository = gateRepository;
         this.meetingReportRepository = meetingReportRepository;
+        this.timeSlotRepository = timeSlotRepository;
     }
 
     public List<MeetingDTO> findMeetingsByProjectId(String projectId) {
@@ -50,11 +52,11 @@ public class MeetingService {
     @SneakyThrows
     @Transactional
     public MeetingDTO createMeeting(String projectId, CreateMeetingDTO createMeetingDTO) {
+        var professorTimeSlot = timeSlotRepository.findById(UUID.fromString(createMeetingDTO.getTimeSlotId()))
+                .orElseThrow(() -> new EntityNotFoundException("Professor TimeSlot not found"));
+
         var project = projectRepository.findById(UUID.fromString(projectId))
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
-
-        var professor = userRepository.findById(UUID.fromString(createMeetingDTO.getProfessorId()))
-                .orElseThrow(() -> new EntityNotFoundException("Professor not found"));
 
         var projectGates = gateRepository.findAllByProjectId(project.getId());
 
@@ -63,12 +65,15 @@ public class MeetingService {
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("No unapproved gate found for this project."));
 
-        validateMinimumDifferentApproverProfessors(createMeetingDTO, projectGates, professor, currentGate);
+        validateMinimumDifferentApproverProfessors(createMeetingDTO, projectGates, professorTimeSlot.getProfessor(), currentGate);
+        validateScheduleTime(createMeetingDTO, professorTimeSlot);
 
         Meeting meeting = new Meeting();
         meeting.setProject(project);
-        meeting.setProfessor(professor);
+        meeting.setProfessor(professorTimeSlot.getProfessor());
         meeting.setScheduleDate(createMeetingDTO.getScheduleDate());
+        meeting.setStartTime(professorTimeSlot.getStartTime());
+        meeting.setEndTime(professorTimeSlot.getEndTime());
         meeting.setType(createMeetingDTO.getType());
         meeting.setStatus(MeetingStatusEnum.SCHEDULED);
         meeting.setStageGateNumber(currentGate.getNumber());
@@ -138,6 +143,32 @@ public class MeetingService {
         return meetingRepository.findMeetingsWithProfessorByStatusAndScheduleDateBeforeAndReportIsNull(MeetingStatusEnum.SCHEDULED, twentyFourHoursAgo);
     }
 
+    public List<TimeSlotDTO> findTimeSlotsForDate(LocalDate startDate, LocalDate endDate) {
+        var timeSlots = timeSlotRepository.findAll();
+        var timeSlotsDtos = new ArrayList<TimeSlotDTO>();
+        for (LocalDate i = startDate; i.isBefore(endDate) || i.isEqual(endDate); i = i.plusDays(1)) {
+            LocalDate finalI = i;
+            var timeSlotsForDay = timeSlots.stream()
+                    .filter(ts -> ts.getDayOfWeek().equals(finalI.getDayOfWeek()))
+                    .toList();
+            for (RecurrentTimeSlot timeSlot : timeSlotsForDay) {
+                timeSlotsDtos.add(new TimeSlotDTO(timeSlot, finalI));
+            }
+        }
+        var meetingsInRange = meetingRepository.findAllByScheduleDateBetweenAndStatus(startDate, endDate, MeetingStatusEnum.SCHEDULED);
+        
+        for (TimeSlotDTO timeSlotDto : timeSlotsDtos) {
+            for (Meeting meeting : meetingsInRange) {
+                if (meeting.getScheduleDate().equals(timeSlotDto.getScheduleDate()) 
+                        && meeting.getStartTime().equals(timeSlotDto.getStartTime())) {
+                    timeSlotDto.setAvailable(false);
+                    break;
+                }
+            }
+        }
+        return timeSlotsDtos;
+    }
+
     private void createNextGateOrFinishProject(Meeting meeting, Gate gate) {
         short currentGateNumber = gate.getNumber();
         if (currentGateNumber < 6) {
@@ -183,6 +214,17 @@ public class MeetingService {
             if (maxDifferentProfessors < 3) {
                 throw new Exception("Cannot the gate meeting because it would not have the minimum of 3 different professors by the end of all gates");
             }
+        }
+    }
+
+    private void validateScheduleTime(CreateMeetingDTO createMeetingDTO, RecurrentTimeSlot timeSlot) {
+        if (createMeetingDTO.getScheduleDate().isBefore(LocalDateTime.now().toLocalDate())) {
+            throw new IllegalArgumentException("Schedule date cannot be in the past.");
+        }
+
+        var existingMeeting = meetingRepository.findByProfessorIdAndScheduleDateAndStartTimeAndStatus(timeSlot.getProfessor().getId(), createMeetingDTO.getScheduleDate(), timeSlot.getStartTime(), MeetingStatusEnum.SCHEDULED);
+        if (existingMeeting != null) {
+            throw new IllegalArgumentException("Cannot schedule meeting because the time slot is already scheduled");
         }
     }
 }

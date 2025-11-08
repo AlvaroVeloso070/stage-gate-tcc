@@ -1,5 +1,6 @@
 -- Deleting all existing data to ensure a clean slate
 DELETE FROM meeting_report;
+DELETE FROM recurrent_time_slot;
 DELETE FROM meeting;
 DELETE FROM gate;
 DELETE FROM app_user;
@@ -129,34 +130,52 @@ SELECT
     p.id
 FROM project p WHERE p.id <> '00000000-0000-0001-0003-000000000002';
 
+-- === RECURRENT TIME SLOTS ===
+-- Professor 1 Time Slots
+INSERT INTO recurrent_time_slot (id, professor_id, day_of_week, start_time, end_time) VALUES
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000002', 'MONDAY', '08:00:00', '09:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000002', 'TUESDAY', '09:00:00', '10:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000002', 'WEDNESDAY', '10:00:00', '11:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000002', 'THURSDAY', '11:00:00', '12:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000002', 'FRIDAY', '13:00:00', '14:00:00');
+
+-- Professor 2 Time Slots
+INSERT INTO recurrent_time_slot (id, professor_id, day_of_week, start_time, end_time) VALUES
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000003', 'MONDAY', '14:00:00', '15:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000003', 'TUESDAY', '15:00:00', '16:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000003', 'WEDNESDAY', '16:00:00', '17:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000003', 'THURSDAY', '17:00:00', '18:00:00'),
+(RANDOM_UUID(), '00000000-2222-0000-0000-000000000003', 'FRIDAY', '18:00:00', '19:00:00');
+
+
 -- === MEETINGS AND MEETING REPORTS ===
 
 -- Meeting for a project in Gate 1, scheduled
-INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
-('00000000-0000-0002-0001-000000000001', '00000000-0000-0001-0003-000000000002', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', -2, CURRENT_DATE), 'GATE', 'SCHEDULED', 1);
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, start_time, end_time, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000001', '00000000-0000-0001-0003-000000000002', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', -2, CURRENT_DATE), '10:00:00', '11:00:00', 'GATE', 'SCHEDULED', 1);
 
 -- Meeting for a project in Gate 2, completed and approved
-INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
-('00000000-0000-0002-0001-000000000002', '00000000-0000-0001-0004-000000000003', '00000000-2222-0000-0000-000000000002', DATEADD('HOUR', -12, CURRENT_TIMESTAMP), 'GATE', 'SCHEDULED', 2);
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, start_time, end_time, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000002', '00000000-0000-0001-0004-000000000003', '00000000-2222-0000-0000-000000000002', DATEADD('HOUR', -12, CURRENT_TIMESTAMP), '10:00:00', '11:00:00', 'GATE', 'SCHEDULED', 2);
 INSERT INTO meeting_report (id, meeting_id, feedback, report_date, gate_result) VALUES
 (RANDOM_UUID(), '00000000-0000-0002-0001-000000000002', 'Excellent progress, gate 2 approved.', CURRENT_DATE, 'APPROVED');
 
 -- Meeting for a project in Gate 3, completed and rejected
-INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
-('00000000-0000-0002-0001-000000000003', (SELECT id FROM project WHERE title = 'In-Progress G3-Late Project 1'), '00000000-2222-0000-0000-000000000002', DATEADD('DAY', -5, CURRENT_DATE), 'GATE', 'SCHEDULED', 3);
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, start_time, end_time, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000003', (SELECT id FROM project WHERE title = 'In-Progress G3-Late Project 1'), '00000000-2222-0000-0000-000000000002', DATEADD('DAY', -5, CURRENT_DATE), '10:00:00', '11:00:00', 'GATE', 'SCHEDULED', 3);
 INSERT INTO meeting_report (id, meeting_id, feedback, report_date, gate_result) VALUES
 (RANDOM_UUID(), '00000000-0000-0002-0001-000000000003', 'More work is needed before approval.', CURRENT_DATE, 'REJECTED');
 
 -- Meeting for a project in Gate 4, scheduled (alignment meeting)
-INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
-('00000000-0000-0002-0001-000000000004', '00000000-0000-0001-0006-000000000001', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 1, CURRENT_DATE), 'STAGE', 'SCHEDULED', 4);
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, start_time, end_time, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000004', '00000000-0000-0001-0006-000000000001', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 1, CURRENT_DATE), '10:00:00', '11:00:00', 'STAGE', 'SCHEDULED', 4);
 
 -- Meeting for a project in Gate 5, canceled
-INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
-('00000000-0000-0002-0001-000000000005', '00000000-0000-0001-0007-000000000002', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 2, CURRENT_DATE), 'GATE', 'CANCELLED', 5);
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, start_time, end_time, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000005', '00000000-0000-0001-0007-000000000002', '00000000-2222-0000-0000-000000000002', DATEADD('DAY', 2, CURRENT_DATE), '10:00:00', '11:00:00', 'GATE', 'CANCELLED', 5);
 
 -- Meeting for a project in Gate 6, completed and approved, project should be completed
-INSERT INTO meeting (id, project_id, professor_id, schedule_date, type, status, stage_gate_number) VALUES
-('00000000-0000-0002-0001-000000000006', '00000000-0000-0001-0008-000000000003', '00000000-2222-0000-0000-000000000002', CURRENT_DATE, 'GATE', 'COMPLETED', 6);
+INSERT INTO meeting (id, project_id, professor_id, schedule_date, start_time, end_time, type, status, stage_gate_number) VALUES
+('00000000-0000-0002-0001-000000000006', '00000000-0000-0001-0008-000000000003', '00000000-2222-0000-0000-000000000002', CURRENT_DATE, '10:00:00', '11:00:00', 'GATE', 'COMPLETED', 6);
 INSERT INTO meeting_report (id, meeting_id, feedback, report_date, gate_result) VALUES
 (RANDOM_UUID(), '00000000-0000-0002-0001-000000000006', 'Final gate approved. Project completed.', CURRENT_DATE, 'APPROVED');

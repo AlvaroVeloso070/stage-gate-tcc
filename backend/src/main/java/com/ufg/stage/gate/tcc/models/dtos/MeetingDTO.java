@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +26,9 @@ public class MeetingDTO {
     private UserDTO professor;
     private short stageGateNumber;
     private List<UserDTO> participants;
-    private LocalDateTime scheduleDate;
+    private LocalDate scheduleDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private MeetingStatusEnum status;
     private MeetingReportDTO report;
 
@@ -44,6 +48,8 @@ public class MeetingDTO {
                 meeting.getStageGateNumber(),
                 participantDTOs,
                 meeting.getScheduleDate(),
+                meeting.getStartTime(),
+                meeting.getEndTime(),
                 meeting.getStatus(),
                 MeetingReportDTO.fromEntity(meeting.getReport())
         );
