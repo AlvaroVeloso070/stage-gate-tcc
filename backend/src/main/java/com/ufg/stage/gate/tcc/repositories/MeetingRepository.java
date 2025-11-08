@@ -18,6 +18,10 @@ public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
 
     public List<Meeting> findByProjectId(UUID projectId);
     public List<Meeting> findAllByOrderByScheduleDateDesc();
+
+    @Query("SELECT m FROM Meeting m LEFT JOIN FETCH m.participants JOIN FETCH m.project WHERE m.professor.id = :professorId ORDER BY m.scheduleDate DESC")
+    List<Meeting> findAllByProfessorIdOrderByScheduleDateDesc(@Param("professorId") UUID professorId);
+
     Meeting findByProfessorIdAndScheduleDateAndStartTimeAndStatus(UUID professorId, LocalDate scheduleDate, LocalTime startTime, MeetingStatusEnum status);
 
     @Query("SELECT m FROM Meeting m JOIN FETCH m.professor JOIN FETCH m.project WHERE m.status = :status AND m.isReportReminderSent = false AND m.scheduleDate <= :scheduleDate AND m.report IS NULL")

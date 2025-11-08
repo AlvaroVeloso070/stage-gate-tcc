@@ -31,6 +31,7 @@ public class MeetingDTO {
     private LocalTime endTime;
     private MeetingStatusEnum status;
     private MeetingReportDTO report;
+    private ProjectDTO project;
 
     public static MeetingDTO fromEntity(Meeting meeting) {
         List<UserDTO> participantDTOs = Optional.ofNullable(meeting.getParticipants()).orElse(Collections.emptySet()).stream()
@@ -51,7 +52,8 @@ public class MeetingDTO {
                 meeting.getStartTime(),
                 meeting.getEndTime(),
                 meeting.getStatus(),
-                MeetingReportDTO.fromEntity(meeting.getReport())
+                MeetingReportDTO.fromEntity(meeting.getReport()),
+                ProjectDTO.fromEntity(meeting.getProject())
         );
     }
 }
