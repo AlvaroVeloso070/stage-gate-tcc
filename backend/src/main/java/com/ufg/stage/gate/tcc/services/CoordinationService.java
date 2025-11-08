@@ -55,13 +55,13 @@ public class CoordinationService {
         Map<Short, Long> countsByGate = currentGates.stream()
                 .collect(Collectors.groupingBy(Gate::getNumber, Collectors.counting()));
 
-        long lateProjectsCount = currentGates.stream()
+        var lateProjects = currentGates.stream()
                 .filter(gate -> gate.getDueDate() != null && gate.getDueDate().isBefore(LocalDate.now()))
-                .count();
+                .toList();
 
-        long almostLateProjectsCount = currentGates.stream()
+        var almostLateProjects = currentGates.stream()
                 .filter(gate -> gate.getDueDate() != null && ChronoUnit.DAYS.between(LocalDate.now(), gate.getDueDate()) <= 7)
-                .count();
+                .toList();
 
         long completedProjectsCount = projectRepository.countByStatus(ProjectStatusEnum.COMPLETED);
         long cancelledProjectsCount = projectRepository.countByStatus(ProjectStatusEnum.CANCELLED);
@@ -73,8 +73,20 @@ public class CoordinationService {
         metrics.setProjectsInGate4(countsByGate.getOrDefault((short)4, 0L));
         metrics.setProjectsInGate5(countsByGate.getOrDefault((short)5, 0L));
         metrics.setProjectsInGate6(countsByGate.getOrDefault((short)6, 0L));
-        metrics.setLateProjects(lateProjectsCount);
-        metrics.setAlmostLateProjects(almostLateProjectsCount);
+        metrics.setLateProjectsInGate1(lateProjects.stream().filter(gate -> gate.getNumber() == 1).count());
+        metrics.setLateProjectsInGate2(lateProjects.stream().filter(gate -> gate.getNumber() == 2).count());
+        metrics.setLateProjectsInGate3(lateProjects.stream().filter(gate -> gate.getNumber() == 3).count());
+        metrics.setLateProjectsInGate4(lateProjects.stream().filter(gate -> gate.getNumber() == 4).count());
+        metrics.setLateProjectsInGate5(lateProjects.stream().filter(gate -> gate.getNumber() == 5).count());
+        metrics.setLateProjectsInGate6(lateProjects.stream().filter(gate -> gate.getNumber() == 6).count());
+        metrics.setLateProjects(lateProjects.size());
+        metrics.setAlmostLateProjectsInGate1(almostLateProjects.stream().filter(gate -> gate.getNumber() == 1).count());
+        metrics.setAlmostLateProjectsInGate2(almostLateProjects.stream().filter(gate -> gate.getNumber() == 2).count());
+        metrics.setAlmostLateProjectsInGate3(almostLateProjects.stream().filter(gate -> gate.getNumber() == 3).count());
+        metrics.setAlmostLateProjectsInGate4(almostLateProjects.stream().filter(gate -> gate.getNumber() == 4).count());
+        metrics.setAlmostLateProjectsInGate5(almostLateProjects.stream().filter(gate -> gate.getNumber() == 5).count());
+        metrics.setAlmostLateProjectsInGate6(almostLateProjects.stream().filter(gate -> gate.getNumber() == 6).count());
+        metrics.setAlmostLateProjects(almostLateProjects.size());
         metrics.setCompletedProjects(completedProjectsCount);
         metrics.setCancelledProjects(cancelledProjectsCount);
         metrics.setInProgressProjects(openGates.size());
