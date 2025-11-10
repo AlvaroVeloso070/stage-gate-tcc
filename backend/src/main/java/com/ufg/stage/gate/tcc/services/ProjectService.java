@@ -52,6 +52,7 @@ public class ProjectService {
                 .collect(Collectors.toList());
 
         return new ProjectListDTO(
+                project.getId(),
                 project.getTitle(),
                 groupMemberNames,
                 currentGateNumber,

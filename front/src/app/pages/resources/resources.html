@@ -5,7 +5,24 @@
     </div>
 
     <div>
-        <p-tree [value]="files()" class="w-full md:w-[30rem]" selectionMode="single" [(selection)]="selectedFile" [contextMenu]="cm" />
+        <div class="mb-3">
+            <p-button
+                icon="pi pi-plus"
+                label="Expandir tudo"
+                (onClick)="expandAll()"
+                class="mr-2" />
+            <p-button
+                icon="pi pi-minus"
+                label="Recolher tudo"
+                (onClick)="collapseAll()" />
+        </div>
+        <p-tree [value]="files()"
+                class="w-full md:w-[30rem]"
+                selectionMode="single"
+                [(selection)]="selectedFile"
+                [contextMenu]="cm"
+                [filter]="true"
+                filterPlaceholder="Pesquise por um arquivo..."/>
         <p-context-menu #cm [model]="items" />
     </div>
 </div>
