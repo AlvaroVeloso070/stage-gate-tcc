@@ -1,433 +1,87 @@
-//TODO apagar depois, apenas para mock
 import { Injectable } from '@angular/core';
+import { TreeNode } from 'primeng/api';
+
+export interface ResourceFile {
+    name: string;
+    extension: string;
+    link: string;
+}
+
+export interface ResourceData {
+    name: string;
+    type: 'folder' | 'file';
+    file?: ResourceFile;
+}
 
 @Injectable()
 export class NodeService {
-    getTreeNodesData() {
+    private keyCounter = 0;
+
+    getTreeNodesData(): TreeNode[] {
         return [
             {
                 key: '0',
                 label: 'Normas e Diretrizes',
-                data: 'Normas e Diretrizes',
+                data: { name: 'Normas e Diretrizes', type: 'folder' } as ResourceData,
                 icon: 'pi pi-fw pi-folder',
-                children: [
-                    { key: '0-0', label: 'Normas ABNT.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Normas ABNT' },
-                    { key: '0-1', label: 'Guia Integridade UFG.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Guia de Integridade Acadêmica UFG' },
-                    { key: '0-2', label: 'LGPD - Guia ANPD.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'LGPD - Guia ANPD' },
-                    { key: '0-3', label: 'Resoluções CNS.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Resoluções CNS' }
-                ]
-            },
-            {
-                key: '1',
-                label: 'EQUATOR Network',
-                data: 'EQUATOR Network',
-                icon: 'pi pi-fw pi-folder',
-                children: [
-                    { key: '1-0', label: 'CONSORT.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'CONSORT Guidelines' },
-                    { key: '1-1', label: 'STROBE.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'STROBE Guidelines' },
-                    { key: '1-2', label: 'PRISMA.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'PRISMA Guidelines' },
-                    { key: '1-3', label: 'CARE.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'CARE Guidelines' }
-                ]
-            },
-            {
-                key: '2',
-                label: 'Métodos de Pesquisa',
-                data: 'Métodos de Pesquisa',
-                icon: 'pi pi-fw pi-folder',
-                children: [
-                    { key: '2-0', label: 'Revisões Sistemáticas.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Revisões Sistemáticas' },
-                    { key: '2-1', label: 'Pesquisa Documental.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Pesquisa Documental' },
-                    { key: '2-2', label: 'Pesquisa Observacional.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Pesquisa Observacional' },
-                    { key: '2-3', label: 'Benchmarking.pdf', icon: 'pi pi-fw pi-file-pdf', data: 'Benchmarking' }
-                ]
-            },
-            {
-                key: '3',
-                label: 'Templates',
-                data: 'Templates Folder',
-                icon: 'pi pi-fw pi-folder',
-                children: [
-                    {
-                        key: '3-0',
-                        label: 'Artigo Científico',
-                        data: 'Templates Artigo Científico',
-                        icon: 'pi pi-fw pi-folder',
-                        children: [
-                            { key: '3-0-0', label: 'Template Metodologia.docx', icon: 'pi pi-fw pi-file-word', data: 'Template de Metodologia' },
-                            { key: '3-0-1', label: 'Estrutura Completa.docx', icon: 'pi pi-fw pi-file-word', data: 'Estrutura Completa Artigo' }
-                        ]
-                    },
-                    {
-                        key: '3-1',
-                        label: 'Relatório Técnico',
-                        data: 'Templates Relatório Técnico',
-                        icon: 'pi pi-fw pi-folder',
-                        children: [
-                            { key: '3-1-0', label: 'Template Planejamento.docx', icon: 'pi pi-fw pi-file-word', data: 'Template de Planejamento' },
-                            { key: '3-1-1', label: 'Estrutura Completa.docx', icon: 'pi pi-fw pi-file-word', data: 'Estrutura Completa Relatório Técnico' }
-                        ]
-                    }
-                ]
-            }
-        ];
-    }
-
-
-    getTreeTableNodesData() {
-        return [
-            {
-                key: '0',
-                data: {
-                    name: 'Applications',
-                    size: '100kb',
-                    type: 'Folder'
-                },
                 children: [
                     {
                         key: '0-0',
+                        label: 'Normas ABNT.pdf',
+                        icon: 'pi pi-fw pi-file-pdf',
                         data: {
-                            name: 'React',
-                            size: '25kb',
-                            type: 'Folder'
-                        },
-                        children: [
-                            {
-                                key: '0-0-0',
-                                data: {
-                                    name: 'react.app',
-                                    size: '10kb',
-                                    type: 'Application'
-                                }
-                            },
-                            {
-                                key: '0-0-1',
-                                data: {
-                                    name: 'native.app',
-                                    size: '10kb',
-                                    type: 'Application'
-                                }
-                            },
-                            {
-                                key: '0-0-2',
-                                data: {
-                                    name: 'mobile.app',
-                                    size: '5kb',
-                                    type: 'Application'
-                                }
-                            }
-                        ]
+                            name: 'Normas ABNT',
+                            type: 'file',
+                            file: { name: 'Normas ABNT', extension: 'pdf', link: 'https://drive.google.com/example1' }
+                        } as ResourceData
                     },
                     {
                         key: '0-1',
+                        label: 'Guia Integridade UFG.pdf',
+                        icon: 'pi pi-fw pi-file-pdf',
                         data: {
-                            name: 'editor.app',
-                            size: '25kb',
-                            type: 'Application'
-                        }
-                    },
-                    {
-                        key: '0-2',
-                        data: {
-                            name: 'settings.app',
-                            size: '50kb',
-                            type: 'Application'
-                        }
+                            name: 'Guia de Integridade Acadêmica UFG',
+                            type: 'file',
+                            file: { name: 'Guia Integridade UFG', extension: 'pdf', link: 'https://drive.google.com/example2' }
+                        } as ResourceData
                     }
                 ]
             },
             {
                 key: '1',
-                data: {
-                    name: 'Cloud',
-                    size: '20kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '1-0',
-                        data: {
-                            name: 'backup-1.zip',
-                            size: '10kb',
-                            type: 'Zip'
-                        }
-                    },
-                    {
-                        key: '1-1',
-                        data: {
-                            name: 'backup-2.zip',
-                            size: '10kb',
-                            type: 'Zip'
-                        }
-                    }
-                ]
-            },
-            {
-                key: '2',
-                data: {
-                    name: 'Desktop',
-                    size: '150kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '2-0',
-                        data: {
-                            name: 'note-meeting.txt',
-                            size: '50kb',
-                            type: 'Text'
-                        }
-                    },
-                    {
-                        key: '2-1',
-                        data: {
-                            name: 'note-todo.txt',
-                            size: '100kb',
-                            type: 'Text'
-                        }
-                    }
-                ]
-            },
-            {
-                key: '3',
-                data: {
-                    name: 'Documents',
-                    size: '75kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '3-0',
-                        data: {
-                            name: 'Work',
-                            size: '55kb',
-                            type: 'Folder'
-                        },
-                        children: [
-                            {
-                                key: '3-0-0',
-                                data: {
-                                    name: 'Expenses.doc',
-                                    size: '30kb',
-                                    type: 'Document'
-                                }
-                            },
-                            {
-                                key: '3-0-1',
-                                data: {
-                                    name: 'Resume.doc',
-                                    size: '25kb',
-                                    type: 'Resume'
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        key: '3-1',
-                        data: {
-                            name: 'Home',
-                            size: '20kb',
-                            type: 'Folder'
-                        },
-                        children: [
-                            {
-                                key: '3-1-0',
-                                data: {
-                                    name: 'Invoices',
-                                    size: '20kb',
-                                    type: 'Text'
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                key: '4',
-                data: {
-                    name: 'Downloads',
-                    size: '25kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '4-0',
-                        data: {
-                            name: 'Spanish',
-                            size: '10kb',
-                            type: 'Folder'
-                        },
-                        children: [
-                            {
-                                key: '4-0-0',
-                                data: {
-                                    name: 'tutorial-a1.txt',
-                                    size: '5kb',
-                                    type: 'Text'
-                                }
-                            },
-                            {
-                                key: '4-0-1',
-                                data: {
-                                    name: 'tutorial-a2.txt',
-                                    size: '5kb',
-                                    type: 'Text'
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        key: '4-1',
-                        data: {
-                            name: 'Travel',
-                            size: '15kb',
-                            type: 'Text'
-                        },
-                        children: [
-                            {
-                                key: '4-1-0',
-                                data: {
-                                    name: 'Hotel.pdf',
-                                    size: '10kb',
-                                    type: 'PDF'
-                                }
-                            },
-                            {
-                                key: '4-1-1',
-                                data: {
-                                    name: 'Flight.pdf',
-                                    size: '5kb',
-                                    type: 'PDF'
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                key: '5',
-                data: {
-                    name: 'Main',
-                    size: '50kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '5-0',
-                        data: {
-                            name: 'bin',
-                            size: '50kb',
-                            type: 'Link'
-                        }
-                    },
-                    {
-                        key: '5-1',
-                        data: {
-                            name: 'etc',
-                            size: '100kb',
-                            type: 'Link'
-                        }
-                    },
-                    {
-                        key: '5-2',
-                        data: {
-                            name: 'var',
-                            size: '100kb',
-                            type: 'Link'
-                        }
-                    }
-                ]
-            },
-            {
-                key: '6',
-                data: {
-                    name: 'Other',
-                    size: '5kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '6-0',
-                        data: {
-                            name: 'todo.txt',
-                            size: '3kb',
-                            type: 'Text'
-                        }
-                    },
-                    {
-                        key: '6-1',
-                        data: {
-                            name: 'logo.png',
-                            size: '2kb',
-                            type: 'Picture'
-                        }
-                    }
-                ]
-            },
-            {
-                key: '7',
-                data: {
-                    name: 'Pictures',
-                    size: '150kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '7-0',
-                        data: {
-                            name: 'barcelona.jpg',
-                            size: '90kb',
-                            type: 'Picture'
-                        }
-                    },
-                    {
-                        key: '7-1',
-                        data: {
-                            name: 'primeng.png',
-                            size: '30kb',
-                            type: 'Picture'
-                        }
-                    },
-                    {
-                        key: '7-2',
-                        data: {
-                            name: 'prime.jpg',
-                            size: '30kb',
-                            type: 'Picture'
-                        }
-                    }
-                ]
-            },
-            {
-                key: '8',
-                data: {
-                    name: 'Videos',
-                    size: '1500kb',
-                    type: 'Folder'
-                },
-                children: [
-                    {
-                        key: '8-0',
-                        data: {
-                            name: 'primefaces.mkv',
-                            size: '1000kb',
-                            type: 'Video'
-                        }
-                    },
-                    {
-                        key: '8-1',
-                        data: {
-                            name: 'intro.avi',
-                            size: '500kb',
-                            type: 'Video'
-                        }
-                    }
-                ]
+                label: 'Templates',
+                data: { name: 'Templates', type: 'folder' } as ResourceData,
+                icon: 'pi pi-fw pi-folder',
+                children: []
             }
         ];
     }
 
-    getFiles() {
-        return Promise.resolve(this.getTreeNodesData());
+    generateKey(): string {
+        return `node-${this.keyCounter++}-${Date.now()}`;
     }
 
+    getFileIcon(extension: string): string {
+        const iconMap: { [key: string]: string } = {
+            pdf: 'pi pi-fw pi-file-pdf',
+            doc: 'pi pi-fw pi-file-word',
+            docx: 'pi pi-fw pi-file-word',
+            xls: 'pi pi-fw pi-file-excel',
+            xlsx: 'pi pi-fw pi-file-excel',
+            ppt: 'pi pi-fw pi-file',
+            pptx: 'pi pi-fw pi-file',
+            txt: 'pi pi-fw pi-file',
+            jpg: 'pi pi-fw pi-image',
+            jpeg: 'pi pi-fw pi-image',
+            png: 'pi pi-fw pi-image',
+            gif: 'pi pi-fw pi-image',
+            zip: 'pi pi-fw pi-file',
+            rar: 'pi pi-fw pi-file'
+        };
+        return iconMap[extension.toLowerCase()] || 'pi pi-fw pi-file';
+    }
+
+    async getFiles(): Promise<TreeNode[]> {
+        return Promise.resolve(this.getTreeNodesData());
+    }
 }

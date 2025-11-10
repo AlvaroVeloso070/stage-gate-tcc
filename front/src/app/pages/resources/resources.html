@@ -4,25 +4,199 @@
         <p class="text-muted-color">Diretrizes, normas e templates para seu TCC</p>
     </div>
 
+    <div class="flex gap-3 flex-wrap">
+        <p-button
+            icon="pi pi-folder"
+            label="Nova Pasta"
+            (onClick)="openCreateFolderDialog()"
+            severity="success"
+            class="flex-shrink-0" />
+        <p-button
+            icon="pi pi-file-plus"
+            label="Novo Arquivo"
+            (onClick)="openAddFileDialog()"
+            severity="info"
+            class="flex-shrink-0" />
+        <p-button
+            icon="pi pi-plus"
+            label="Expandir tudo"
+            (onClick)="expandAll()"
+            [outlined]="true"
+            class="flex-shrink-0" />
+        <p-button
+            icon="pi pi-minus"
+            label="Recolher tudo"
+            (onClick)="collapseAll()"
+            [outlined]="true"
+            class="flex-shrink-0" />
+    </div>
+
     <div>
-        <div class="mb-3">
-            <p-button
-                icon="pi pi-plus"
-                label="Expandir tudo"
-                (onClick)="expandAll()"
-                class="mr-2" />
-            <p-button
-                icon="pi pi-minus"
-                label="Recolher tudo"
-                (onClick)="collapseAll()" />
-        </div>
-        <p-tree [value]="files()"
-                class="w-full md:w-[30rem]"
-                selectionMode="single"
-                [(selection)]="selectedFile"
-                [contextMenu]="cm"
-                [filter]="true"
-                filterPlaceholder="Pesquise por um arquivo..."/>
+        <p-tree 
+            [value]="files()"
+            class="w-full"
+            selectionMode="single"
+            [(selection)]="selectedFile"
+            [contextMenu]="cm"
+            [filter]="true"
+            filterPlaceholder="Pesquise por um arquivo..."
+            (onNodeSelect)="onNodeSelect($event)"
+            (onNodeUnselect)="onNodeUnselect($event)"
+            (onNodeDblclick)="onNodeDoubleClick($event)" />
         <p-context-menu #cm [model]="items" />
     </div>
 </div>
+
+<!-- Dialog para criar pasta -->
+<p-dialog 
+    header="Nova Pasta" 
+    [(visible)]="showCreateFolderDialog" 
+    [modal]="true" 
+    [style]="{width: '450px'}"
+    [draggable]="false"
+    [resizable]="false">
+    <div class="flex flex-col gap-4 py-4">
+        <div class="flex flex-col gap-2">
+            <label for="folderName" class="font-semibold">Nome da Pasta</label>
+            <input 
+                pInputText 
+                id="folderName" 
+                [(ngModel)]="newFolderName" 
+                placeholder="Digite o nome da pasta"
+                class="w-full" />
+        </div>
+        <div class="flex items-center gap-2 text-sm text-muted-color">
+            <i class="pi pi-info-circle"></i>
+            <span>A pasta será criada {{ selectedFile ? 'dentro da pasta selecionada' : 'na raiz' }}</span>
+        </div>
+    </div>
+    <div class="flex w-full items-center justify-end gap-x-2">
+        <p-button 
+            label="Cancelar" 
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="showCreateFolderDialog = false" />
+        <p-button 
+            label="Criar" 
+            icon="pi pi-check"
+            (onClick)="createFolder()" />
+    </div>
+</p-dialog>
+
+<!-- Dialog para adicionar arquivo -->
+<p-dialog 
+    header="Novo Arquivo" 
+    [(visible)]="showAddFileDialog" 
+    [modal]="true" 
+    [style]="{width: '550px'}"
+    [draggable]="false"
+    [resizable]="false">
+    <div class="flex flex-col gap-4 py-4">
+        <div class="flex flex-col gap-2">
+            <label for="fileName" class="font-semibold">Nome do Arquivo</label>
+            <input 
+                pInputText 
+                id="fileName" 
+                [(ngModel)]="newFileName" 
+                placeholder="Digite o nome do arquivo"
+                class="w-full" />
+        </div>
+        <div class="flex flex-col gap-2">
+            <label for="fileExtension" class="font-semibold">Extensão</label>
+            <input 
+                pInputText 
+                id="fileExtension" 
+                [(ngModel)]="newFileExtension" 
+                placeholder="pdf, docx, xlsx, etc."
+                class="w-full" />
+        </div>
+        <div class="flex flex-col gap-2">
+            <label for="fileLink" class="font-semibold">Link do Arquivo</label>
+            <input 
+                pInputText 
+                id="fileLink" 
+                [(ngModel)]="newFileLink" 
+                placeholder="https://drive.google.com/..."
+                class="w-full" />
+            <small class="text-muted-color">Cole o link do Google Drive, OneDrive ou outro serviço de armazenamento</small>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-muted-color">
+            <i class="pi pi-info-circle"></i>
+            <span>O arquivo será adicionado {{ selectedFile ? 'dentro da pasta selecionada' : 'na raiz' }}</span>
+        </div>
+    </div>
+    <div class="flex w-full items-center justify-end gap-x-2">
+        <p-button 
+            label="Cancelar" 
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="showAddFileDialog = false" />
+        <p-button 
+            label="Adicionar" 
+            icon="pi pi-check"
+            (onClick)="addFile()" />
+    </div>
+</p-dialog>
+
+<!-- Dialog para mover item -->
+<p-dialog 
+    header="Mover Item" 
+    [(visible)]="showMoveDialog" 
+    [modal]="true" 
+    [style]="{width: '500px'}"
+    [draggable]="false"
+    [resizable]="false">
+    <div class="flex flex-col gap-4 py-4">
+
+        <div class="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <i class="pi pi-info-circle text-blue-600 dark:text-blue-400 text-xl mt-0.5"></i>
+            <div class="flex-1">
+                <p class="font-semibold text-blue-900 dark:text-blue-100 mb-1">Item selecionado</p>
+                <p class="text-blue-700 dark:text-blue-300">{{ selectedFile?.label }}</p>
+            </div>
+        </div>
+        
+        <div class="flex flex-col gap-2">
+            <label class="font-semibold">Selecione a pasta de destino</label>
+            
+            <div class="flex flex-col gap-2 max-h-64 overflow-y-auto border border-surface-300 dark:border-surface-600 rounded-lg p-3">
+                @if (availableFolders.length === 0) {
+                    <div class="text-center text-muted-color py-4">
+                        <i class="pi pi-folder-open text-4xl mb-2 block"></i>
+                        <p>Nenhuma pasta disponível</p>
+                    </div>
+                } @else {
+                    @for (folder of availableFolders; track folder.key) {
+                        <div 
+                            class="p-3 rounded-md cursor-pointer transition-colors hover:bg-surface-100 dark:hover:bg-surface-700"
+                            [class.bg-primary-50]="targetFolder?.key === folder.key"
+                            [class.border-2]="targetFolder?.key === folder.key"
+                            [class.border-primary-500]="targetFolder?.key === folder.key"
+                            (click)="targetFolder = folder">
+                            <div class="flex items-center gap-2">
+                                <i class="pi pi-folder text-yellow-600"></i>
+                                <span class="font-medium">{{ getFolderPath(folder) }}</span>
+                                @if (targetFolder?.key === folder.key) {
+                                    <i class="pi pi-check text-primary-600 ml-auto"></i>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        
+    </div>
+    <div class="flex w-full items-center justify-end gap-x-2">
+        <p-button 
+            label="Cancelar" 
+            severity="secondary"
+            [outlined]="true"
+            (onClick)="showMoveDialog = false" />
+        <p-button 
+            label="Mover" 
+            icon="pi pi-arrows-alt"
+            [disabled]="!targetFolder"
+            (onClick)="moveNode()" />
+    </div>
+</p-dialog>
