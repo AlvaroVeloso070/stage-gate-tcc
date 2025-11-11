@@ -22,7 +22,26 @@ export class ProjectConsult implements OnInit {
         groupMembers: [
             {
                 id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
-                name: 'Student for In-Progress G2 Project 3 (Soon)',
+                name: 'Álvaro Veloso',
+                email: 'student.in-progressg2project3(soon)@ufg.br',
+                type: UserTypeEnum.STUDENT
+            },
+            {
+                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
+                name: 'João Pedro',
+                email: 'student.in-progressg2project3(soon)@ufg.br',
+                type: UserTypeEnum.STUDENT
+            },
+            {
+                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
+                name: 'Thiago Telho',
+                email: 'student.in-progressg2project3(soon)@ufg.br',
+                type: UserTypeEnum.STUDENT
+            },
+
+            {
+                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
+                name: 'Guilherme S.',
                 email: 'student.in-progressg2project3(soon)@ufg.br',
                 type: UserTypeEnum.STUDENT
             }
@@ -39,6 +58,20 @@ export class ProjectConsult implements OnInit {
                 id: '51049b0f-17f9-46d9-80de-ac9bd5535f4b',
                 number: 2,
                 name: 'GATE_2',
+                dueDate: '2025-11-20',
+                approved: true
+            },
+            {
+                id: '8027600d-94e1-4255-b828-1089515f39c5',
+                number: 3,
+                name: 'GATE_3',
+                dueDate: '2024-03-01',
+                approved: true
+            },
+            {
+                id: '51049b0f-17f9-46d9-80de-ac9bd5535f4b',
+                number: 4,
+                name: 'GATE_4',
                 dueDate: '2025-11-20',
                 approved: false
             }
