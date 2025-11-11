@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Project, UserTypeEnum } from '@/pages/projects/entities/projectConsult';
+import { Project, ProjectStatus, UserTypeEnum } from '@/pages/projects/entities/projectConsult';
 import { GatesProgressStepper } from '@/pages/projects/components/gates-progress-stepper/gates-progress-stepper';
 
 @Component({
@@ -10,15 +10,14 @@ import { GatesProgressStepper } from '@/pages/projects/components/gates-progress
     styleUrl: './project-consult.scss'
 })
 export class ProjectConsult implements OnInit {
-
-    protected activeGate : WritableSignal<number> = signal(1);
-    protected isAllGatesCompleted : WritableSignal<boolean> = signal(false);
+    protected activeGate: WritableSignal<number> = signal(1);
+    protected isAllGatesCompleted: WritableSignal<boolean> = signal(false);
 
     protected project: Project = {
         id: '00000000-0000-0001-0004-000000000003',
         title: 'In-Progress G2 Project 3 (Soon)',
         researchQuestion: 'RQ G2P3',
-        status: 'IN_PROGRESS',
+        status: ProjectStatus.IN_PROGRESS,
         startDate: '2024-02-03',
         groupMembers: [
             {
@@ -53,17 +52,19 @@ export class ProjectConsult implements OnInit {
     private handleGates() {
         const gates = this.project.gates ?? [];
 
-        const approvedGates = gates.filter(g => g.approved);
-        const highestApproved = approvedGates.length
-            ? Math.max(...approvedGates.map(g => g.number))
-            : 0;
+        const approvedGates = gates.filter((g) => g.approved);
+        const highestApproved = approvedGates.length ? Math.max(...approvedGates.map((g) => g.number)) : 0;
 
         const nextGate = highestApproved + 1;
         const lastGateNumber = 6;
 
         this.activeGate.set(Math.min(nextGate, lastGateNumber));
 
-        const allCompleted = gates.some(g => g.number === lastGateNumber && g.approved);
+        const allCompleted = gates.some((g) => g.number === lastGateNumber && g.approved);
         this.isAllGatesCompleted.set(allCompleted);
+    }
+
+    protected getGroupMembers(project: Project) {
+        return project.groupMembers.map((member) => member.name).join(', ');
     }
 }

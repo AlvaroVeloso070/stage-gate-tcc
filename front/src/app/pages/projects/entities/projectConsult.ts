@@ -23,10 +23,16 @@ export interface Project {
     id: string;
     title: string;
     researchQuestion: string;
-    status: string;
+    status: ProjectStatus;
     startDate: string;
     groupMembers: User[];
     gates: Gate[];
+}
+
+export enum ProjectStatus {
+    IN_PROGRESS = 'IN_PROGRESS',
+    CANCELLED = 'CANCELLED',
+    COMPLETED = 'COMPLETED'
 }
 
 export interface Report {
