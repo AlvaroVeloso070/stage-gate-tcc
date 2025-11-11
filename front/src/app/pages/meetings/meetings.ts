@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { MeetingListing, MeetingStatusEnum, MeetingTypeEnum } from '@/pages/meetings/entities/meetingListing';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { TagProjectStatus } from '@/pages/projects/components/tag-project-status/tag-project-status';
 import { TagMeetingStatus } from '@/pages/meetings/components/tag-meeting-status/tag-meeting-status';
 
 @Component({
     selector: 'app-meetings',
-    imports: [Button, TableModule, TagProjectStatus, TagMeetingStatus],
+    imports: [Button, TableModule, TagMeetingStatus],
     templateUrl: './meetings.html',
     styleUrl: './meetings.scss'
 })

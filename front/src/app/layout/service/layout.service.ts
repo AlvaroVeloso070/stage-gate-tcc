@@ -31,7 +31,7 @@ export class LayoutService {
     /** Estado inicial */
     private defaultConfig: layoutConfig = {
         preset: 'Aura',
-        primary: 'emerald',
+        primary: 'violet',
         surface: null,
         darkTheme: false,
         menuMode: 'static'

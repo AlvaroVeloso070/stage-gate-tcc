@@ -1,0 +1,23 @@
+<p-stepper [value]="activeStep()" class="basis-[40rem]">
+    <p-step-list>
+        @for (gate of gates; track gate.value) {
+            <p-step [value]="gate.value" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col items-center gap-2">
+                        <span class="text-sm font-medium text-center text-color">
+                            {{ gate.name }}
+                        </span>
+                        <span class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center relative"
+                              [ngClass]="{'bg-primary text-primary-contrast border-primary border-0!': isGateCompleted(value), 'border-surface': !isGateCompleted(value) && !isGateActive(value),
+                                      'border-primary animate-pulse': isGateActive(value)}">
+                                    <p>{{ gate.value }}</p>
+                                </span>
+                        <span class="text-sm font-medium text-center text-color">
+                            <i class="pi" [ngClass]="isGateCompleted(value) ? 'pi-check primary-color' : ''"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+        }
+    </p-step-list>
+</p-stepper>

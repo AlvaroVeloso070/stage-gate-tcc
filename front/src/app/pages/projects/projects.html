@@ -30,7 +30,7 @@
                 <td class="text-center!">{{ project.dueDate ? project.dueDate : '-' }}</td>
                 <td class="text-center!"><tag-project-status [status]="project.dueDateStatus"></tag-project-status></td>
                 <td>
-                    <p-button icon="pi pi-search" severity="secondary" rounded />
+                    <p-button icon="pi pi-search" severity="secondary" rounded (click)="consultProject(project)"/>
                 </td>
             </tr>
         </ng-template>

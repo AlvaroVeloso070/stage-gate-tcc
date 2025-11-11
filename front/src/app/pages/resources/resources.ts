@@ -1,18 +1,18 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { Tree } from 'primeng/tree';
-import { ContextMenu } from 'primeng/contextmenu';
-import { MenuItem, TreeNode } from 'primeng/api';
-import { NodeService, ResourceData, ResourceFile } from '@/pages/resources/nodeService';
-import { ToastService } from '@/services/toast.service';
-import { Button, ButtonDirective } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
-import { InputText } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {Component, OnInit, signal} from '@angular/core';
+import {Tree} from 'primeng/tree';
+import {ContextMenu} from 'primeng/contextmenu';
+import {MenuItem, TreeNode} from 'primeng/api';
+import {NodeService, ResourceData, ResourceFile} from '@/pages/resources/nodeService';
+import {ToastService} from '@/services/toast.service';
+import {Button} from 'primeng/button';
+import {Dialog} from 'primeng/dialog';
+import {InputText} from 'primeng/inputtext';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'app-resources',
-    imports: [Tree, ContextMenu, Button, ButtonDirective, Dialog, InputText, FormsModule, CommonModule],
+    imports: [Tree, ContextMenu, Button, Dialog, InputText, FormsModule, CommonModule],
     providers: [NodeService],
     templateUrl: './resources.html',
     styleUrl: './resources.scss',

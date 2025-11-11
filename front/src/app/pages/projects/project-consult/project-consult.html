@@ -1,0 +1,15 @@
+<div class="card flex flex-col gap-8">
+    <div>
+        <p class="font-bold text-2xl">Projeto: {{ project.title }}</p>
+    </div>
+</div>
+
+<div class="card flex flex-col gap-8">
+    <div>
+        <p class="font-bold text-2xl">Progresso do projeto (Gates)</p>
+    </div>
+
+    <div>
+        <gates-progress-stepper [activeStep]="activeGate()" [isAllGatesCompleted]="isAllGatesCompleted()"></gates-progress-stepper>
+    </div>
+</div>

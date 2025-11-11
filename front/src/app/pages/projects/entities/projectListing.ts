@@ -1,4 +1,5 @@
 export interface ProjectListing {
+    id : string;
     title : string;
     groupMembers: string[];
     currentGateNumber: number;
