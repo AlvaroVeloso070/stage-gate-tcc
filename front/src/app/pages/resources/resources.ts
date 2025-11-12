@@ -1,7 +1,7 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {Tree} from 'primeng/tree';
-import {ContextMenu} from 'primeng/contextmenu';
-import {MenuItem, TreeNode} from 'primeng/api';
+import { ContextMenu } from 'primeng/contextmenu';
+import { MenuItem, TreeDragDropService, TreeNode } from 'primeng/api';
 import {NodeService, ResourceData, ResourceFile} from '@/pages/resources/nodeService';
 import {ToastService} from '@/services/toast.service';
 import {Button} from 'primeng/button';
@@ -13,7 +13,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'app-resources',
     imports: [Tree, ContextMenu, Button, Dialog, InputText, FormsModule, CommonModule],
-    providers: [NodeService],
+    providers: [NodeService, TreeDragDropService],
     templateUrl: './resources.html',
     styleUrl: './resources.scss',
     standalone: true

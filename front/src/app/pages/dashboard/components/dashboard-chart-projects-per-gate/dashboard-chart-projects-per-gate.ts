@@ -39,7 +39,7 @@ export class DashboardChartProjectsPerGate implements OnInit, OnDestroy {
         const textMutedColor = documentStyle.getPropertyValue('--text-color-secondary');
 
         this.chartData = {
-            labels: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5'],
+            labels: ['Gate 1', 'Gate 2', 'Gate 3', 'Gate 4', 'Gate 5', 'Gate 6'],
             datasets: [
                 {
                     type: 'bar',
@@ -50,7 +50,8 @@ export class DashboardChartProjectsPerGate implements OnInit, OnDestroy {
                         this.coordinationMetrics().projectsInGate2,
                         this.coordinationMetrics().projectsInGate3,
                         this.coordinationMetrics().projectsInGate4,
-                        this.coordinationMetrics().projectsInGate5
+                        this.coordinationMetrics().projectsInGate5,
+                        this.coordinationMetrics().projectsInGate6
                     ],
                     barThickness: 32
                 },
@@ -59,11 +60,12 @@ export class DashboardChartProjectsPerGate implements OnInit, OnDestroy {
                     label: 'Proximo do prazo',
                     backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
                     data: [
-                        this.coordinationMetrics().projectsAlmostLateInGate1,
-                        this.coordinationMetrics().projectsAlmostLateInGate2,
-                        this.coordinationMetrics().projectsAlmostLateInGate3,
-                        this.coordinationMetrics().projectsAlmostLateInGate4,
-                        this.coordinationMetrics().projectsAlmostLateInGate5
+                        this.coordinationMetrics().almostLateProjectsInGate1,
+                        this.coordinationMetrics().almostLateProjectsInGate2,
+                        this.coordinationMetrics().almostLateProjectsInGate3,
+                        this.coordinationMetrics().almostLateProjectsInGate4,
+                        this.coordinationMetrics().almostLateProjectsInGate5,
+                        this.coordinationMetrics().almostLateProjectsInGate6
                     ],
                     barThickness: 32
                 },
@@ -72,11 +74,12 @@ export class DashboardChartProjectsPerGate implements OnInit, OnDestroy {
                     label: 'Atrasado',
                     backgroundColor: documentStyle.getPropertyValue('--p-primary-200'),
                     data: [
-                        this.coordinationMetrics().projectsLateInGate1,
-                        this.coordinationMetrics().projectsLateInGate2,
-                        this.coordinationMetrics().projectsLateInGate3,
-                        this.coordinationMetrics().projectsLateInGate4,
-                        this.coordinationMetrics().projectsLateInGate5
+                        this.coordinationMetrics().lateProjectsInGate1,
+                        this.coordinationMetrics().lateProjectsInGate2,
+                        this.coordinationMetrics().lateProjectsInGate3,
+                        this.coordinationMetrics().lateProjectsInGate4,
+                        this.coordinationMetrics().lateProjectsInGate5,
+                        this.coordinationMetrics().lateProjectsInGate6
                     ],
                     borderRadius: {
                         topLeft: 8,

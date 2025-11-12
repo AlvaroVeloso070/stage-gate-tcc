@@ -42,7 +42,11 @@
             filterPlaceholder="Pesquise por um arquivo..."
             (onNodeSelect)="onNodeSelect($event)"
             (onNodeUnselect)="onNodeUnselect($event)"
-            (onNodeDoubleClick)="onNodeDoubleClick($event)" />
+            (onNodeDoubleClick)="onNodeDoubleClick($event)"
+            [draggableNodes]="true"
+            [droppableNodes]="true"
+            draggableScope="self"
+            droppableScope="self"/>
         <p-context-menu #cm [model]="items" />
     </div>
 </div>
