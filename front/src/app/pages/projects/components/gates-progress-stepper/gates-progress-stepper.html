@@ -1,6 +1,6 @@
 <p-stepper [value]="activeStep()" class="basis-[40rem]">
     <p-step-list>
-        @for (gate of gates; track gate.value) {
+        @for (gate of GATES; track gate.value) {
             <p-step [value]="gate.value" class="flex flex-row flex-auto gap-2">
                 <ng-template #content let-value="value">
                     <button class="bg-transparent border-0 inline-flex flex-col items-center gap-2">

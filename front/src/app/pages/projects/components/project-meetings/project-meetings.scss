@@ -1,0 +1,33 @@
+.marker-gate {
+    background-color: var(--primary-color);
+}
+
+.marker-stage {
+    background-color: var(--text-color-secondary);
+}
+
+.customized-timeline ::ng-deep .p-card {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+/* Aplica a borda lateral dependendo do alinhamento */
+.customized-timeline ::ng-deep .p-timeline-event-left .p-card {
+    border-left: 4px solid var(--primary-color);
+}
+
+.customized-timeline ::ng-deep .p-timeline-event-right .p-card {
+    border-right: 4px solid var(--primary-color);
+}
+
+/* Se quiser diferenciar Gates e Stages */
+.customized-timeline ::ng-deep .p-timeline-event-left.stage .p-card {
+    border-left-color: var(--text-color-secondary);
+}
+
+.customized-timeline ::ng-deep .p-timeline-event-right.stage .p-card {
+    border-right-color: var(--text-color-secondary);
+}

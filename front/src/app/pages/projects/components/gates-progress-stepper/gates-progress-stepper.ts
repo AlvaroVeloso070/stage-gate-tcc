@@ -1,6 +1,7 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { Step, StepList, Stepper } from 'primeng/stepper';
 import { NgClass } from '@angular/common';
+import { GATES } from '@/constants/gates';
 
 @Component({
     selector: 'gates-progress-stepper',
@@ -13,15 +14,6 @@ export class GatesProgressStepper {
     activeStep: InputSignal<number> = input(1);
     isAllGatesCompleted: InputSignal<boolean> = input.required();
 
-    gates = [
-        { value: 1, name: 'Ideação' },
-        { value: 2, name: 'Planejamento' },
-        { value: 3, name: 'Desenvolvimento' },
-        { value: 4, name: 'Resultados' },
-        { value: 5, name: 'Redação' },
-        { value: 6, name: 'Defesa' }
-    ];
-
     isGateActive(value: number): boolean {
         return value === this.activeStep() && !this.isAllGatesCompleted();
     }
@@ -29,4 +21,6 @@ export class GatesProgressStepper {
     isGateCompleted(value: number): boolean {
         return this.isAllGatesCompleted() || value < this.activeStep();
     }
+
+    protected readonly GATES = GATES;
 }

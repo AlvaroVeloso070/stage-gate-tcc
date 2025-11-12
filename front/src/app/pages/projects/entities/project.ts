@@ -38,13 +38,13 @@ export enum ProjectStatus {
 export interface Report {
     id: string;
     feedback: string;
-    gateResult: string;
+    gateResult: GateResultEnum;
     reportDate: string; // formato ISO
 }
 
 export interface MeetingConsult {
     id: string;
-    type: string;
+    type: MeetingType;
     professor: User;
     stageGateNumber: number;
     participants: User[];
@@ -53,5 +53,16 @@ export interface MeetingConsult {
     endTime: string;
     status: string;
     report: Report;
-    project: Project;
 }
+
+export enum MeetingType {
+    GATE = 'GATE',
+    STAGE = 'STAGE'
+}
+
+export enum GateResultEnum {
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
+    PENDING = 'PENDING'
+}
+

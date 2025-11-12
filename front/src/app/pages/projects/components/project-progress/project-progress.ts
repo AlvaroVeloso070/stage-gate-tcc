@@ -1,11 +1,10 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { Project } from '@/pages/projects/entities/project';
 import { Message } from 'primeng/message';
-import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
     selector: 'project-progress',
-    imports: [Message, NgClass, NgStyle],
+    imports: [Message],
     templateUrl: './project-progress.html',
     styleUrl: './project-progress.scss'
 })
