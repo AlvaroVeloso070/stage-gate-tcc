@@ -37,7 +37,7 @@
         </p-tablist>
         <p-tabpanels>
             <p-tabpanel [value]="TABS.PROGRESS">
-                <project-progress [project]="project"></project-progress>
+                <project-progress [project]="project" [activeGate]="activeGate()"></project-progress>
             </p-tabpanel>
             <p-tabpanel [value]="TABS.MEETINGS">
                 <project-meetings [projectId]="project.id"></project-meetings>

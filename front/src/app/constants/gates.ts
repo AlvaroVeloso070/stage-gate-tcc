@@ -1,4 +1,9 @@
-export const GATES = [
+export interface Gate {
+    value: number;
+    name : string;
+}
+
+export const GATES : Gate[] = [
     { value: 1, name: 'Ideação' },
     { value: 2, name: 'Planejamento' },
     { value: 3, name: 'Desenvolvimento' },

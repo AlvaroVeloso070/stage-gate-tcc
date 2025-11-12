@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Project, ProjectStatus, UserTypeEnum } from '@/pages/projects/entities/project';
 import { GatesProgressStepper } from '@/pages/projects/components/gates-progress-stepper/gates-progress-stepper';
@@ -7,6 +7,8 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { ProjectProgress } from '@/pages/projects/components/project-progress/project-progress';
 import { ProjectMeetings } from '@/pages/projects/components/project-meetings/project-meetings';
 import {DatePipe} from "@angular/common";
+import { ProjectService } from '@/services/project.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-project-consult',
@@ -16,6 +18,10 @@ import {DatePipe} from "@angular/common";
     styleUrl: './project-consult.scss'
 })
 export class ProjectConsult implements OnInit {
+
+    private projectService : ProjectService = inject(ProjectService);
+    private activatedRoute : ActivatedRoute = inject(ActivatedRoute);
+
     protected activeGate: WritableSignal<number> = signal(1);
     protected isAllGatesCompleted: WritableSignal<boolean> = signal(false);
     protected readonly TABS = {
@@ -23,73 +29,14 @@ export class ProjectConsult implements OnInit {
         MEETINGS: 1
     };
 
-    protected project: Project = {
-        id: '00000000-0000-0001-0004-000000000003',
-        title: 'In-Progress G2 Project 3 (Soon)',
-        researchQuestion: 'RQ G2P3',
-        status: ProjectStatus.IN_PROGRESS,
-        startDate: '2024-02-03',
-        groupMembers: [
-            {
-                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
-                name: 'Álvaro Veloso',
-                email: 'student.in-progressg2project3(soon)@ufg.br',
-                type: UserTypeEnum.STUDENT
-            },
-            {
-                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
-                name: 'João Pedro',
-                email: 'student.in-progressg2project3(soon)@ufg.br',
-                type: UserTypeEnum.STUDENT
-            },
-            {
-                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
-                name: 'Thiago Telho',
-                email: 'student.in-progressg2project3(soon)@ufg.br',
-                type: UserTypeEnum.STUDENT
-            },
-
-            {
-                id: '0d1e4648-b8bb-44ed-9af9-44cb57bf08b6',
-                name: 'Guilherme S.',
-                email: 'student.in-progressg2project3(soon)@ufg.br',
-                type: UserTypeEnum.STUDENT
-            }
-        ],
-        gates: [
-            {
-                id: '8027600d-94e1-4255-b828-1089515f39c5',
-                number: 1,
-                name: 'GATE_1',
-                dueDate: '2024-03-01',
-                approved: true
-            },
-            {
-                id: '51049b0f-17f9-46d9-80de-ac9bd5535f4b',
-                number: 2,
-                name: 'GATE_2',
-                dueDate: '2025-11-20',
-                approved: true
-            },
-            {
-                id: '8027600d-94e1-4255-b828-1089515f39c5',
-                number: 3,
-                name: 'GATE_3',
-                dueDate: '2024-03-01',
-                approved: true
-            },
-            {
-                id: '51049b0f-17f9-46d9-80de-ac9bd5535f4b',
-                number: 4,
-                name: 'GATE_4',
-                dueDate: '2025-11-20',
-                approved: false
-            }
-        ]
-    };
+    protected project !: Project;
 
     ngOnInit(): void {
-        this.handleGates();
+        let id : string = this.activatedRoute.snapshot.params["id"];
+        this.projectService.getProjectById(id).subscribe(project => {
+            this.project = project;
+            this.handleGates();
+        })
     }
 
     private handleGates() {
