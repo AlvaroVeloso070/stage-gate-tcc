@@ -27,8 +27,8 @@
                 <td>{{ project.title }}</td>
                 <td class="text-center!">{{ project.groupMembers.length > 0 ? project.groupMembers.join(', ') : '-' }}</td>
                 <td class="text-center!">{{ project.currentGateNumber ? 'Gate ' + project.currentGateNumber : '-' }}</td>
-                <td class="text-center!">{{ project.dueDate ? project.dueDate : '-' }}</td>
-                <td class="text-center!"><tag-project-status [status]="project.dueDateStatus"></tag-project-status></td>
+                <td class="text-center!">{{ project.dueDate ? (project.dueDate | date:'shortDate') : '-' }}</td>
+                <td class="text-center!"><tag-project-due-status [status]="project.dueDateStatus"></tag-project-due-status></td>
                 <td>
                     <p-button icon="pi pi-search" severity="secondary" rounded (click)="consultProject(project)"/>
                 </td>

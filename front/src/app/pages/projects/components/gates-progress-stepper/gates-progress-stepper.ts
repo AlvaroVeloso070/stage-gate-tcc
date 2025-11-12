@@ -6,6 +6,7 @@ import { NgClass } from '@angular/common';
     selector: 'gates-progress-stepper',
     imports: [Step, StepList, Stepper, NgClass],
     templateUrl: './gates-progress-stepper.html',
+    standalone: true,
     styleUrl: './gates-progress-stepper.scss'
 })
 export class GatesProgressStepper {

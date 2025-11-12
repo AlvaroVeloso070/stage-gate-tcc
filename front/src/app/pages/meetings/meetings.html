@@ -27,7 +27,7 @@
             <tr>
                 <td>{{ meeting.projectTitle }}</td>
                 <td class="text-center!">{{ meeting.professorName }}</td>
-                <td class="text-center!">{{ meeting.scheduleDate }}</td>
+                <td class="text-center!">{{ meeting.scheduleDate | date:'shortDate' }}</td>
                 <td class="text-center!">{{ `${meeting.startTime} - ${meeting.endTime}` }}</td>
                 <td class="text-center!">{{ `${meeting.type} ${meeting.stageGateNumber}` }}</td>
                 <td class="text-center!"><tag-meeting-status [status]="meeting.status"></tag-meeting-status></td>

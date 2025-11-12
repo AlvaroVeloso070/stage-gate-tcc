@@ -2,12 +2,13 @@ import { Component, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DueDateStatus, ProjectListing } from '@/pages/projects/entities/projectListing';
 import { Button } from 'primeng/button';
-import { TagProjectStatus } from '@/pages/projects/components/tag-project-status/tag-project-status';
+import { TagProjectDueStatus } from '@/pages/projects/components/tag-project-due-status/tag-project-due-status';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-projects',
-    imports: [TableModule, Button, TagProjectStatus],
+    imports: [TableModule, Button, TagProjectDueStatus, DatePipe],
     templateUrl: './projects.html',
     styleUrl: './projects.scss'
 })

@@ -1,17 +1,27 @@
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Project, ProjectStatus, UserTypeEnum } from '@/pages/projects/entities/projectConsult';
+import { Project, ProjectStatus, UserTypeEnum } from '@/pages/projects/entities/project';
 import { GatesProgressStepper } from '@/pages/projects/components/gates-progress-stepper/gates-progress-stepper';
+import { TagProjectStatus } from '@/pages/projects/components/tag-project-status/tag-project-status';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { ProjectProgress } from '@/pages/projects/components/project-progress/project-progress';
+import { ProjectMeetings } from '@/pages/projects/components/project-meetings/project-meetings';
+import {DatePipe} from "@angular/common";
 
 @Component({
     selector: 'app-project-consult',
-    imports: [TableModule, GatesProgressStepper],
+    imports: [TableModule, GatesProgressStepper, TagProjectStatus, Tabs, TabList, Tab, TabPanels, TabPanel, ProjectProgress, ProjectMeetings, DatePipe],
     templateUrl: './project-consult.html',
+    standalone: true,
     styleUrl: './project-consult.scss'
 })
 export class ProjectConsult implements OnInit {
     protected activeGate: WritableSignal<number> = signal(1);
     protected isAllGatesCompleted: WritableSignal<boolean> = signal(false);
+    protected readonly TABS = {
+        PROGRESS: 0,
+        MEETINGS: 1
+    };
 
     protected project: Project = {
         id: '00000000-0000-0001-0004-000000000003',

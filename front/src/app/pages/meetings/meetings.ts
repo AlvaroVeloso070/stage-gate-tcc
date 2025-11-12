@@ -3,10 +3,11 @@ import { MeetingListing, MeetingStatusEnum, MeetingTypeEnum } from '@/pages/meet
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagMeetingStatus } from '@/pages/meetings/components/tag-meeting-status/tag-meeting-status';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-meetings',
-    imports: [Button, TableModule, TagMeetingStatus],
+    imports: [Button, TableModule, TagMeetingStatus, DatePipe],
     templateUrl: './meetings.html',
     styleUrl: './meetings.scss'
 })

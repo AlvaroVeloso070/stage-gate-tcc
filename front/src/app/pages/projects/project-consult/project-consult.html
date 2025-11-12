@@ -20,17 +20,28 @@
 
         <div>
             <span class="font-bold">Data de início: </span>
-            <span>{{project.startDate}}</span>
+            <span>{{project.startDate | date:'longDate'}}</span>
+        </div>
+        <div>
+            <span class="font-bold">Status: </span>
+            <span><tag-project-status [status]="project.status"></tag-project-status></span>
         </div>
     </div>
 </div>
 
 <div class="card flex flex-col gap-8">
-    <div>
-        <p class="font-bold text-2xl">Histórico de reuniões</p>
-    </div>
-
-    <div>
-        componente histórico de reuniões
-    </div>
+    <p-tabs [value]="TABS.PROGRESS">
+        <p-tablist>
+            <p-tab [value]="TABS.PROGRESS">Andamento do Projeto</p-tab>
+            <p-tab [value]="TABS.MEETINGS">Reuniões</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+            <p-tabpanel [value]="TABS.PROGRESS">
+                <project-progress [project]="project"></project-progress>
+            </p-tabpanel>
+            <p-tabpanel [value]="TABS.MEETINGS">
+                <project-meetings [projectId]="project.id"></project-meetings>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
 </div>

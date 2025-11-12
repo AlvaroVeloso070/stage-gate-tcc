@@ -1,7 +1,6 @@
-import { Component, computed, input, InputSignal, OnInit, signal } from '@angular/core';
-import { DueDateStatus } from '@/pages/projects/entities/projectListing';
+import { Component, input, InputSignal, OnInit, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
-import { sign } from 'chart.js/helpers';
+import { ProjectStatus } from '@/pages/projects/entities/project';
 
 @Component({
     selector: 'tag-project-status',
@@ -10,23 +9,23 @@ import { sign } from 'chart.js/helpers';
     styleUrl: './tag-project-status.scss'
 })
 export class TagProjectStatus implements OnInit {
-    public status: InputSignal<DueDateStatus> = input.required();
-    protected tagValue = signal<string>('-')
-    protected tagSeverity = signal<string>('primary')
+    public status: InputSignal<ProjectStatus> = input.required();
+    protected tagValue = signal<string>('-');
+    protected tagSeverity = signal<string>('primary');
 
     ngOnInit(): void {
         switch (this.status()) {
-            case DueDateStatus.ON_TIME:
-                this.tagValue.set('No prazo');
-                this.tagSeverity.set('success');
+            case ProjectStatus.IN_PROGRESS:
+                this.tagValue.set('Em andamento');
+                this.tagSeverity.set('primary');
                 break;
-            case DueDateStatus.WARNING:
-                this.tagValue.set('Alerta');
-                this.tagSeverity.set('warn');
-                break;
-            case DueDateStatus.OVERDUE:
-                this.tagValue.set('Atrasado');
+            case ProjectStatus.CANCELLED:
+                this.tagValue.set('Cancelado');
                 this.tagSeverity.set('danger');
+                break;
+            case ProjectStatus.COMPLETED:
+                this.tagValue.set('Completo');
+                this.tagSeverity.set('success');
                 break;
         }
     }
