@@ -28,4 +28,5 @@ public class ProjectGateMetricsDTO {
     private long cancelledProjects = 0;
     private long inProgressProjects = 0;
     private long totalProjects = 0;
+    private long meetingsToday = 0;
 }

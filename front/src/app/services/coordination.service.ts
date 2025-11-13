@@ -4,6 +4,7 @@ import { CoordinationMetrics } from '@/pages/dashboard/entities/coordination-met
 import { Observable } from 'rxjs';
 import { Project } from '@/pages/projects/entities/project';
 import { ProjectListing } from '@/pages/projects/entities/projectListing';
+import { MeetingListing } from '@/pages/meetings/entities/meetingListing';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,10 @@ export class CoordinationService extends BaseService {
 
     public getAllProjects() : Observable<ProjectListing[]> {
         return this.http.get<ProjectListing[]>(`${this.getUrlEndPoint()}/projects`);
+    }
+
+    public getAllMeetings() : Observable<MeetingListing[]> {
+        return this.http.get<MeetingListing[]>(`${this.getUrlEndPoint()}/projects/meetings`);
     }
 
     protected override getPathEndPoint(): string {

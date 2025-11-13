@@ -66,6 +66,8 @@ public class CoordinationService {
         long completedProjectsCount = projectRepository.countByStatus(ProjectStatusEnum.COMPLETED);
         long cancelledProjectsCount = projectRepository.countByStatus(ProjectStatusEnum.CANCELLED);
 
+        long meetingsToday = meetingRepository.countMeetingsByScheduleDate(LocalDate.now());
+
         ProjectGateMetricsDTO metrics = new ProjectGateMetricsDTO();
         metrics.setProjectsInGate1(countsByGate.getOrDefault((short)1, 0L));
         metrics.setProjectsInGate2(countsByGate.getOrDefault((short)2, 0L));
@@ -91,6 +93,7 @@ public class CoordinationService {
         metrics.setCancelledProjects(cancelledProjectsCount);
         metrics.setInProgressProjects(openGates.size());
         metrics.setTotalProjects(metrics.getInProgressProjects() + completedProjectsCount + cancelledProjectsCount);
+        metrics.setMeetingsToday(meetingsToday);
 
         return metrics;
     }
