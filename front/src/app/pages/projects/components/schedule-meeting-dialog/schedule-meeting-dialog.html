@@ -1,25 +1,75 @@
-@if (timeSlots && daysWithAvailableSchedules) {
-    <div class="flex flex-col gap-8 p-4">
-        <div class="flex flex-col gap-2 w-2/5">
-            <p-datePicker
-                class="max-w-full"
-                [inline]="true"
-                [minDate]="minDate"
-                (onMonthChange)="onMonthChange($event)"
-            >
-                <ng-template #date let-date>
-                    <div class="day-wrapper">
-                        <span class="day-number">{{date.day}}</span>
-                        @if (existsPossibleSchedule(date)) {
-                            <span class="dot"></span>
-                        }
-                    </div>
-                </ng-template>
-            </p-datePicker>
-            <div class="flex items-center gap-2 text-sm text-muted-color">
-                <span class="info-dot"></span>
-                <span>Dias com agendamento disponível</span>
-            </div>
+<div class="flex flex-row gap-8 p-4">
+    <div class="flex flex-col gap-2 w-2/5">
+        <p-datePicker
+            class="max-w-full"
+            [inline]="true"
+            [minDate]="minDate"
+            [(ngModel)]="selectedDay"
+            [required]="true"
+            (onSelect)="onSelectDate($event)"
+            (onMonthChange)="onMonthChange($event)"
+        >
+            <ng-template #date let-date>
+                <div class="day-wrapper">
+                    <span class="day-number">{{date.day}}</span>
+                    @if (existsPossibleSchedule(date)) {
+                        <span class="dot"></span>
+                    }
+                </div>
+            </ng-template>
+        </p-datePicker>
+        <div class="flex items-center gap-2 text-sm text-muted-color">
+            <span class="info-dot"></span>
+            <span>Dias com agendamento disponível</span>
         </div>
     </div>
-}
+
+    <div>
+        <div class="flex flex-row gap-2 w-full">
+            <span class="font-bold">Tipo de Reunião: </span>
+            <div class="flex items-center">
+                <p-radioButton name="type" [value]="MeetingTypeEnum.STAGE" inputId="typeStage" [(ngModel)]="meetingType" [required]="true"></p-radioButton>
+                <label for="typeStage" class="ml-1 ">Acompanhamento (Stage)</label>
+            </div>
+
+            <div class="flex items-center">
+                <p-radioButton name="type" [value]="MeetingTypeEnum.GATE" inputId="typeGate" [(ngModel)]="meetingType" [required]="true"></p-radioButton>
+                <label for="typeStage" class="ml-1">Apresentação (Gate)</label>
+            </div>
+        </div>
+
+        <div>
+            <p-scroll-panel [style]="{height: '300px', width: '100%', padding: '0.75rem'}">
+                <div class="flex flex-col gap-3 mt-4">
+                    @for (timeSlot of availableTimeSlotsInSelectedDay; track timeSlot.id) {
+                        <div class="flex items-center gap-3 p-2 border border-gray-200 hover:border-primary rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
+                            <p-radioButton
+                                name="selectedTimeSlot"
+                                [value]="timeSlot"
+                                [required]="true"
+                                [(ngModel)]="selectedTimeSlot"
+                                [inputId]="'slot-' + timeSlot.id">
+                            </p-radioButton>
+
+                            <label [for]="'slot-' + timeSlot.id" class="cursor-pointer">
+                                <div class="flex flex-col">
+                                    <span class="font-semibold">
+                                        {{ timeSlot.professor.name }}
+                                    </span>
+
+                                    <span class="text-sm text-gray-500">
+                                        {{ timeSlot.startTime }} → {{ timeSlot.endTime }}
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+                    }
+                </div>
+            </p-scroll-panel>
+        </div>
+
+        <div class="flex justify-end">
+            <p-button label="Agendar" severity="primary"></p-button>
+        </div>
+    </div>
+</div>

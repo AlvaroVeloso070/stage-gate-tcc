@@ -58,7 +58,7 @@ export class ProjectProgress implements OnInit {
         this.dynamicDialogRef = this.dialogService.open(ScheduleMeetingDialog, {
             header: 'Agendar nova reunião',
             width: '50vw',
-            height: '450px',
+            height: '470px',
             focusOnShow: false,
             closable: true,
             closeOnEscape: true,
