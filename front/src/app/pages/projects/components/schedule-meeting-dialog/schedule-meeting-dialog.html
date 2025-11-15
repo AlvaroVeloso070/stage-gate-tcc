@@ -58,7 +58,7 @@
                                     </span>
 
                                     <span class="text-sm text-gray-500">
-                                        {{ timeSlot.startTime }} → {{ timeSlot.endTime }}
+                                        {{ timeSlot.startTime }} - {{ timeSlot.endTime }}
                                     </span>
                                 </div>
                             </label>
@@ -69,7 +69,32 @@
         </div>
 
         <div class="flex justify-end">
-            <p-button label="Agendar" severity="primary"></p-button>
+            <p-button label="Agendar" severity="primary" (click)="agendar()"></p-button>
         </div>
     </div>
 </div>
+
+<p-confirmDialog>
+    <ng-template #message let-message>
+        <div class="flex flex-col items-center justify-center gap-4 p-4 w-md">
+            <p>{{ message.message }}</p>
+
+            <div>
+                <div>
+                    <span class="font-bold">Data: </span>
+                    <span>{{selectedDay | date:'shortDate'}} {{selectedTimeSlot?.startTime}} - {{selectedTimeSlot?.endTime}}</span>
+                </div>
+
+                <div>
+                    <span class="font-bold">Professor(a): </span>
+                    <span>{{getSelectedProfessorName()}}</span>
+                </div>
+
+                <div>
+                    <span class="font-bold">Tipo de Reunião: </span>
+                    <span>{{getSelectedMeetingType()}}</span>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-confirmDialog>

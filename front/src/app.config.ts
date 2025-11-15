@@ -5,7 +5,7 @@ import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScroll
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
-import {MessageService} from "primeng/api";
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { authInterceptor } from '@/services/auth.interceptor';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -17,6 +17,7 @@ export const appConfig: ApplicationConfig = {
         providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } }, ripple: true }),
         MessageService,
         DialogService,
-        DynamicDialogRef
+        DynamicDialogRef,
+        ConfirmationService
     ]
 };
