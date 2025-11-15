@@ -1,0 +1,25 @@
+@if (timeSlots && daysWithAvailableSchedules) {
+    <div class="flex flex-col gap-8 p-4">
+        <div class="flex flex-col gap-2 w-2/5">
+            <p-datePicker
+                class="max-w-full"
+                [inline]="true"
+                [minDate]="minDate"
+                (onMonthChange)="onMonthChange($event)"
+            >
+                <ng-template #date let-date>
+                    <div class="day-wrapper">
+                        <span class="day-number">{{date.day}}</span>
+                        @if (existsPossibleSchedule(date)) {
+                            <span class="dot"></span>
+                        }
+                    </div>
+                </ng-template>
+            </p-datePicker>
+            <div class="flex items-center gap-2 text-sm text-muted-color">
+                <span class="info-dot"></span>
+                <span>Dias com agendamento disponível</span>
+            </div>
+        </div>
+    </div>
+}

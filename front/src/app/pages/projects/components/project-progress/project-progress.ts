@@ -1,22 +1,29 @@
-import { Component, input, InputSignal, OnInit } from '@angular/core';
+import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
 import { Project } from '@/pages/projects/entities/project';
 import { Message } from 'primeng/message';
 import { GATES } from '@/constants/gates';
 import { DatePipe } from '@angular/common';
+import { Panel } from 'primeng/panel';
+import { Button } from 'primeng/button';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ScheduleMeetingDialog } from '@/pages/projects/components/schedule-meeting-dialog/schedule-meeting-dialog';
 
 @Component({
     selector: 'project-progress',
-    imports: [Message, DatePipe],
+    imports: [Message, DatePipe, Panel, Button],
     templateUrl: './project-progress.html',
     styleUrl: './project-progress.scss'
 })
-export class ProjectProgress implements OnInit{
+export class ProjectProgress implements OnInit {
     public project: InputSignal<Project> = input.required();
     public activeGate: InputSignal<number> = input.required();
 
-    protected dueDateActiveGate !: string;
-    protected infoActiveGate !: string;
-    protected remainingDaysInGate !: number;
+    private dialogService : DialogService = inject(DialogService);
+    private dynamicDialogRef : DynamicDialogRef = inject(DynamicDialogRef);
+
+    protected dueDateActiveGate!: string;
+    protected infoActiveGate!: string;
+    protected remainingDaysInGate!: number;
 
     ngOnInit(): void {
         this.dueDateActiveGate = this.getDueDateAtiveGate();
@@ -45,5 +52,21 @@ export class ProjectProgress implements OnInit{
         const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
 
         return diffInDays > 0 ? diffInDays : 0;
+    }
+
+    protected scheduleMeeting() {
+        this.dynamicDialogRef = this.dialogService.open(ScheduleMeetingDialog, {
+            header: 'Agendar nova reunião',
+            width: '50vw',
+            height: '450px',
+            focusOnShow: false,
+            closable: true,
+            closeOnEscape: true,
+            modal: true,
+            data: {
+                projectId: this.project().id,
+                activeGate: this.activeGate()
+            }
+        })
     }
 }

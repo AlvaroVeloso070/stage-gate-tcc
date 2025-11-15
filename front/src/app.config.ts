@@ -6,7 +6,8 @@ import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
 import {MessageService} from "primeng/api";
-import {authInterceptor} from "@/services/auth.interceptor";
+import { authInterceptor } from '@/services/auth.interceptor';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -14,6 +15,8 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(withInterceptors([authInterceptor])),
         provideAnimationsAsync(),
         providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } }, ripple: true }),
-        MessageService
+        MessageService,
+        DialogService,
+        DynamicDialogRef
     ]
 };

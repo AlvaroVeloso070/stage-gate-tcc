@@ -6,7 +6,7 @@
     </ng-template>
     <ng-template #content let-meeting>
         <p-card [header]="getTimelineHeader(meeting)"
-                subheader="{{meeting.scheduleDate ? (meeting.scheduleDate | date: 'longDate') + ', ' + meeting.startTime : null}}">
+                subheader="{{meeting.scheduleDate ? (meeting.scheduleDate | date: 'longDate') + ', ' + meeting.startTime + ' - ' + meeting.endTime : null}}">
 
             <div>
                 <span class="font-bold">Docente: </span>
