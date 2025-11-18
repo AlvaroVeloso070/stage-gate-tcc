@@ -4,6 +4,34 @@
     <div class="project-subtitle">Detalhes e acompanhamento do projeto</div>
 </div>
 
+<div class="project-info-section">
+    <div class="info-card">
+        <div class="info-grid">
+            <div class="info-item research-question">
+                <div class="info-label">Pergunta de Pesquisa</div>
+                <div class="info-value">{{ project.researchQuestion }}</div>
+            </div>
+
+            <div class="info-item members">
+                <div class="info-label">Membros do Grupo</div>
+                <div class="info-value">{{ getGroupMembers(project) }}</div>
+            </div>
+
+            <div class="info-item start-date">
+                <div class="info-label">Data de Início</div>
+                <div class="info-value">{{ project.startDate | date:'dd/MM/yyyy' }}</div>
+            </div>
+
+            <div class="info-item status">
+                <div class="info-label">Status do Projeto</div>
+                <div class="info-value">
+                    <tag-project-status [status]="project.status"></tag-project-status>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="progress-section">
     <div class="progress-card">
         <div class="progress-title">Progresso dos Gates</div>
