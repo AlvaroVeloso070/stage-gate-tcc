@@ -1,0 +1,553 @@
+.users-content {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.users-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    border: none;
+}
+
+.users-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1.5rem;
+}
+
+.users-title {
+    h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.5px;
+    }
+}
+
+.users-subtitle {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+.users-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-input {
+    position: relative;
+
+    i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        z-index: 2;
+    }
+}
+
+.search-field {
+    padding-left: 3rem !important;
+    padding-right: 1rem !important;
+    border-radius: 25px !important;
+    border: 2px solid #e9ecef !important;
+    font-size: 0.95rem;
+    min-width: 300px;
+    transition: all 0.3s ease;
+
+    &:focus {
+        border-color: #007bff !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+.users-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+:host ::ng-deep {
+    .users-table {
+        border: none;
+
+        .p-datatable-header {
+            background: white;
+            border-bottom: 2px solid #e9ecef;
+            padding: 1.5rem;
+        }
+
+        .p-datatable-thead > tr > th {
+            background: white;
+            border-bottom: 2px solid #e9ecef;
+            padding: 1.25rem 1rem;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+
+            &:first-child {
+                border-top-left-radius: 12px;
+            }
+
+            &:last-child {
+                border-top-right-radius: 12px;
+            }
+        }
+
+        .p-datatable-tbody > tr {
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: #f8f9fa !important;
+            }
+
+            > td {
+                padding: 1.25rem 1rem;
+                border-bottom: 1px solid #f1f3f4;
+                border-left: none;
+                border-right: none;
+                vertical-align: middle;
+            }
+        }
+
+        .p-datatable-tbody > tr:last-child > td {
+            border-bottom: none;
+        }
+    }
+
+    .p-paginator {
+        background: white;
+        border: none;
+        border-top: 1px solid #e9ecef;
+        padding: 1rem 1.5rem;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        position: relative;
+        z-index: 1000;
+
+        .p-paginator-current {
+            margin-left: auto;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .p-paginator-pages .p-paginator-page {
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            min-width: 2.5rem;
+            height: 2.5rem;
+
+            &.p-highlight {
+                background: #007bff;
+                border-color: #007bff;
+            }
+        }
+
+        .p-paginator-first,
+        .p-paginator-prev,
+        .p-paginator-next,
+        .p-paginator-last {
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            min-width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .p-dropdown {
+            position: relative;
+            z-index: 9999;
+
+            .p-dropdown-panel {
+                z-index: 99999 !important;
+                position: fixed !important;
+            }
+        }
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-start;
+
+        .p-button {
+            width: 2.25rem;
+            height: 2.25rem;
+            padding: 0;
+
+            &.p-button-info {
+                background: #17a2b8;
+                border-color: #17a2b8;
+
+                &:hover {
+                    background: #138496;
+                    border-color: #117a8b;
+                }
+            }
+        }
+    }
+
+    .p-tag {
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+
+        &.p-tag-student {
+            background: #e8f5e8;
+            color: #2d5016;
+            border: 1px solid #4caf50;
+        }
+
+        &.p-tag-professor {
+            background: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ff9800;
+        }
+
+        &.p-tag-coordinator {
+            background: #fce4ec;
+            color: #880e4f;
+            border: 1px solid #e91e63;
+        }
+    }
+    .p-button {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+
+        &.p-button-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            }
+        }
+    }
+}
+
+.user-name {
+    display: flex;
+    align-items: center;
+}
+
+.name-text {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+.email-text {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+
+    .empty-icon {
+        font-size: 3rem;
+        color: #dee2e6;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        color: #6c757d;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    p {
+        color: #adb5bd;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+}
+
+:host ::ng-deep .user-dialog {
+    .p-dialog-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px 12px 0 0;
+        padding: 1.5rem;
+
+        .p-dialog-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .p-dialog-header-icon {
+            color: white;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+    .p-dialog-content {
+        padding: 2rem;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .p-dialog-footer {
+        padding: 1.5rem 2rem;
+        background: #f8f9fa;
+        border-radius: 0 0 12px 12px;
+        border-top: 1px solid #e9ecef;
+    }
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 3rem;
+}
+
+.dialog-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .users-container {
+        padding: 1rem;
+    }
+
+    .users-card {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .users-title h1 {
+        font-size: 2rem;
+    }
+
+    .users-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+        justify-content: center;
+    }
+
+    .search-field {
+        min-width: 100%;
+    }
+
+    :host ::ng-deep {
+        .users-table {
+            .p-datatable-thead > tr > th,
+            .p-datatable-tbody > tr > td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        .action-buttons {
+            .p-button {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+
+    .user-form {
+        gap: 1rem;
+    }
+
+    .dialog-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .users-title h1 {
+        font-size: 1.75rem;
+    }
+
+    .users-subtitle {
+        font-size: 1rem;
+    }
+}
+
+:host ::ng-deep .p-dialog {
+    .p-dialog-header {
+        background: var(--primary-color);
+        color: var(--primary-contrast-color);
+        border-radius: 12px 12px 0 0;
+        padding: 1.5rem 2rem;
+
+        .p-dialog-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .p-dialog-header-close {
+            color: var(--primary-contrast-color);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+
+    .p-dialog-content {
+        padding: 2rem;
+        background: var(--surface-card);
+    }
+
+    .p-dialog-footer {
+        padding: 1.5rem 2rem;
+        background: var(--surface-ground);
+        border-top: 1px solid var(--surface-border);
+        border-radius: 0 0 12px 12px;
+
+        .p-button {
+            margin-left: 0.5rem;
+
+            &.p-button-text {
+                color: var(--text-color-secondary);
+
+                &:hover {
+                    background: var(--surface-hover);
+                    color: var(--text-color);
+                }
+            }
+
+            &:not(.p-button-text) {
+                background: var(--primary-color);
+                border: none;
+                color: var(--primary-contrast-color);
+
+                &:hover {
+                    background: var(--p-primary-600);
+                }
+            }
+        }
+    }
+}
+
+.user-form {
+    .form-field {
+        margin-bottom: 1.5rem;
+
+        .field-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--surface-border);
+            border-radius: var(--content-border-radius);
+            font-size: 0.95rem;
+            transition: all var(--transition-duration);
+            background: var(--surface-card);
+            color: var(--text-color);
+
+            &:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: var(--focus-ring-shadow);
+            }
+
+            &::placeholder {
+                color: var(--text-color-secondary);
+            }
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+    }
+}
