@@ -1,40 +1,28 @@
 @if (project) {
-    <div class="card flex flex-col gap-8">
-        <div>
-            <p class="font-bold text-2xl">Projeto: {{ project.title }}</p>
-        </div>
+<div class="project-header">
+    <div class="project-title">{{ project.title }}</div>
+    <div class="project-subtitle">Detalhes e acompanhamento do projeto</div>
+</div>
 
-        <div>
-            <gates-progress-stepper [activeStep]="activeGate()" [isAllGatesCompleted]="isAllGatesCompleted()"></gates-progress-stepper>
-        </div>
-
-        <div class="flex flex-col gap-2">
-            <div>
-                <span class="font-bold">Pergunta de pesquisa: </span>
-                <span>{{project.researchQuestion}}</span>
-            </div>
-
-            <div>
-                <span class="font-bold">Membros do grupo: </span>
-                <span>{{getGroupMembers(project)}}</span>
-            </div>
-
-            <div>
-                <span class="font-bold">Data de início: </span>
-                <span>{{project.startDate | date:'longDate'}}</span>
-            </div>
-            <div>
-                <span class="font-bold">Status: </span>
-                <span><tag-project-status [status]="project.status"></tag-project-status></span>
-            </div>
-        </div>
+<div class="progress-section">
+    <div class="progress-card">
+        <div class="progress-title">Progresso dos Gates</div>
+        <gates-progress-stepper [activeStep]="activeGate()" [isAllGatesCompleted]="isAllGatesCompleted()"></gates-progress-stepper>
     </div>
+</div>
 
-    <div class="card flex flex-col gap-8">
+<div class="tabs-section">
+    <div class="custom-tabs">
         <p-tabs [value]="TABS.PROGRESS">
             <p-tablist>
-                <p-tab [value]="TABS.PROGRESS">Andamento do Projeto</p-tab>
-                <p-tab [value]="TABS.MEETINGS">Reuniões</p-tab>
+                <p-tab [value]="TABS.PROGRESS">
+                    <i class="pi pi-chart-line mr-2"></i>
+                    Andamento do Projeto
+                </p-tab>
+                <p-tab [value]="TABS.MEETINGS">
+                    <i class="pi pi-calendar mr-2"></i>
+                    Reuniões
+                </p-tab>
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel [value]="TABS.PROGRESS">
@@ -46,4 +34,5 @@
             </p-tabpanels>
         </p-tabs>
     </div>
+</div>
 }

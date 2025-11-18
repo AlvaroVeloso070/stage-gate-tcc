@@ -2,7 +2,7 @@ import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
 import { Project } from '@/pages/projects/entities/project';
 import { Message } from 'primeng/message';
 import { GATES } from '@/constants/gates';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Panel } from 'primeng/panel';
 import { Button } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -10,7 +10,7 @@ import { ScheduleMeetingDialog } from '@/pages/projects/components/schedule-meet
 
 @Component({
     selector: 'project-progress',
-    imports: [Message, DatePipe, Panel, Button],
+    imports: [Message, DatePipe, Panel, Button, NgClass],
     templateUrl: './project-progress.html',
     styleUrl: './project-progress.scss'
 })
@@ -18,8 +18,8 @@ export class ProjectProgress implements OnInit {
     public project: InputSignal<Project> = input.required();
     public activeGate: InputSignal<number> = input.required();
 
-    private dialogService : DialogService = inject(DialogService);
-    private dynamicDialogRef : DynamicDialogRef = inject(DynamicDialogRef);
+    private dialogService: DialogService = inject(DialogService);
+    private dynamicDialogRef: DynamicDialogRef = inject(DynamicDialogRef);
 
     protected dueDateActiveGate!: string;
     protected infoActiveGate!: string;
@@ -67,6 +67,6 @@ export class ProjectProgress implements OnInit {
                 projectId: this.project().id,
                 activeGate: this.activeGate()
             }
-        })
+        });
     }
 }

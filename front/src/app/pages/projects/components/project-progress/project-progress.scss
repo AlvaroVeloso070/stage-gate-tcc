@@ -1,7 +1,333 @@
-.icon-project-progress-container {
-    background-color: var(--color-primary-200);
+.progress-container {
+    padding: 0;
 
-    .icon-project-progress {
-        color: var(--primary-color);
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+        gap: 2rem;
+
+        .gate-info {
+            flex: 1;
+
+            .gate-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color), #000 20%) 100%);
+                color: var(--primary-contrast-color);
+                padding: 0.75rem 1.5rem;
+                border-radius: 50px;
+                font-weight: 600;
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color), transparent 70%);
+
+                i {
+                    font-size: 1.2rem;
+                }
+            }
+
+            .gate-description {
+                color: #6c757d;
+                line-height: 1.6;
+                margin: 0;
+                font-size: 0.95rem;
+            }
+        }
+
+        .action-buttons {
+            .schedule-btn {
+                ::ng-deep .p-button {
+                    background: linear-gradient(135deg, var(--p-green-500) 0%, var(--p-green-400) 100%);
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    font-weight: 600;
+                    box-shadow: 0 4px 12px color-mix(in srgb, var(--p-green-500), transparent 70%);
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 20px color-mix(in srgb, var(--p-green-500), transparent 60%);
+                    }
+                }
+            }
+        }
+    }
+
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .metric-card {
+            background: var(--surface-card);
+            border-radius: var(--content-border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--text-color), transparent 90%);
+            border: 1px solid var(--surface-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, var(--primary-color), color-mix(in srgb, var(--primary-color), #000 20%));
+            }
+
+            &:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px color-mix(in srgb, var(--text-color), transparent 80%);
+            }
+
+            .metric-icon {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 1rem;
+
+                i {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .metric-content {
+                h4 {
+                    margin: 0 0 0.5rem 0;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: var(--text-color-secondary);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                .metric-value {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: var(--text-color);
+                    margin: 0;
+
+                    .metric-total {
+                        font-size: 1rem;
+                        color: var(--text-color-secondary);
+                        font-weight: 400;
+                    }
+
+                    .metric-unit {
+                        font-size: 1rem;
+                        color: var(--text-color-secondary);
+                    }
+                }
+
+                .metric-label {
+                    font-size: 0.875rem;
+                    color: var(--text-color-secondary);
+                    font-weight: 500;
+                }
+            }
+
+            &.deadline-card {
+                &::before {
+                    background: linear-gradient(90deg, var(--p-cyan-500), color-mix(in srgb, var(--p-cyan-500), #000 15%));
+                }
+                .metric-icon {
+                    background-color: color-mix(in srgb, var(--p-cyan-500), transparent 90%);
+                }
+                .metric-icon i {
+                    color: var(--p-cyan-500);
+                }
+            }
+
+            &.time-card {
+                &::before {
+                    background: linear-gradient(90deg, var(--p-green-500), color-mix(in srgb, var(--p-green-500), #000 15%));
+                }
+                .metric-icon {
+                    background-color: color-mix(in srgb, var(--p-green-500), transparent 90%);
+                }
+                .metric-icon i {
+                    color: var(--p-green-500);
+                }
+
+                &.warning {
+                    &::before {
+                        background: linear-gradient(90deg, var(--p-orange-500), color-mix(in srgb, var(--p-orange-500), #000 15%));
+                    }
+                    .metric-icon {
+                        background-color: color-mix(in srgb, var(--p-orange-500), transparent 90%);
+                    }
+                    .metric-icon i {
+                        color: var(--p-orange-500);
+                    }
+                }
+
+                &.urgent {
+                    &::before {
+                        background: linear-gradient(90deg, var(--p-red-500), color-mix(in srgb, var(--p-red-500), #000 15%));
+                    }
+                    .metric-icon {
+                        background-color: color-mix(in srgb, var(--p-red-500), transparent 90%);
+                    }
+                    .metric-icon i {
+                        color: var(--p-red-500);
+                    }
+                }
+            }
+
+            &.status-card {
+                &::before {
+                    background: linear-gradient(90deg, var(--p-purple-500), color-mix(in srgb, var(--p-purple-500), #000 15%));
+                }
+                .metric-icon {
+                    background-color: color-mix(in srgb, var(--p-purple-500), transparent 90%);
+                }
+                .metric-icon i {
+                    color: var(--p-purple-500);
+                }
+            }
+        }
+    }
+
+    .alerts-section {
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid;
+
+            .alert-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+
+                i {
+                    font-size: 1.25rem;
+                }
+            }
+
+            .alert-content {
+                flex: 1;
+
+                h4 {
+                    margin: 0 0 0.5rem 0;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+
+                p {
+                    margin: 0 0 1rem 0;
+                    line-height: 1.5;
+                }
+
+                .alert-actions {
+                    display: flex;
+                    gap: 0.75rem;
+
+                    .btn {
+                        padding: 0.5rem 1rem;
+                        border-radius: 6px;
+                        font-weight: 500;
+                        font-size: 0.875rem;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+
+                        &.btn-outline {
+                            background: transparent;
+                            border: 1px solid currentColor;
+                        }
+
+                        &.btn-primary {
+                            background: currentColor;
+                            color: white;
+                            border: 1px solid currentColor;
+                        }
+                    }
+                }
+            }
+
+            &.alert-danger {
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                color: #721c24;
+
+                .alert-icon {
+                    background-color: #dc3545;
+                    color: white;
+                }
+            }
+
+            &.alert-warning {
+                background-color: #fff3cd;
+                border-color: #ffecb5;
+                color: #856404;
+
+                .alert-icon {
+                    background-color: #ffc107;
+                    color: #212529;
+                }
+            }
+
+            &.alert-success {
+                background-color: #d1edff;
+                border-color: #bee5eb;
+                color: #0c5460;
+
+                .alert-icon {
+                    background-color: #17a2b8;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+    .progress-container {
+        .progress-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .metrics-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .alerts-section {
+            .alert {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     }
 }

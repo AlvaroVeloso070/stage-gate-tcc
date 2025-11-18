@@ -1,33 +1,441 @@
-.marker-gate {
-    background-color: var(--primary-color);
+.meetings-container {
+    padding: 0;
+
+    .meetings-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--surface-card);
+        border-radius: var(--content-border-radius);
+        box-shadow: 0 4px 16px color-mix(in srgb, var(--text-color), transparent 90%);
+        border: 1px solid var(--surface-border);
+
+        .header-info {
+            flex: 1;
+
+            h3 {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--text-color);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                &::before {
+                    content: '';
+                    width: 4px;
+                    height: 24px;
+                    background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color), #000 20%) 100%);
+                    border-radius: 2px;
+                }
+            }
+
+            p {
+                margin: 0;
+                color: var(--text-color-secondary);
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+        }
+
+        .meetings-stats {
+            display: flex;
+            gap: 2rem;
+
+            .stat-item {
+                text-align: center;
+
+                .stat-number {
+                    display: block;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: var(--primary-color);
+                    line-height: 1;
+                }
+
+                .stat-label {
+                    font-size: 0.875rem;
+                    color: var(--text-color-secondary);
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+            }
+        }
+    }
+
+    .timeline-container {
+        .custom-timeline {
+            ::ng-deep {
+                .p-timeline-event-content {
+                    padding: 0;
+                }
+
+                .p-timeline-event-separator {
+                    background: linear-gradient(135deg, var(--surface-ground) 0%, var(--surface-hover) 100%);
+                    border-radius: var(--content-border-radius);
+                    padding: 0.5rem;
+                }
+            }
+        }
+
+        .timeline-marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+
+            .marker-icon {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--primary-contrast-color);
+                font-weight: bold;
+                box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color), transparent 80%);
+                position: relative;
+
+                i {
+                    font-size: 1.25rem;
+                }
+            }
+
+            .marker-text {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: var(--text-color-secondary);
+                background: var(--surface-card);
+                padding: 0.25rem 0.5rem;
+                border-radius: 4px;
+                border: 1px solid var(--surface-border);
+            }
+
+            &.marker-gate {
+                .marker-icon {
+                    background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color), #000 20%) 100%);
+                }
+            }
+
+            &.marker-stage {
+                .marker-icon {
+                    background: linear-gradient(135deg, var(--text-color-secondary) 0%, color-mix(in srgb, var(--text-color-secondary), #000 20%) 100%);
+                }
+            }
+
+            &.marker-approved {
+                .marker-icon {
+                    background: linear-gradient(135deg, var(--p-green-500) 0%, var(--p-green-400) 100%);
+                }
+            }
+
+            &.marker-rejected {
+                .marker-icon {
+                    background: linear-gradient(135deg, var(--p-red-500) 0%, color-mix(in srgb, var(--p-red-500), #000 15%) 100%);
+                }
+            }
+        }
+
+        .meeting-card {
+            background: var(--surface-card);
+            border-radius: var(--content-border-radius);
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--text-color), transparent 90%);
+            border: 1px solid var(--surface-border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin: 1rem 0;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px color-mix(in srgb, var(--text-color), transparent 80%);
+            }
+
+            &.gate-meeting {
+                border-left: 4px solid var(--primary-color);
+            }
+
+            &.stage-meeting {
+                border-left: 4px solid var(--text-color-secondary);
+            }
+
+            .meeting-header {
+                padding: 1.5rem 1.5rem 1rem 1.5rem;
+                border-bottom: 1px solid var(--surface-border);
+
+                .meeting-title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 0.75rem;
+
+                    h4 {
+                        margin: 0;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                        color: var(--text-color);
+                        flex: 1;
+                        padding-right: 1rem;
+                    }
+
+                    .meeting-type-badge {
+                        padding: 0.25rem 0.75rem;
+                        border-radius: 50px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+
+                        &.badge-gate {
+                            background-color: color-mix(in srgb, var(--primary-color), transparent 90%);
+                            color: var(--primary-color);
+                        }
+
+                        &.badge-stage {
+                            background-color: color-mix(in srgb, var(--text-color-secondary), transparent 90%);
+                            color: var(--text-color-secondary);
+                        }
+                    }
+                }
+
+                .meeting-date {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    color: var(--text-color-secondary);
+                    font-size: 0.875rem;
+
+                    i {
+                        color: var(--primary-color);
+                    }
+
+                    .time-range {
+                        margin-left: 0.5rem;
+                        padding: 0.25rem 0.5rem;
+                        background-color: var(--surface-ground);
+                        border-radius: 4px;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .meeting-content {
+                padding: 1.5rem;
+
+                .professor-info {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 1.5rem;
+                    padding: 1rem;
+                    background-color: var(--surface-ground);
+                    border-radius: var(--content-border-radius);
+
+                    .professor-avatar {
+                        width: 2.5rem;
+                        height: 2.5rem;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color), #000 20%) 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--primary-contrast-color);
+
+                        i {
+                            font-size: 1.1rem;
+                        }
+                    }
+
+                    .professor-details {
+                        flex: 1;
+
+                        .label {
+                            display: block;
+                            font-size: 0.75rem;
+                            color: var(--text-color-secondary);
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .name {
+                            font-weight: 600;
+                            color: var(--text-color);
+                            font-size: 1rem;
+                        }
+                    }
+                }
+
+                .meeting-feedback {
+                    margin-bottom: 1.5rem;
+
+                    .feedback-section,
+                    .gate-result-section {
+                        margin-bottom: 1rem;
+
+                        h5 {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            margin: 0 0 0.5rem 0;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: var(--text-color-secondary);
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+
+                            i {
+                                color: var(--primary-color);
+                                font-size: 1rem;
+                            }
+                        }
+
+                        .feedback-text {
+                            margin: 0;
+                            line-height: 1.6;
+                            color: var(--text-color-secondary);
+                            padding: 1rem;
+                            background-color: var(--surface-ground);
+                            border-radius: var(--content-border-radius);
+                            border-left: 4px solid var(--primary-color);
+
+                            &.no-feedback {
+                                color: var(--text-color-secondary);
+                                font-style: italic;
+                                border-left-color: var(--surface-border);
+                            }
+                        }
+                    }
+                }
+
+                .meeting-participants {
+                    h5 {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        margin: 0 0 0.75rem 0;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        color: var(--text-color-secondary);
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+
+                        i {
+                            color: var(--primary-color);
+                            font-size: 1rem;
+                        }
+                    }
+
+                    .participants-list {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.5rem;
+
+                        .participant {
+                            padding: 0.25rem 0.75rem;
+                            background-color: var(--surface-hover);
+                            border-radius: 50px;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            color: var(--text-color);
+                        }
+                    }
+                }
+            }
+
+            .meeting-actions {
+                padding: 1rem 1.5rem;
+                background-color: var(--surface-ground);
+                border-top: 1px solid var(--surface-border);
+                display: flex;
+                gap: 0.75rem;
+                justify-content: flex-end;
+            }
+        }
+
+        .no-meetings {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--surface-card);
+            border-radius: var(--content-border-radius);
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--text-color), transparent 90%);
+            border: 1px solid var(--surface-border);
+
+            .no-meetings-icon {
+                width: 4rem;
+                height: 4rem;
+                border-radius: 50%;
+                background-color: var(--surface-ground);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem auto;
+
+                i {
+                    font-size: 2rem;
+                    color: var(--text-color-secondary);
+                }
+            }
+
+            h4 {
+                margin: 0 0 1rem 0;
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: var(--text-color);
+            }
+
+            p {
+                margin: 0 0 2rem 0;
+                color: var(--text-color-secondary);
+                line-height: 1.6;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
 }
 
-.marker-stage {
-    background-color: var(--text-color-secondary);
-}
+// Responsividade
+@media (max-width: 768px) {
+    .meetings-container {
+        .meetings-header {
+            flex-direction: column;
+            gap: 1.5rem;
 
-.customized-timeline ::ng-deep .p-card {
-    box-shadow: none !important;
-    border: none !important;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: border-color 0.3s ease;
-}
+            .meetings-stats {
+                align-self: stretch;
+                justify-content: space-around;
+            }
+        }
 
-/* Aplica a borda lateral dependendo do alinhamento */
-.customized-timeline ::ng-deep .p-timeline-event-left .p-card {
-    border-left: 4px solid var(--primary-color);
-}
+        .meeting-card {
+            .meeting-header {
+                .meeting-title {
+                    flex-direction: column;
+                    gap: 0.75rem;
 
-.customized-timeline ::ng-deep .p-timeline-event-right .p-card {
-    border-right: 4px solid var(--primary-color);
-}
+                    h4 {
+                        padding-right: 0;
+                    }
+                }
 
-/* Se quiser diferenciar Gates e Stages */
-.customized-timeline ::ng-deep .p-timeline-event-left.stage .p-card {
-    border-left-color: var(--text-color-secondary);
-}
+                .meeting-date {
+                    flex-wrap: wrap;
+                }
+            }
 
-.customized-timeline ::ng-deep .p-timeline-event-right.stage .p-card {
-    border-right-color: var(--text-color-secondary);
+            .meeting-actions {
+                flex-direction: column;
+
+                ::ng-deep .p-button {
+                    width: 100%;
+                }
+            }
+        }
+    }
 }

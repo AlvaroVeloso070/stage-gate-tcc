@@ -1,63 +1,50 @@
-<div class="flex flex-col gap-8">
-    <div>
-        <p class="font-bold text-2xl">{{infoActiveGate}}</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    </div>
-
-    <div>
-        <p-button severity="primary" label="Agendar nova Reunião" icon="pi pi-video" (click)="scheduleMeeting()"></p-button>
-    </div>
-
-    <div class="flex flex-row justify-between">
-        <div class="flex flex-row gap-8 align-baseline">
-            <div>
-                <div class="flex items-center justify-center rounded-border icon-project-progress-container" style="width: 4rem; height: 4rem">
-                    <i class="pi pi-calendar text-5xl! icon-project-progress"></i>
-                </div>
+<div class="progress-container">
+    <div class="progress-header">
+        <div class="gate-info">
+            <div class="gate-badge">
+                <i class="pi pi-flag-fill"></i>
+                {{infoActiveGate}}
             </div>
-
-            <div class="flex flex-col align-baseline">
-                <span class="font-bold text-xl">{{dueDateActiveGate | date:'longDate'}}</span>
-                <span>Prazo do Gate</span>
-            </div>
+            <p class="gate-description">Acompanhe o andamento do seu projeto e certifique-se de cumprir os prazos estabelecidos.</p>
         </div>
 
-        <div class="flex flex-row gap-8">
-            <div>
-                <div class="flex items-center justify-center rounded-border icon-project-progress-container" style="width: 4rem; height: 4rem">
-                    <i class="pi pi-file-edit text-5xl! icon-project-progress"></i>
-                </div>
-            </div>
-
-            <div class="flex flex-col align-baseline">
-                <span class="font-bold text-xl">0</span>
-                <span>Entregáveis pendentes</span>
-            </div>
-        </div>
-
-        <div class="flex flex-row gap-8">
-            <div>
-                <div class="flex items-center justify-center rounded-border icon-project-progress-container" style="width: 4rem; height: 4rem">
-                    <i class="pi pi-stopwatch text-5xl! icon-project-progress"></i>
-                </div>
-            </div>
-
-            <div class="flex flex-col align-baseline">
-                <span class="font-bold text-xl">{{remainingDaysInGate}}</span>
-                <span>Dias restantes</span>
-            </div>
+        <div class="action-buttons">
+            <p-button severity="primary" label="Agendar Reunião" icon="pi pi-video" (click)="scheduleMeeting()" class="schedule-btn"> </p-button>
         </div>
     </div>
 
-    @if (remainingDaysInGate <= 0){
-        <p-message severity="error" icon="pi pi-exclamation-triangle" styleClass="h-full">
-            <span class="font-bold">Atenção: </span>
-            <span>O prazo do Gate {{activeGate()}} já expirou. Regularize as pendências o quanto antes e reagende sua reunião de avaliação com o orientador para evitar impactos no cronograma do projeto.</span>
-        </p-message>
-    } @else {
-        <p-message severity="warn" icon="pi pi-exclamation-triangle" styleClass="h-full">
-            <span class="font-bold">Atenção: </span>
-            <span>Faltam apenas {{remainingDaysInGate}} dias para o prazo do Gate {{activeGate()}}. Certifique-se de que todos os entregáveis estejam completos e agende sua reunião de avaliação com antecedência.</span>
-        </p-message>
-    }
+    <div class="metrics-grid">
+        <div class="metric-card deadline-card">
+            <div class="metric-icon">
+                <i class="pi pi-calendar"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Prazo do Gate</h4>
+                <p class="metric-value">{{dueDateActiveGate | date:'dd/MM/yyyy'}}</p>
+                <span class="metric-label">{{dueDateActiveGate | date:'EEEE'}}</span>
+            </div>
+        </div>
+
+        <div class="metric-card time-card" [ngClass]="{'urgent': remainingDaysInGate <= 3, 'warning': remainingDaysInGate <= 7 && remainingDaysInGate > 3}">
+            <div class="metric-icon">
+                <i class="pi pi-stopwatch"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Tempo Restante</h4>
+                <p class="metric-value">{{remainingDaysInGate}}</p>
+                <span class="metric-label">{{remainingDaysInGate === 1 ? 'dia' : 'dias'}}</span>
+            </div>
+        </div>
+
+        <div class="metric-card status-card">
+            <div class="metric-icon">
+                <i class="pi pi-info-circle"></i>
+            </div>
+            <div class="metric-content">
+                <h4>Status Atual</h4>
+                <p class="metric-value">Gate {{activeGate()}}</p>
+                <span class="metric-label">Em andamento</span>
+            </div>
+        </div>
+    </div>
 </div>
