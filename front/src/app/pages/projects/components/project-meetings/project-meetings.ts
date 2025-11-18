@@ -2,7 +2,7 @@ import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
 import { GateResultEnum, MeetingConsult, MeetingType, UserTypeEnum } from '@/pages/projects/entities/project';
 import { Timeline } from 'primeng/timeline';
 import { Card } from 'primeng/card';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import { GATES } from '@/constants/gates';
 import { Button } from 'primeng/button';
 import { TagStatusGateApproval } from '@/pages/projects/components/tag-status-gate-approval/tag-status-gate-approval';
@@ -10,22 +10,21 @@ import { ProjectService } from '@/services/project.service';
 
 @Component({
     selector: 'project-meetings',
-    imports: [Timeline, Card, DatePipe, Button, NgClass, TagStatusGateApproval],
+    imports: [Timeline, Card, DatePipe, Button, NgClass, TagStatusGateApproval, NgIf],
     templateUrl: './project-meetings.html',
     styleUrl: './project-meetings.scss'
 })
-export class ProjectMeetings implements OnInit{
-
-    private readonly projectService : ProjectService = inject(ProjectService);
+export class ProjectMeetings implements OnInit {
+    private readonly projectService: ProjectService = inject(ProjectService);
 
     public projectId: InputSignal<string> = input.required();
-    protected meetings !: MeetingConsult[];
+    protected meetings!: MeetingConsult[];
     protected readonly MeetingType = MeetingType;
 
     ngOnInit(): void {
-        this.projectService.getAllProjectMeetings(this.projectId()).subscribe(meetings => {
+        this.projectService.getAllProjectMeetings(this.projectId()).subscribe((meetings) => {
             this.meetings = meetings;
-        })
+        });
     }
 
     protected isGateMeeting(meeting: MeetingConsult): boolean {
@@ -46,4 +45,12 @@ export class ProjectMeetings implements OnInit{
     }
 
     protected readonly GateResultEnum = GateResultEnum;
+
+    protected getGateMeetingsCount(): number {
+        return this.meetings?.filter((meeting) => this.isGateMeeting(meeting)).length || 0;
+    }
+
+    protected getStageMeetingsCount(): number {
+        return this.meetings?.filter((meeting) => !this.isGateMeeting(meeting)).length || 0;
+    }
 }
