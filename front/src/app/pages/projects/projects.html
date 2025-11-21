@@ -1,95 +1,11 @@
 <div class="card flex flex-col gap-3">
     <div class="flex justify-between items-center">
         <p class="font-bold text-2xl">Projetos</p>
-        <div class="flex gap-2">
-            <p-button 
-                *ngIf="activeFiltersCount > 0" 
-                label="Limpar filtros ({{ activeFiltersCount }})"
-                icon="pi pi-filter-slash"
-                severity="secondary"
-                [outlined]="true"
-                (onClick)="clearFilters()"
-            />
-        </div>
-    </div>
-
-    <!-- Área de Filtros -->
-    <div class="filter-container card px-3 bg-gray-50 border-1 border-gray-200">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            <!-- Busca por texto -->
-            <div class="flex flex-col gap-1">
-                <label class="text-sm font-semibold text-gray-700">Buscar</label>
-                <span class="p-input-icon-left w-full">
-                    <i class="pi pi-search"></i>
-                    <input 
-                        type="text" 
-                        pInputText 
-                        placeholder="Título ou membros..."
-                        [(ngModel)]="searchText"
-                        (input)="applyFilters()"
-                        class="w-full"
-                    />
-                </span>
-            </div>
-
-            <!-- Filtro de Status de Prazo -->
-            <div class="flex flex-col gap-1">
-                <label class="text-sm font-semibold text-gray-700">Status do Prazo</label>
-                <p-multiSelect 
-                    [options]="dueStatusOptions" 
-                    [(ngModel)]="selectedDueStatuses"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Todos os status"
-                    [showClear]="true"
-                    (onChange)="applyFilters()"
-                    class="w-full"
-                    [style]="{'width': '100%'}"
-                />
-            </div>
-
-            <!-- Filtro de Gate -->
-            <div class="flex flex-col gap-1">
-                <label class="text-sm font-semibold text-gray-700">Gate Atual</label>
-                <p-multiSelect 
-                    [options]="gateOptions" 
-                    [(ngModel)]="selectedGates"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Todos os gates"
-                    [showClear]="true"
-                    (onChange)="applyFilters()"
-                    class="w-full"
-                    [style]="{'width': '100%'}"
-                />
-            </div>
-
-            <!-- Filtro de Quantidade de Membros -->
-            <div class="flex flex-col gap-1">
-                <label class="text-sm font-semibold text-gray-700">Nº de Membros</label>
-                <p-multiSelect 
-                    [options]="memberCountOptions" 
-                    [(ngModel)]="selectedMemberCounts"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Todos"
-                    [showClear]="true"
-                    (onChange)="applyFilters()"
-                    class="w-full"
-                    [style]="{'width': '100%'}"
-                />
-            </div>
-        </div>
-
-        <!-- Indicador de resultados -->
-        <div class="mt-2 text-sm text-gray-600">
-            <i class="pi pi-info-circle mr-2"></i>
-            Exibindo {{ filteredProjects?.length || 0 }} de {{ projects?.length || 0 }} projeto(s)
-        </div>
     </div>
 
     <div class="table-wrapper">
-        <p-table [value]="filteredProjects" stripedRows
+        <p-table [value]="projects"
+                 stripedRows
                  [paginator]="true"
                  [rows]="10"
                  [rowsPerPageOptions]="[10, 20, 30]"
@@ -97,11 +13,56 @@
                  currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} registros.">
             <ng-template #header>
                 <tr>
-                    <th pSortableColumn="title">Titulo <p-sortIcon field="title"/></th>
-                    <th pSortableColumn="groupMembers" class="text-center!">Membros <p-sortIcon field="groupMembers"/></th>
-                    <th pSortableColumn="currentGateNumber" class="text-center!">Gate Atual <p-sortIcon field="currentGateNumber"/></th>
-                    <th pSortableColumn="dueDate" class="text-center!">Prazo <p-sortIcon field="dueDate"/></th>
-                    <th pSortableColumn="dueDateStatus" class="text-center!">Status <p-sortIcon field="dueDateStatus"/></th>
+                    <th pSortableColumn="title">
+                        Titulo
+                        <p-columnFilter type="text" field="title" display="menu" matchMode="contains"/>
+                        <p-sortIcon field="title"/>
+                    </th>
+                    <th pSortableColumn="groupMembers" class="text-center!">
+                        Membros
+                        <p-columnFilter type="text" field="groupMembers" display="menu" matchMode="contains"/>
+                        <p-sortIcon field="groupMembers"/>
+                    </th>
+                    <th pSortableColumn="currentGateNumber" class="text-center!">
+                        Gate Atual
+                        <p-columnFilter field="currentGateNumber" matchMode="equals" display="menu">
+                            <ng-template #filter let-value let-filter="filterCallback">
+                                <p-select [ngModel]="value"
+                                          [options]="gateOptions"
+                                          (onChange)="filter($event.value)"
+                                          placeholder="Selecione um Gate"
+                                          class="w-full"
+                                          optionLabel="label"
+                                          optionValue="value">
+                                </p-select>
+                            </ng-template>
+                        </p-columnFilter>
+                        <p-sortIcon field="currentGateNumber"/>
+                    </th>
+                    <th pSortableColumn="dueDate" class="text-center!">
+                        Prazo
+                        <p-columnFilter field="dueDate" display="menu" type="date"></p-columnFilter>
+                        <p-sortIcon field="dueDate"/>
+                    </th>
+                    <th pSortableColumn="dueDateStatus" class="text-center!">
+                        Status
+                        <p-columnFilter field="dueDateStatus" matchMode="equals" display="menu">
+                            <ng-template #filter let-value let-filter="filterCallback">
+                                <p-select [ngModel]="value"
+                                          [options]="dueStatusOptions"
+                                          (onChange)="filter($event.value)"
+                                          placeholder="Selecione um Status"
+                                          class="w-full"
+                                          optionLabel="label"
+                                          optionValue="value">
+                                    <ng-template let-option #item>
+                                        <tag-project-due-status [status]="option.value"></tag-project-due-status>
+                                    </ng-template>
+                                </p-select>
+                            </ng-template>
+                        </p-columnFilter>
+                        <p-sortIcon field="dueDateStatus"/>
+                    </th>
                     <th style="width: 5rem"></th>
                 </tr>
             </ng-template>

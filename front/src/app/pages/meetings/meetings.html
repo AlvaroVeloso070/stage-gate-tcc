@@ -34,9 +34,15 @@
                     Status
                     <p-columnFilter field="status" matchMode="equals" display="menu">
                         <ng-template #filter let-value let-filter="filterCallback">
-                            <p-select [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Selecione um status" class="w-full">
+                            <p-select [ngModel]="value"
+                                      [options]="statuses"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="label"
+                                      optionValue="value"
+                                      placeholder="Selecione um status"
+                                      class="w-full">
                                 <ng-template let-option #item>
-                                    <tag-meeting-status [status]="option"></tag-meeting-status>
+                                    <tag-meeting-status [status]="option.value"></tag-meeting-status>
                                 </ng-template>
                             </p-select>
                         </ng-template>

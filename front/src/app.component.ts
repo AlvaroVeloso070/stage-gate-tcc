@@ -27,7 +27,27 @@ export class AppComponent implements OnInit {
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             today: 'Hoje',
             clear: 'Limpar',
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            startsWith: 'Começa com',
+            contains: 'Contém',
+            notContains: 'Não contém',
+            endsWith: 'Termina com',
+            equals: 'Igual a',
+            notEquals: 'Diferente de',
+            noFilter: 'Sem filtro',
+            lt: 'Menor que',
+            lte: 'Menor ou igual a',
+            gt: 'Maior que',
+            gte: 'Maior ou igual a',
+            dateIs: 'É igual a',
+            dateIsNot: 'É diferente de',
+            dateBefore: 'Antes de',
+            dateAfter: 'Depois de',
+            apply: 'Aplicar',
+            matchAll: 'Corresponder todos',
+            matchAny: 'Corresponder qualquer',
+            addRule: 'Adicionar Regra',
+            removeRule: 'Remover Regra',
         });
     }
 }

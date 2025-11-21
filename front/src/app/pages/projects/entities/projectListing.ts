@@ -3,7 +3,7 @@ export interface ProjectListing {
     title : string;
     groupMembers: string[];
     currentGateNumber: number;
-    dueDate : string | undefined;
+    dueDate : Date | undefined;
     dueDateStatus : DueDateStatus | undefined;
 }
 

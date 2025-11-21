@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import {Select} from "primeng/select";
 import {FormsModule} from "@angular/forms";
 import {DatePicker} from "primeng/datepicker";
+import {FilterOption} from "@/shared/dtos/FilterOption";
 
 @Component({
     selector: 'app-meetings',
@@ -20,14 +21,20 @@ export class Meetings implements OnInit {
 
     private coordinationService : CoordinationService = inject(CoordinationService);
     protected meetingsList!: MeetingListing[];
-    protected statuses : MeetingStatusEnum[] = Object.values(MeetingStatusEnum);
+    protected statuses : FilterOption[] = [
+        {label: 'Completa', value: MeetingStatusEnum.COMPLETED},
+        {label: 'Pendente', value: MeetingStatusEnum.PENDING},
+        {label: 'Feedback Atrasado', value: MeetingStatusEnum.LATE_FEEDBACK},
+        {label: 'Feedback Pendente', value: MeetingStatusEnum.PENDING_FEEDBACK},
+        {label: 'Cancelada', value: MeetingStatusEnum.CANCELLED},
+    ];
 
     ngOnInit(): void {
         this.coordinationService.getAllMeetings().subscribe(meetings => {
             this.meetingsList = meetings.map(item => ({
                 ...item,
-                scheduleDate: new Date(item.scheduleDate) // converte '2025-11-22' → Date
-            }));;
+                scheduleDate: new Date(item.scheduleDate)
+            }));
         })
     }
 }
