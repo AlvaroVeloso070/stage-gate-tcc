@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import { MeetingListing, MeetingStatusEnum, MeetingTypeEnum } from '@/pages/meetings/entities/meetingListing';
 import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import { TagMeetingStatus } from '@/pages/meetings/components/tag-meeting-status/tag-meeting-status';
 import { DatePipe } from '@angular/common';
 import { CoordinationService } from '@/services/coordination.service';
@@ -10,6 +10,7 @@ import {Select} from "primeng/select";
 import {FormsModule} from "@angular/forms";
 import {DatePicker} from "primeng/datepicker";
 import {FilterOption} from "@/shared/dtos/FilterOption";
+import {startOfDay} from "date-fns";
 
 @Component({
     selector: 'app-meetings',
@@ -19,7 +20,9 @@ import {FilterOption} from "@/shared/dtos/FilterOption";
 })
 export class Meetings implements OnInit {
 
-    private coordinationService : CoordinationService = inject(CoordinationService);
+    private readonly coordinationService : CoordinationService = inject(CoordinationService);
+    private readonly route : ActivatedRoute = inject(ActivatedRoute);
+
     protected meetingsList!: MeetingListing[];
     protected statuses : FilterOption[] = [
         {label: 'Completa', value: MeetingStatusEnum.COMPLETED},
@@ -29,12 +32,33 @@ export class Meetings implements OnInit {
         {label: 'Cancelada', value: MeetingStatusEnum.CANCELLED},
     ];
 
+    @ViewChild('dt') table!: Table;
+
     ngOnInit(): void {
         this.coordinationService.getAllMeetings().subscribe(meetings => {
             this.meetingsList = meetings.map(item => ({
                 ...item,
-                scheduleDate: new Date(item.scheduleDate)
+                scheduleDate: startOfDay(item.scheduleDate)
             }));
+            this.applyPreFilters();
         })
+    }
+
+    private applyPreFilters() {
+        this.route.queryParams.subscribe(params => {
+            if (params['filter'] && params['filter'] === 'TODAY' ){
+                this.table.filters = {
+                    ...this.table.filters,
+                    scheduleDate: [
+                        {
+                            value: startOfDay(new Date()),
+                            matchMode: 'dateIs'
+                        }
+                    ]
+                }
+
+                this.table._filter();
+            }
+        });
     }
 }

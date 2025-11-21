@@ -4,7 +4,8 @@
             [metricName]="'Reuniões hoje'"
             [metricValue]="coordinationMetrics().meetingsToday"
             [icon]="'video'"
-            [iconColor]="'blue'">
+            [iconColor]="'blue'"
+            [onClickFunction]="consultTodayMeetings">
         </coordination-metric>
     </div>
 
@@ -13,7 +14,8 @@
             [metricName]="'Projetos em andamento'"
             [metricValue]="coordinationMetrics().inProgressProjects"
             [icon]="'chart-line'"
-            [iconColor]="'green'">
+            [iconColor]="'green'"
+            [onClickFunction]="consultInProgressProjects">
         </coordination-metric>
     </div>
 
@@ -22,7 +24,8 @@
             [metricName]="'Projetos próximos do prazo'"
             [metricValue]="coordinationMetrics().almostLateProjects"
             [icon]="'calendar-clock'"
-            [iconColor]="'orange'">
+            [iconColor]="'orange'"
+            [onClickFunction]="consultAlmostLateProjects">
         </coordination-metric>
     </div>
 
@@ -31,7 +34,8 @@
             [metricName]="'Projetos atrasados'"
             [metricValue]="coordinationMetrics().lateProjects"
             [icon]="'exclamation-triangle'"
-            [iconColor]="'red'">
+            [iconColor]="'red'"
+            [onClickFunction]="consultLateProjects">
         </coordination-metric>
     </div>
 </div>

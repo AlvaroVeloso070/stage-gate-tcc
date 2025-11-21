@@ -11,15 +11,15 @@ import { Router } from '@angular/router';
   styleUrl: './coordination-metric-card.scss'
 })
 export class CoordinationMetric {
-
-    private router : Router = inject(Router);
-
     public metricName : InputSignal<string> = input.required<string>();
     public metricValue : InputSignal<number> = input.required<number>();
     public icon : InputSignal<string> = input.required<string>();
     public iconColor : InputSignal<string> = input.required<string>();
+    public onClickFunction : InputSignal<Function> = input.required<Function>();
 
     protected onViewDetails() {
-        this.router.navigateByUrl("/pages/projects")
+        this.onClickFunction().call(this);
     }
 }
+
+

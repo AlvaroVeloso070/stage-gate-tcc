@@ -4,7 +4,9 @@
     </div>
 
 
-    <p-table [value]="meetingsList" stripedRows
+    <p-table [value]="meetingsList"
+             #dt
+             stripedRows
              [paginator]="true"
              [rows]="10"
              [rowsPerPageOptions]="[10, 20, 30]"

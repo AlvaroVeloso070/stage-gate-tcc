@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { TableModule } from 'primeng/table';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Table, TableModule} from 'primeng/table';
 import { DueDateStatus, ProjectListing } from '@/pages/projects/entities/projectListing';
 import { Button } from 'primeng/button';
 import { TagProjectDueStatus } from '@/pages/projects/components/tag-project-due-status/tag-project-due-status';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { CoordinationService } from '@/services/coordination.service';
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,6 +13,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import {Select} from "primeng/select";
 import {FilterOption} from "@/shared/dtos/FilterOption";
 import {TagMeetingStatus} from "@/pages/meetings/components/tag-meeting-status/tag-meeting-status";
+import {startOfDay} from "date-fns";
+import {ProjectFilterEnum} from "@/pages/projects/entities/ProjectFilterEnum";
+import {ProjectStatus} from "@/pages/projects/entities/project";
 
 @Component({
     selector: 'app-projects',
@@ -21,8 +24,11 @@ import {TagMeetingStatus} from "@/pages/meetings/components/tag-meeting-status/t
     styleUrl: './projects.scss'
 })
 export class Projects implements OnInit {
-    private coordinationService: CoordinationService = inject(CoordinationService);
+    private readonly coordinationService: CoordinationService = inject(CoordinationService);
     private readonly router: Router = inject(Router);
+    private readonly route : ActivatedRoute = inject(ActivatedRoute);
+
+    @ViewChild('dt') table!: Table;
 
     protected projects!: ProjectListing[];
 
@@ -47,9 +53,55 @@ export class Projects implements OnInit {
                 .filter(item => item.currentGateNumber && item.dueDate && item.dueDateStatus && item.groupMembers.length > 0)
                 .map(item => ({
                 ...item,
-                dueDate: item.dueDate ? new Date(item.dueDate) : item.dueDate
+                dueDate: item.dueDate ? startOfDay(item.dueDate) : item.dueDate
             }));
+            this.applyPreFilters();
         });
+    }
+
+    private applyPreFilters() {
+        this.route.queryParams.subscribe(params => {
+            let filter = params['filter'];
+            if (filter){
+                this.table.filters = {
+                    ...this.table.filters,
+                    dueDateStatus: [
+                        {
+                            value: this.getFilterProjectStatus(filter),
+                            matchMode: 'equals'
+                        }
+                    ],
+                    // TODO - A regra no backend está para trazer os projetos entre a data atual e -7 dias na métrica de 'almostLate'. Ajustar este filtro do redirecionamento da dashboard
+                    // dueDate: [
+                    //     {
+                    //         value: startOfDay(new Date()),
+                    //         matchMode: 'dateBefore'
+                    //     },
+                    //     {
+                    //         value: () => {
+                    //             let date = startOfDay(new Date());
+                    //             date.setDate(date.getDate() - 7)
+                    //             return date;
+                    //         },
+                    //         matchMode: 'dateBefore',
+                    //         operator: 'and'
+                    //     }
+                    // ]
+                }
+
+                this.table._filter();
+            }
+        });
+    }
+
+    private getFilterProjectStatus(filter : any){
+        if (filter === ProjectFilterEnum.ALMOST_LATE.toString()){
+            return DueDateStatus.WARNING;
+        } else if (filter === ProjectFilterEnum.LATE.toString()){
+            return DueDateStatus.OVERDUE
+        }else {
+            return DueDateStatus.ON_TIME;
+        }
     }
 
     protected consultProject(project: ProjectListing) {
