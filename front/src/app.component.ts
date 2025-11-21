@@ -19,14 +19,15 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.primeng.setTranslation({
-            firstDayOfWeek: 0, // Domingo como primeiro dia da semana
+            firstDayOfWeek: 0,
             dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
             dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
             dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sá'],
             monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             today: 'Hoje',
-            clear: 'Limpar'
+            clear: 'Limpar',
+            dateFormat: 'dd/mm/yy'
         });
     }
 }

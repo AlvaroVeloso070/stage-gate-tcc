@@ -2,7 +2,7 @@ export interface MeetingListing {
     id : string;
     projectTitle : string;
     professorName : string;
-    scheduleDate : string;
+    scheduleDate : Date;
     startTime : string;
     endTime : string;
     type : MeetingTypeEnum;

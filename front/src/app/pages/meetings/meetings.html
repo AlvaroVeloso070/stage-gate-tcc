@@ -14,12 +14,34 @@
              currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} registros.">
         <ng-template #header>
             <tr>
-                <th pSortableColumn="projectTitle">Projeto <p-sortIcon field="projectTitle"/></th>
-                <th pSortableColumn="professorName" class="text-center!">Docente <p-sortIcon field="professorName"/></th>
-                <th pSortableColumn="scheduleDate" class="text-center!">Data <p-sortIcon field="scheduleDate"/></th>
-                <th pSortableColumn="startTime" class="text-center!">Horário <p-sortIcon field="startTime"/></th>
+                <th>
+                    Projeto
+                    <p-columnFilter type="text" field="projectTitle" display="menu" matchMode="contains" />
+                </th>
+                <th class="text-center!">
+                    Docente
+                    <p-columnFilter type="text" field="professorName" display="menu"/>
+                </th>
+                <th class="text-center!">
+                    Data
+                    <p-columnFilter field="scheduleDate" display="menu" type="date"></p-columnFilter>
+                </th>
+                <th class="text-center!">
+                    Horário
+                </th>
                 <th class="text-center!">Stage / Gate</th>
-                <th pSortableColumn="status" class="text-center!">Status <p-sortIcon field="status"/></th>
+                <th class="text-center!">
+                    Status
+                    <p-columnFilter field="status" matchMode="equals" display="menu">
+                        <ng-template #filter let-value let-filter="filterCallback">
+                            <p-select [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Selecione um status" class="w-full">
+                                <ng-template let-option #item>
+                                    <tag-meeting-status [status]="option"></tag-meeting-status>
+                                </ng-template>
+                            </p-select>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
                 <th style="width: 5rem"></th>
             </tr>
         </ng-template>
