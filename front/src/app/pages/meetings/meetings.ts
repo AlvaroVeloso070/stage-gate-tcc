@@ -10,7 +10,7 @@ import {Select} from "primeng/select";
 import {FormsModule} from "@angular/forms";
 import {DatePicker} from "primeng/datepicker";
 import {FilterOption} from "@/shared/dtos/FilterOption";
-import {startOfDay} from "date-fns";
+import {parseISO, startOfDay} from "date-fns";
 
 @Component({
     selector: 'app-meetings',
@@ -38,7 +38,7 @@ export class Meetings implements OnInit {
         this.coordinationService.getAllMeetings().subscribe(meetings => {
             this.meetingsList = meetings.map(item => ({
                 ...item,
-                scheduleDate: startOfDay(item.scheduleDate)
+                scheduleDate: startOfDay(new Date(item.scheduleDate + 'T00:00:00'))
             }));
             this.applyPreFilters();
         })
