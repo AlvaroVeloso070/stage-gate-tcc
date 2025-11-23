@@ -102,9 +102,9 @@ export class ScheduleMeetingDialog implements OnInit {
                 type: this.meetingType
             }
 
-            this.projectService.scheduleMeeting(this.projectId, data).subscribe(() => {
+            this.projectService.scheduleMeeting(this.projectId, data).subscribe((meeting) => {
                 this.toastService.success(`Reunião de ${this.getSelectedMeetingType()} agendada com sucesso!`);
-                this.dynamicDialogRef.close();
+                this.dynamicDialogRef.close(meeting);
             })
         }
         this.confirmationService.confirm({

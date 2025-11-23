@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +43,7 @@ public class MeetingService {
     public List<MeetingDTO> findMeetingsByProjectId(String projectId) {
         return meetingRepository.findByProjectId(UUID.fromString(projectId)).stream()
                 .map(MeetingDTO::fromEntity)
+                .sorted(Comparator.comparing(MeetingDTO::getScheduleDate).reversed())
                 .collect(Collectors.toList());
     }
 

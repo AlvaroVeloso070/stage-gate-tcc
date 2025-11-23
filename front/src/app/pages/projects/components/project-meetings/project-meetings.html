@@ -49,72 +49,74 @@
             </ng-template>
 
             <ng-template #content let-meeting>
-                <div
-                    class="meeting-card"
-                    [ngClass]="{
+                <div class="text-left">
+                    <div
+                        class="meeting-card"
+                        [ngClass]="{
                         'gate-meeting': isGateMeeting(meeting),
                         'stage-meeting': !isGateMeeting(meeting)
                     }"
-                >
-                    <div class="meeting-header">
-                        <div class="meeting-title">
-                            <h4>{{getTimelineHeader(meeting)}}</h4>
-                            <div class="meeting-type-badge" [ngClass]="isGateMeeting(meeting) ? 'badge-gate' : 'badge-stage'">{{isGateMeeting(meeting) ? 'Gate' : 'Stage'}}</div>
-                        </div>
-                        <div class="meeting-date">
-                            <i class="pi pi-calendar"></i>
-                            <span>{{meeting.scheduleDate | date: 'dd/MM/yyyy'}}</span>
-                            <span class="time-range">{{meeting.startTime}} - {{meeting.endTime}}</span>
-                        </div>
-                    </div>
-
-                    <div class="meeting-content">
-                        <div class="professor-info">
-                            <div class="professor-avatar">
-                                <i class="pi pi-user"></i>
+                    >
+                        <div class="meeting-header">
+                            <div class="meeting-title">
+                                <h4>{{getTimelineHeader(meeting)}}</h4>
+                                <div class="meeting-type-badge" [ngClass]="isGateMeeting(meeting) ? 'badge-gate' : 'badge-stage'">{{isGateMeeting(meeting) ? 'Gate' : 'Stage'}}</div>
                             </div>
-                            <div class="professor-details">
-                                <span class="label">Orientador</span>
-                                <span class="name">{{meeting.professor.name}}</span>
+                            <div class="meeting-date">
+                                <i class="pi pi-calendar"></i>
+                                <span>{{meeting.scheduleDate | date: 'dd/MM/yyyy'}}</span>
+                                <span class="time-range">{{meeting.startTime}} - {{meeting.endTime}}</span>
                             </div>
                         </div>
 
-                        <div class="meeting-feedback">
-                            <div class="feedback-section">
+                        <div class="meeting-content">
+                            <div class="professor-info">
+                                <div class="professor-avatar">
+                                    <i class="pi pi-user"></i>
+                                </div>
+                                <div class="professor-details">
+                                    <span class="label">Orientador</span>
+                                    <span class="name">{{meeting.professor.name}}</span>
+                                </div>
+                            </div>
+
+                            <div class="meeting-feedback">
+                                <div class="feedback-section">
+                                    <h5>
+                                        <i class="pi pi-comment"></i>
+                                        Feedback da Reunião
+                                    </h5>
+                                    <p class="feedback-text" [ngClass]="{'no-feedback': !meeting.report?.feedback}">{{meeting.report?.feedback || 'Aguardando feedback do orientador...'}}</p>
+                                </div>
+
+                                @if (isGateMeeting(meeting)) {
+                                    <div class="gate-result-section">
+                                        <h5>
+                                            <i class="pi pi-flag"></i>
+                                            Resultado do Gate
+                                        </h5>
+                                        <tag-status-gate-approval [status]="meeting.report?.gateResult || GateResultEnum.PENDING"> </tag-status-gate-approval>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="meeting-participants" *ngIf="meeting.participants && meeting.participants.length > 0">
                                 <h5>
-                                    <i class="pi pi-comment"></i>
-                                    Feedback da Reunião
+                                    <i class="pi pi-users"></i>
+                                    Participantes
                                 </h5>
-                                <p class="feedback-text" [ngClass]="{'no-feedback': !meeting.report?.feedback}">{{meeting.report?.feedback || 'Aguardando feedback do orientador...'}}</p>
+                                <div class="participants-list">
+                                    <span class="participant" *ngFor="let participant of meeting.participants"> {{participant.name}} </span>
+                                </div>
                             </div>
+                        </div>
 
-                            @if (isGateMeeting(meeting)) {
-                            <div class="gate-result-section">
-                                <h5>
-                                    <i class="pi pi-flag"></i>
-                                    Resultado do Gate
-                                </h5>
-                                <tag-status-gate-approval [status]="meeting.report?.gateResult || GateResultEnum.PENDING"> </tag-status-gate-approval>
-                            </div>
+                        <div class="meeting-actions">
+                            <p-button label="Ver Detalhes" icon="pi pi-eye" [severity]="isGateMeeting(meeting) ? 'primary' : 'secondary'" [outlined]="true" size="small"> </p-button>
+                            @if (meeting.report?.feedback) {
+                                <p-button label="Baixar Relatório" icon="pi pi-download" severity="info" [outlined]="true" size="small"> </p-button>
                             }
                         </div>
-
-                        <div class="meeting-participants" *ngIf="meeting.participants && meeting.participants.length > 0">
-                            <h5>
-                                <i class="pi pi-users"></i>
-                                Participantes
-                            </h5>
-                            <div class="participants-list">
-                                <span class="participant" *ngFor="let participant of meeting.participants"> {{participant.name}} </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="meeting-actions">
-                        <p-button label="Ver Detalhes" icon="pi pi-eye" [severity]="isGateMeeting(meeting) ? 'primary' : 'secondary'" [outlined]="true" size="small"> </p-button>
-                        @if (meeting.report?.feedback) {
-                        <p-button label="Baixar Relatório" icon="pi pi-download" severity="info" [outlined]="true" size="small"> </p-button>
-                        }
                     </div>
                 </div>
             </ng-template>
@@ -126,7 +128,7 @@
             </div>
             <h4>Nenhuma reunião encontrada</h4>
             <p>Ainda não há reuniões registradas para este projeto. Agende uma reunião para começar o acompanhamento.</p>
-            <p-button label="Agendar Primeira Reunião" icon="pi pi-plus" severity="primary"> </p-button>
+            <p-button label="Agendar Primeira Reunião" icon="pi pi-plus" severity="primary" (click)="scheduleMeeting()"></p-button>
         </div>
         }
     </div>

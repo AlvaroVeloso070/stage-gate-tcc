@@ -6,6 +6,8 @@ import {GATES} from '@/constants/gates';
 import {Button} from 'primeng/button';
 import {TagStatusGateApproval} from '@/pages/projects/components/tag-status-gate-approval/tag-status-gate-approval';
 import {ProjectService} from '@/services/project.service';
+import {ScheduleMeetingDialog} from "@/pages/projects/components/schedule-meeting-dialog/schedule-meeting-dialog";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
     selector: 'project-meetings',
@@ -15,12 +17,20 @@ import {ProjectService} from '@/services/project.service';
 })
 export class ProjectMeetings implements OnInit {
     private readonly projectService: ProjectService = inject(ProjectService);
+    private dialogService: DialogService = inject(DialogService);
+    private dynamicDialogRef: DynamicDialogRef = inject(DynamicDialogRef);
 
     public projectId: InputSignal<string> = input.required();
+    public activeGate: InputSignal<number> = input.required();
+
     protected meetings!: MeetingConsult[];
     protected readonly MeetingType = MeetingType;
 
     ngOnInit(): void {
+        this.listMeetings();
+    }
+
+    private listMeetings() {
         this.projectService.getAllProjectMeetings(this.projectId()).subscribe((meetings) => {
             this.meetings = meetings;
         });
@@ -51,5 +61,25 @@ export class ProjectMeetings implements OnInit {
 
     protected getStageMeetingsCount(): number {
         return this.meetings?.filter((meeting) => !this.isGateMeeting(meeting)).length || 0;
+    }
+
+    protected scheduleMeeting() {
+        this.dynamicDialogRef = this.dynamicDialogRef = this.dialogService.open(ScheduleMeetingDialog, {
+            header: 'Agendar nova reunião',
+            width: '960px',
+            height: '470px',
+            focusOnShow: false,
+            closable: true,
+            closeOnEscape: true,
+            modal: true,
+            data: {
+                projectId: this.projectId(),
+                activeGate: this.activeGate()
+            }
+        });
+
+        this.dynamicDialogRef.onClose.subscribe((meeting) => {
+            this.listMeetings();
+        })
     }
 }

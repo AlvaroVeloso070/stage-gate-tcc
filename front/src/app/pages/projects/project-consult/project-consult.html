@@ -49,7 +49,7 @@
                     <project-progress [project]="project" [activeGate]="activeGate()"></project-progress>
                 </p-tabpanel>
                 <p-tabpanel [value]="TABS.MEETINGS">
-                    <project-meetings [projectId]="project.id"></project-meetings>
+                    <project-meetings [projectId]="project.id" [activeGate]="activeGate()"></project-meetings>
                 </p-tabpanel>
             </p-tabpanels>
         </p-tabs>
