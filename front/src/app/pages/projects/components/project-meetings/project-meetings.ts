@@ -1,16 +1,15 @@
-import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
-import { GateResultEnum, MeetingConsult, MeetingType, UserTypeEnum } from '@/pages/projects/entities/project';
-import { Timeline } from 'primeng/timeline';
-import { Card } from 'primeng/card';
-import { DatePipe, NgClass, NgIf } from '@angular/common';
-import { GATES } from '@/constants/gates';
-import { Button } from 'primeng/button';
-import { TagStatusGateApproval } from '@/pages/projects/components/tag-status-gate-approval/tag-status-gate-approval';
-import { ProjectService } from '@/services/project.service';
+import {Component, inject, input, InputSignal, OnInit} from '@angular/core';
+import {GateResultEnum, MeetingConsult, MeetingType} from '@/pages/projects/entities/project';
+import {Timeline} from 'primeng/timeline';
+import {DatePipe, NgClass, NgIf} from '@angular/common';
+import {GATES} from '@/constants/gates';
+import {Button} from 'primeng/button';
+import {TagStatusGateApproval} from '@/pages/projects/components/tag-status-gate-approval/tag-status-gate-approval';
+import {ProjectService} from '@/services/project.service';
 
 @Component({
     selector: 'project-meetings',
-    imports: [Timeline, Card, DatePipe, Button, NgClass, TagStatusGateApproval, NgIf],
+    imports: [Timeline, DatePipe, Button, NgClass, TagStatusGateApproval, NgIf],
     templateUrl: './project-meetings.html',
     styleUrl: './project-meetings.scss'
 })

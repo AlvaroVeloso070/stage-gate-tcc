@@ -1,46 +1,38 @@
 @if (project) {
-<div class="project-header">
-    <div class="project-title">{{ project.title }}</div>
-    <div class="project-subtitle">Detalhes e acompanhamento do projeto</div>
-</div>
+    <div class="card flex flex-col gap-8">
+        <div>
+            <p class="card-title font-bold text-2xl">{{ project.title }}</p>
+            <p class="text-muted-color">Detalhes e acompanhamento do projeto</p>
+        </div>
 
-<div class="project-info-section">
-    <div class="info-card">
-        <div class="info-grid">
-            <div class="info-item research-question">
-                <div class="info-label">Pergunta de Pesquisa</div>
-                <div class="info-value">{{ project.researchQuestion }}</div>
+        <div class="flex flex-col gap-2">
+            <div>
+                <span class="font-bold">Pergunta de pesquisa: </span>
+                <span>{{project.researchQuestion}}</span>
             </div>
 
-            <div class="info-item members">
-                <div class="info-label">Membros do Grupo</div>
-                <div class="info-value">{{ getGroupMembers(project) }}</div>
+            <div>
+                <span class="font-bold">Membros do grupo: </span>
+                <span>{{getGroupMembers(project)}}</span>
             </div>
 
-            <div class="info-item start-date">
-                <div class="info-label">Data de Início</div>
-                <div class="info-value">{{ project.startDate | date:'dd/MM/yyyy' }}</div>
+            <div>
+                <span class="font-bold">Data de início: </span>
+                <span>{{project.startDate | date:'longDate'}}</span>
             </div>
-
-            <div class="info-item status">
-                <div class="info-label">Status do Projeto</div>
-                <div class="info-value">
-                    <tag-project-status [status]="project.status"></tag-project-status>
-                </div>
+            <div>
+                <span class="font-bold">Status: </span>
+                <span><tag-project-status [status]="project.status"></tag-project-status></span>
             </div>
         </div>
     </div>
-</div>
 
-<div class="progress-section">
-    <div class="progress-card">
-        <div class="progress-title">Progresso dos Gates</div>
+    <div class="card flex flex-col gap-8">
+        <div class="card-title text-2xl font-bold">Progresso dos Gates</div>
         <gates-progress-stepper [activeStep]="activeGate()" [isAllGatesCompleted]="isAllGatesCompleted()"></gates-progress-stepper>
     </div>
-</div>
 
-<div class="tabs-section">
-    <div class="custom-tabs">
+    <div class="card flex flex-col gap-8">
         <p-tabs [value]="TABS.PROGRESS">
             <p-tablist>
                 <p-tab [value]="TABS.PROGRESS">
@@ -62,5 +54,4 @@
             </p-tabpanels>
         </p-tabs>
     </div>
-</div>
 }

@@ -17,3 +17,17 @@
 .content-wrapper {
     height: calc(100vh - 15.3rem);
 }
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color), #000 20%) 100%);
+        border-radius: 2px;
+    }
+}

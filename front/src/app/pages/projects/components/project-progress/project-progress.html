@@ -1,49 +1,46 @@
-<div class="progress-container">
-    <div class="progress-header">
-        <div class="gate-info">
-            <div class="gate-badge">
-                <i class="pi pi-flag-fill"></i>
-                {{infoActiveGate}}
-            </div>
-            <p class="gate-description">Acompanhe o andamento do seu projeto e certifique-se de cumprir os prazos estabelecidos.</p>
+<div class="flex flex-col gap-8">
+    <div class="flex flex-row justify-between">
+        <div>
+            <p class="card-title font-bold text-2xl">{{ infoActiveGate }}</p>
+            <p class="text-muted-color">Acompanhe o andamento do seu projeto e certifique-se de cumprir os prazos estabelecidos.</p>
         </div>
 
-        <div class="action-buttons">
-            <p-button severity="primary" label="Agendar Reunião" icon="pi pi-video" (click)="scheduleMeeting()" class="schedule-btn"> </p-button>
-        </div>
+        <p-button severity="primary" label="Agendar Reunião" icon="pi pi-video" (click)="scheduleMeeting()" class="schedule-btn"> </p-button>
     </div>
 
-    <div class="metrics-grid">
-        <div class="metric-card deadline-card">
-            <div class="metric-icon">
-                <i class="pi pi-calendar"></i>
+    <div class="progress-container">
+        <div class="metrics-grid">
+            <div class="metric-card deadline-card">
+                <div class="metric-icon">
+                    <i class="pi pi-calendar"></i>
+                </div>
+                <div class="metric-content">
+                    <h4>Prazo do Gate</h4>
+                    <p class="metric-value">{{dueDateActiveGate | date:'dd/MM/yyyy'}}</p>
+                    <span class="metric-label">{{dueDateActiveGate | date:'EEEE'}}</span>
+                </div>
             </div>
-            <div class="metric-content">
-                <h4>Prazo do Gate</h4>
-                <p class="metric-value">{{dueDateActiveGate | date:'dd/MM/yyyy'}}</p>
-                <span class="metric-label">{{dueDateActiveGate | date:'EEEE'}}</span>
-            </div>
-        </div>
 
-        <div class="metric-card time-card" [ngClass]="{'urgent': remainingDaysInGate <= 3, 'warning': remainingDaysInGate <= 7 && remainingDaysInGate > 3}">
-            <div class="metric-icon">
-                <i class="pi pi-stopwatch"></i>
+            <div class="metric-card time-card" [ngClass]="{'urgent': remainingDaysInGate <= 3, 'warning': remainingDaysInGate <= 7 && remainingDaysInGate > 3}">
+                <div class="metric-icon">
+                    <i class="pi pi-stopwatch"></i>
+                </div>
+                <div class="metric-content">
+                    <h4>Tempo Restante</h4>
+                    <p class="metric-value">{{remainingDaysInGate}}</p>
+                    <span class="metric-label">{{remainingDaysInGate === 1 ? 'dia' : 'dias'}}</span>
+                </div>
             </div>
-            <div class="metric-content">
-                <h4>Tempo Restante</h4>
-                <p class="metric-value">{{remainingDaysInGate}}</p>
-                <span class="metric-label">{{remainingDaysInGate === 1 ? 'dia' : 'dias'}}</span>
-            </div>
-        </div>
 
-        <div class="metric-card status-card">
-            <div class="metric-icon">
-                <i class="pi pi-info-circle"></i>
-            </div>
-            <div class="metric-content">
-                <h4>Status Atual</h4>
-                <p class="metric-value">Gate {{activeGate()}}</p>
-                <span class="metric-label">Em andamento</span>
+            <div class="metric-card status-card">
+                <div class="metric-icon">
+                    <i class="pi pi-info-circle"></i>
+                </div>
+                <div class="metric-content">
+                    <h4>Status Atual</h4>
+                    <p class="metric-value">Gate {{activeGate()}}</p>
+                    <span class="metric-label">Em andamento</span>
+                </div>
             </div>
         </div>
     </div>

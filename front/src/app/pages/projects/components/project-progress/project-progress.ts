@@ -1,16 +1,14 @@
-import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
-import { Project } from '@/pages/projects/entities/project';
-import { Message } from 'primeng/message';
-import { GATES } from '@/constants/gates';
-import { DatePipe, NgClass } from '@angular/common';
-import { Panel } from 'primeng/panel';
-import { Button } from 'primeng/button';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ScheduleMeetingDialog } from '@/pages/projects/components/schedule-meeting-dialog/schedule-meeting-dialog';
+import {Component, inject, input, InputSignal, OnInit} from '@angular/core';
+import {Project} from '@/pages/projects/entities/project';
+import {GATES} from '@/constants/gates';
+import {DatePipe, NgClass} from '@angular/common';
+import {Button} from 'primeng/button';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ScheduleMeetingDialog} from '@/pages/projects/components/schedule-meeting-dialog/schedule-meeting-dialog';
 
 @Component({
     selector: 'project-progress',
-    imports: [Message, DatePipe, Panel, Button, NgClass],
+    imports: [DatePipe, Button, NgClass],
     templateUrl: './project-progress.html',
     styleUrl: './project-progress.scss'
 })

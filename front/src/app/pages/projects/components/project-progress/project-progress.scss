@@ -1,61 +1,6 @@
 .progress-container {
     padding: 0;
 
-    .progress-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 2rem;
-        gap: 2rem;
-
-        .gate-info {
-            flex: 1;
-
-            .gate-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-                background: linear-gradient(135deg, var(--primary-color) 0%, color-mix(in srgb, var(--primary-color), #000 20%) 100%);
-                color: var(--primary-contrast-color);
-                padding: 0.75rem 1.5rem;
-                border-radius: 50px;
-                font-weight: 600;
-                font-size: 1.1rem;
-                margin-bottom: 1rem;
-                box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color), transparent 70%);
-
-                i {
-                    font-size: 1.2rem;
-                }
-            }
-
-            .gate-description {
-                color: #6c757d;
-                line-height: 1.6;
-                margin: 0;
-                font-size: 0.95rem;
-            }
-        }
-
-        .action-buttons {
-            .schedule-btn {
-                ::ng-deep .p-button {
-                    background: linear-gradient(135deg, var(--p-green-500) 0%, var(--p-green-400) 100%);
-                    border: none;
-                    padding: 0.75rem 1.5rem;
-                    font-weight: 600;
-                    box-shadow: 0 4px 12px color-mix(in srgb, var(--p-green-500), transparent 70%);
-                    transition: all 0.3s ease;
-
-                    &:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 6px 20px color-mix(in srgb, var(--p-green-500), transparent 60%);
-                    }
-                }
-            }
-        }
-    }
-
     .metrics-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -80,11 +25,6 @@
                 right: 0;
                 height: 4px;
                 background: linear-gradient(90deg, var(--primary-color), color-mix(in srgb, var(--primary-color), #000 20%));
-            }
-
-            &:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 8px 25px color-mix(in srgb, var(--text-color), transparent 80%);
             }
 
             .metric-icon {
@@ -309,7 +249,6 @@
     }
 }
 
-// Responsividade
 @media (max-width: 768px) {
     .progress-container {
         .progress-header {

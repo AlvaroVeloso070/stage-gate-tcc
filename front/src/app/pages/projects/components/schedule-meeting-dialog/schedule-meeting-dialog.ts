@@ -13,6 +13,8 @@ import { ConfirmationService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import {ProjectService} from "@/services/project.service";
+import {ToastService} from "@/services/toast.service";
 
 @Component({
     selector: 'app-schedule-meeting-dialog',
@@ -22,10 +24,14 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 })
 export class ScheduleMeetingDialog implements OnInit {
     private meetingsService: MeetingsService = inject(MeetingsService);
+    private projectService : ProjectService = inject(ProjectService);
+    private toastService : ToastService = inject(ToastService);
     private confirmationService: ConfirmationService = inject(ConfirmationService);
     private config: DynamicDialogConfig = inject(DynamicDialogConfig);
+    private dynamicDialogRef : DynamicDialogRef = inject(DynamicDialogRef);
 
     private activeGate!: number;
+    private projectId !: number;
 
     protected timeSlots: TimeSlot[] = [];
     protected availableTimeSlotsInSelectedDay: TimeSlot[] = [];
@@ -40,6 +46,7 @@ export class ScheduleMeetingDialog implements OnInit {
     ngOnInit(): void {
         this.getTimeSlots(this.getStringIsoDate(this.minDate), '2025-11-30');
         this.activeGate = this.config.data.activeGate;
+        this.projectId = this.config.data.projectId;
     }
 
     private getTimeSlots(startDate: string, endDate: string) {
@@ -86,7 +93,19 @@ export class ScheduleMeetingDialog implements OnInit {
         this.selectedTimeSlot = null;
     }
 
-    protected agendar() {
+    protected schedule() {
+        let scheduleMeeting = () => {
+            const data = {
+                timeSlotId: this.selectedTimeSlot?.id,
+                scheduleDate: this.selectedTimeSlot?.scheduleDate,
+                type: this.meetingType
+            }
+
+            this.projectService.scheduleMeeting(this.projectId, data).subscribe(() => {
+                this.toastService.success(`Reunião de ${this.getSelectedMeetingType()} agendada com sucesso!`);
+                this.dynamicDialogRef.close();
+            })
+        }
         this.confirmationService.confirm({
             header: 'Confirmação',
             message: 'Por favor, confirme as informações selecionadas. Uma vez agendada a reunião, poderá ser cancelada somente pela coordenação.',
@@ -98,6 +117,7 @@ export class ScheduleMeetingDialog implements OnInit {
                 variant: 'outlined',
                 severity: 'secondary'
             },
+            accept: scheduleMeeting
         });
     }
 
