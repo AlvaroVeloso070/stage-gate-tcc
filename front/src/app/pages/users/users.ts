@@ -19,7 +19,7 @@ import {Select} from "primeng/select";
 import {TagUserType} from "@/pages/users/components/tag-user-type/tag-user-type";
 import {UserTypeEnum} from "@/pages/projects/entities/project";
 import {ToastService} from "@/services/toast.service";
-import {DialogService} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {UserFormDialog} from "@/pages/users/components/user-form-dialog/user-form-dialog";
 
 @Component({
@@ -35,6 +35,7 @@ export class Users implements OnInit {
     private readonly toastService : ToastService = inject(ToastService);
     private readonly confirmationService : ConfirmationService = inject(ConfirmationService);
     private readonly dialogService : DialogService = inject(DialogService);
+    private dialogRef : DynamicDialogRef = inject(DynamicDialogRef);
 
     protected users: User[] = [];
 
@@ -45,6 +46,10 @@ export class Users implements OnInit {
     ];
 
     ngOnInit(): void {
+        this.listUsers();
+    }
+
+    private listUsers() {
         this.users = [
             {
                 id: '1',
@@ -122,7 +127,7 @@ export class Users implements OnInit {
     }
 
     protected newUser() {
-        this.dialogService.open(UserFormDialog, {
+        this.dialogRef = this.dialogService.open(UserFormDialog, {
             header: 'Incluir novo Usuário',
             focusOnShow: false,
             closable: true,
@@ -131,10 +136,16 @@ export class Users implements OnInit {
             width: '400px',
             height: 'auto'
         })
+
+        this.dialogRef.onClose.subscribe((user) => {
+            if (user?.id){
+                this.listUsers();
+            }
+        })
     }
 
     protected edit(user : User){
-        this.dialogService.open(UserFormDialog, {
+        this.dialogRef = this.dialogService.open(UserFormDialog, {
             header: 'Editar Usuario',
             focusOnShow: false,
             closable: true,
@@ -144,6 +155,12 @@ export class Users implements OnInit {
             height: 'auto',
             data: {
                 user: user
+            }
+        })
+
+        this.dialogRef.onClose.subscribe((user) => {
+            if (user?.id){
+                this.listUsers();
             }
         })
     }

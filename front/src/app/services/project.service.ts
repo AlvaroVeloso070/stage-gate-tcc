@@ -21,6 +21,10 @@ export class ProjectService extends BaseService{
         return this.http.post<any>(`${this.getUrlEndPoint()}/${projectId}/meetings`, data);
     }
 
+    public createProject(project : Project){
+        return this.http.post<Project>(this.getUrlEndPoint(), project);
+    }
+
     protected getPathEndPoint(): string {
         return 'projects';
     }

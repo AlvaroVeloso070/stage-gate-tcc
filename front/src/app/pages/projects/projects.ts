@@ -16,6 +16,9 @@ import {TagMeetingStatus} from "@/pages/meetings/components/tag-meeting-status/t
 import {startOfDay} from "date-fns";
 import {ProjectFilterEnum} from "@/pages/projects/entities/ProjectFilterEnum";
 import {ProjectStatus} from "@/pages/projects/entities/project";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {UserFormDialog} from "@/pages/users/components/user-form-dialog/user-form-dialog";
+import {ProjectFormDialog} from "@/pages/projects/components/project-form-dialog/project-form-dialog";
 
 @Component({
     selector: 'app-projects',
@@ -27,6 +30,8 @@ export class Projects implements OnInit {
     private readonly coordinationService: CoordinationService = inject(CoordinationService);
     private readonly router: Router = inject(Router);
     private readonly route : ActivatedRoute = inject(ActivatedRoute);
+    private readonly dialogService : DialogService = inject(DialogService);
+    private dialogRef : DynamicDialogRef = inject(DynamicDialogRef);
 
     @ViewChild('dt') table!: Table;
 
@@ -47,14 +52,18 @@ export class Projects implements OnInit {
     ];
 
     ngOnInit(): void {
+        this.listProjects();
+    }
+
+    private listProjects() {
         this.coordinationService.getAllProjects().subscribe((projects) => {
             this.projects = projects
                 // TODO - Remover este filter futuramente quando for para produção
                 .filter(item => item.currentGateNumber && item.dueDate && item.dueDateStatus && item.groupMembers.length > 0)
                 .map(item => ({
-                ...item,
-                dueDate: item.dueDate ? startOfDay(item.dueDate) : item.dueDate
-            }));
+                    ...item,
+                    dueDate: item.dueDate ? startOfDay(item.dueDate) : item.dueDate
+                }));
             this.applyPreFilters();
         });
     }
@@ -106,5 +115,23 @@ export class Projects implements OnInit {
 
     protected consultProject(project: ProjectListing) {
         this.router.navigate(['/pages/projects', project.id]);
+    }
+
+    protected newProject(){
+        this.dialogRef = this.dialogService.open(ProjectFormDialog, {
+            header: 'Incluir novo Projeto',
+            focusOnShow: false,
+            closable: true,
+            closeOnEscape: true,
+            modal: true,
+            width: '680px',
+            height: 'auto'
+        })
+
+        this.dialogRef.onClose.subscribe((project) => {
+            if (project?.id){
+                this.listProjects();
+            }
+        })
     }
 }
