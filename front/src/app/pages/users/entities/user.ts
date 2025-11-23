@@ -1,14 +1,10 @@
+import {UserTypeEnum} from "@/pages/projects/entities/project";
+
 export interface User {
     id: string;
     name: string;
     email: string;
     type: UserTypeEnum;
-}
-
-export enum UserTypeEnum {
-    PROFESSOR = 'PROFESSOR',
-    STUDENT = 'STUDENT',
-    COORDINATOR = 'COORDINATOR'
 }
 
 export interface CreateUserRequest {

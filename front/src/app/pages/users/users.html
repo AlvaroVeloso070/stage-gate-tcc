@@ -1,119 +1,74 @@
-<div class="users-container">
-    <div class="users-content">
-        <div class="users-card">
-            <p-toast></p-toast>
-            <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<div class="card flex flex-col gap-8">
+    <div>
+        <p class="card-title">Gerenciamento de Usuários</p>
+        <p class="text-muted-color">Gerencie todos os usuários do sistema</p>
+    </div>
 
-            <div class="users-header">
-                <div class="users-title">
-                    <h1>Gerenciamento de Usuários</h1>
-                    <p class="users-subtitle">Gerencie todos os usuários do sistema</p>
-                </div>
-            </div>
+    <div>
+        <p-button severity="primary" label="Novo Usuário" icon="pi pi-plus" (onClick)="newUser()"> </p-button>
+    </div>
 
-            <div class="users-toolbar">
-                <div class="toolbar-left">
-                    <p-button severity="success" label="Novo Usuário" icon="pi pi-plus" (onClick)="openNew()"> </p-button>
-                </div>
+    <div class="table-wrapper">
+        <p-table [value]="users"
+                 #dt
+                 stripedRows
+                 [paginator]="true"
+                 [rows]="10"
+                 [rowsPerPageOptions]="[10, 20, 30]"
+                 [showCurrentPageReport]="true"
+                 currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} registros.">
 
-                <div class="toolbar-right">
-                    <span class="p-input-icon-left search-input">
-                        <i class="pi pi-search"></i>
-                        <input pInputText type="text" [(ngModel)]="globalFilter" (input)="applyGlobalFilter($event)" placeholder="Buscar usuários..." class="search-field" />
-                    </span>
-                </div>
-            </div>
+            <ng-template #header>
+                <tr>
+                    <th pSortableColumn="name">
+                        Nome
+                        <p-columnFilter type="text" field="name" display="menu" matchMode="contains"/>
+                        <p-sortIcon field="name"/>
+                    </th>
 
-            <div class="users-table-container">
-                <p-table
-                    #dt
-                    [value]="filteredUsers"
-                    dataKey="id"
-                    [rows]="10"
-                    [showCurrentPageReport]="true"
-                    [rowsPerPageOptions]="[10,25,50]"
-                    [loading]="loading"
-                    [paginator]="true"
-                    currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} usuários"
-                    [globalFilterFields]="['name','email','type']"
-                    styleClass="users-table"
-                    [tableStyle]="{'min-width': '100%'}"
-                >
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th pSortableColumn="name" style="width: 30%">Nome <p-sortIcon field="name"></p-sortIcon></th>
-                            <th pSortableColumn="email" style="width: 35%">Email <p-sortIcon field="email"></p-sortIcon></th>
-                            <th pSortableColumn="type" style="width: 20%">Tipo <p-sortIcon field="type"></p-sortIcon></th>
-                            <th style="width: 15%">Ações</th>
-                        </tr>
-                    </ng-template>
+                    <th pSortableColumn="email" class="text-center!">
+                        Email
+                        <p-columnFilter type="text" field="email" display="menu" matchMode="contains"/>
+                        <p-sortIcon field="email"/>
+                    </th>
 
-                    <ng-template pTemplate="body" let-user>
-                        <tr>
-                            <td>
-                                <div class="user-name">
-                                    <span class="name-text">{{ user.name }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="email-text">{{ user.email }}</span>
-                            </td>
-                            <td>
-                                <p-tag [value]="getUserTypeLabel(user.type)" [severity]="getUserTypeSeverity(user.type)" [rounded]="true"> </p-tag>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <p-button icon="pi pi-pencil" [rounded]="true" severity="info" size="small" (onClick)="editUser(user)" pTooltip="Editar usuário" tooltipPosition="top"> </p-button>
-                                    <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small" (onClick)="deleteUser(user)" pTooltip="Excluir usuário" tooltipPosition="top"> </p-button>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-template>
+                    <th pSortableColumn="type" class="text-center!">
+                        Status
+                        <p-columnFilter field="type" matchMode="equals" display="menu">
+                            <ng-template #filter let-value let-filter="filterCallback">
+                                <p-select [ngModel]="value"
+                                          [options]="userTypeOptions"
+                                          (onChange)="filter($event.value)"
+                                          placeholder="Selecione um tipo de usuário"
+                                          class="w-full"
+                                          optionLabel="label"
+                                          optionValue="value">
+                                    <ng-template let-option #item>
+                                        <tag-user-type [userType]="option.value"></tag-user-type>
+                                    </ng-template>
+                                </p-select>
+                            </ng-template>
+                        </p-columnFilter>
+                        <p-sortIcon field="type"/>
+                    </th>
 
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="4">
-                                <div class="empty-state">
-                                    <i class="pi pi-users empty-icon"></i>
-                                    <h3>Nenhum usuário encontrado</h3>
-                                    <p>Não há usuários que correspondam aos critérios de busca.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
+                    <th style="width: 5rem"></th>
+                </tr>
+            </ng-template>
 
-            <p-dialog [(visible)]="userDialog" [style]="{width: '500px'}" [header]="isEditing ? 'Editar Usuário' : 'Novo Usuário'" [modal]="true" class="user-dialog" [closable]="true" (onHide)="hideDialog()">
-                <ng-template pTemplate="content">
-                    <div class="user-form">
-                        <div class="form-field">
-                            <label for="name" class="field-label">Nome Completo *</label>
-                            <input type="text" pInputText id="name" [(ngModel)]="userForm.name" required autofocus placeholder="Digite o nome completo" class="form-input" />
-                        </div>
-
-                        <div class="form-field">
-                            <label for="email" class="field-label">Email *</label>
-                            <input type="email" pInputText id="email" [(ngModel)]="userForm.email" required placeholder="exemplo@email.com" class="form-input" />
-                        </div>
-
-                        <div class="form-field">
-                            <label for="type" class="field-label">Tipo de Usuário *</label>
-                            <select id="type" [(ngModel)]="userForm.type" class="form-select">
-                                <option value="">Selecione o tipo</option>
-                                <option *ngFor="let option of userTypeOptions" [value]="option.value">{{ option.label }}</option>
-                            </select>
-                        </div>
-                    </div>
-                </ng-template>
-
-                <ng-template pTemplate="footer">
-                    <div class="dialog-footer">
-                        <p-button label="Cancelar" icon="pi pi-times" [text]="true" severity="secondary" (onClick)="hideDialog()"> </p-button>
-                        <p-button [label]="isEditing ? 'Atualizar' : 'Criar'" icon="pi pi-check" severity="primary" (onClick)="saveUser()"> </p-button>
-                    </div>
-                </ng-template>
-            </p-dialog>
-        </div>
+            <ng-template #body let-user>
+                <tr>
+                    <td>{{user.name}}</td>
+                    <td class="text-center!">{{user.email}}</td>
+                    <td class="text-center!"><tag-user-type [userType]="user.type"></tag-user-type></td>
+                    <td class="flex flex-row gap-2">
+                        <p-button icon="pi pi-pencil" [rounded]="true" severity="secondary" size="small" (onClick)="edit(user)" pTooltip="Editar usuário" tooltipPosition="top"> </p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small" (onClick)="delete(user)" pTooltip="Excluir usuário" tooltipPosition="top"> </p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
 </div>
+
+<p-confirmDialog></p-confirmDialog>

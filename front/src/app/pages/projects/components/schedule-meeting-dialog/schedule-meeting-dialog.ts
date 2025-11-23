@@ -43,6 +43,7 @@ export class ScheduleMeetingDialog implements OnInit {
     protected meetingType!: MeetingType;
     protected selectedTimeSlot!: TimeSlot | null;
 
+    //TODO utilizar formGroup
     ngOnInit(): void {
         this.getTimeSlots(this.getStringIsoDate(this.minDate), '2025-11-30');
         this.activeGate = this.config.data.activeGate;
