@@ -16,23 +16,29 @@
              currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} registros.">
         <ng-template #header>
             <tr>
-                <th>
+                <th pSortableColumn="projectTitle">
                     Projeto
                     <p-columnFilter type="text" field="projectTitle" display="menu" matchMode="contains" />
+                    <p-sortIcon field="projectTitle"/>
                 </th>
-                <th class="text-center!">
+                <th class="text-center!" pSortableColumn="professorName">
                     Docente
                     <p-columnFilter type="text" field="professorName" display="menu"/>
+                    <p-sortIcon field="professorName"/>
                 </th>
-                <th class="text-center!">
+                <th class="text-center!" pSortableColumn="scheduleDate">
                     Data
                     <p-columnFilter field="scheduleDate" display="menu" type="date"></p-columnFilter>
+                    <p-sortIcon field="scheduleDate"/>
                 </th>
                 <th class="text-center!">
                     Horário
                 </th>
-                <th class="text-center!">Stage / Gate</th>
-                <th class="text-center!">
+                <th class="text-center!" pSortableColumn="stageGateNumber">
+                    Stage / Gate
+                    <p-sortIcon field="stageGateNumber"/>
+                </th>
+                <th class="text-center!" pSortableColumn="status">
                     Status
                     <p-columnFilter field="status" matchMode="equals" display="menu">
                         <ng-template #filter let-value let-filter="filterCallback">
@@ -49,6 +55,7 @@
                             </p-select>
                         </ng-template>
                     </p-columnFilter>
+                    <p-sortIcon field="status"/>
                 </th>
                 <th style="width: 5rem"></th>
             </tr>
