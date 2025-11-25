@@ -2,14 +2,18 @@ package com.ufg.stage.gate.tcc.services;
 
 import com.ufg.stage.gate.tcc.models.dtos.MeetingCoordinationDTO;
 import com.ufg.stage.gate.tcc.models.dtos.ProjectGateMetricsDTO;
+import com.ufg.stage.gate.tcc.models.dtos.UserDTO;
 import com.ufg.stage.gate.tcc.models.entities.Gate;
 import com.ufg.stage.gate.tcc.models.entities.Meeting;
+import com.ufg.stage.gate.tcc.models.entities.User;
 import com.ufg.stage.gate.tcc.models.enums.MeetingStatusCoordinationEnum;
 import com.ufg.stage.gate.tcc.models.enums.MeetingStatusEnum;
 import com.ufg.stage.gate.tcc.models.enums.ProjectStatusEnum;
+import com.ufg.stage.gate.tcc.models.enums.UserTypeEnum;
 import com.ufg.stage.gate.tcc.repositories.GateRepository;
 import com.ufg.stage.gate.tcc.repositories.MeetingRepository;
 import com.ufg.stage.gate.tcc.repositories.ProjectRepository;
+import com.ufg.stage.gate.tcc.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -28,15 +32,18 @@ public class CoordinationService {
     private final GateRepository gateRepository;
     private final ProjectRepository projectRepository;
     private final MeetingRepository meetingRepository;
+    private final UserRepository userRepository;
 
     public CoordinationService(
             GateRepository gateRepository,
             ProjectRepository projectRepository,
-            MeetingRepository meetingRepository
+            MeetingRepository meetingRepository,
+            UserRepository userRepository
     ) {
         this.gateRepository = gateRepository;
         this.projectRepository = projectRepository;
         this.meetingRepository = meetingRepository;
+        this.userRepository = userRepository;
     }
 
     public ProjectGateMetricsDTO getProjectGateMetrics() {
@@ -138,5 +145,12 @@ public class CoordinationService {
         }
 
         return MeetingStatusCoordinationEnum.LATE_FEEDBACK;
+    }
+
+    public List<UserDTO> findUsersByType(UserTypeEnum userType) {
+        List<User> users = userRepository.findByType(userType);
+        return users.stream()
+                .map(UserDTO::fromEntity)
+                .toList();
     }
 }

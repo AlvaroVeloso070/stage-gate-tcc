@@ -3,11 +3,14 @@ package com.ufg.stage.gate.tcc.controllers;
 import com.ufg.stage.gate.tcc.models.dtos.MeetingCoordinationDTO;
 import com.ufg.stage.gate.tcc.models.dtos.ProjectGateMetricsDTO;
 import com.ufg.stage.gate.tcc.models.dtos.ProjectListDTO;
+import com.ufg.stage.gate.tcc.models.dtos.UserDTO;
+import com.ufg.stage.gate.tcc.models.enums.UserTypeEnum;
 import com.ufg.stage.gate.tcc.services.CoordinationService;
 import com.ufg.stage.gate.tcc.services.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,5 +45,11 @@ public class CoordinationController {
     public ResponseEntity<List<MeetingCoordinationDTO>> getAllMeetings() {
         List<MeetingCoordinationDTO> meetings = coordinationService.getAllMeetings();
         return ResponseEntity.ok(meetings);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getUsersByType(@RequestParam UserTypeEnum userType) {
+        List<UserDTO> users = coordinationService.findUsersByType(userType);
+        return ResponseEntity.ok(users);
     }
 }

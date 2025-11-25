@@ -23,7 +23,7 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "00000000-2222-0000-0000-000000000002",
+							"value": "00000000-0000-0000-0000-000000000001",
 							"description": "00000000-2222-0000-0000-000000000002"
 						}
 					]
@@ -100,8 +100,8 @@
 					"variable": [
 						{
 							"key": "projectId",
-							"value": "00000000-0000-0001-0004-000000000001",
-							"description": "00000000-0000-0001-0004-000000000001"
+							"value": "00000000-0000-0001-0006-000000000001",
+							"description": "00000000-0000-0001-0006-000000000001"
 						}
 					]
 				}
@@ -336,6 +336,85 @@
 					"path": [
 						"professor",
 						"timeSlots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Professor Meetings",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"professorId\": \"00000000-2222-0000-0000-000000000002\",\n    \"startTime\": \"12:00\",\n    \"endTime\": \"13:00\",\n    \"daysOfWeek\": [\"MONDAY\", \"WEDNESDAY\", \"FRIDAY\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localUrl}}/professor/:professorId/meetings",
+					"host": [
+						"{{localUrl}}"
+					],
+					"path": [
+						"professor",
+						":professorId",
+						"meetings"
+					],
+					"variable": [
+						{
+							"key": "professorId",
+							"value": "00000000-2222-0000-0000-000000000002",
+							"description": "00000000-2222-0000-0000-000000000002"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localUrl}}/users",
+					"host": [
+						"{{localUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users By Type Coordination",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localUrl}}/coordination/users?userType=PROFESSOR",
+					"host": [
+						"{{localUrl}}"
+					],
+					"path": [
+						"coordination",
+						"users"
+					],
+					"query": [
+						{
+							"key": "userType",
+							"value": "PROFESSOR"
+						}
 					]
 				}
 			},
