@@ -28,8 +28,27 @@ public class UserService {
                 .orElse(null);
     }
 
+    public List<UserDTO> findAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserDTO::fromEntity)
+                .toList();
+    }
+
     public User createUser(User user) {
         return this.userRepository.save(user);
+    }
+
+    public User updateUser(String userId, User user) {
+        User existingUser = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setType(user.getType());
+        return userRepository.save(existingUser);
+    }
+
+    public void deleteUser(String userId) {
+        userRepository.deleteById(UUID.fromString(userId));
     }
 
     public List<RecurrentTimeSlot> createRecurrentMeetingTimeSlots(CreateRecurrentTimeSlotDTO dto) {
