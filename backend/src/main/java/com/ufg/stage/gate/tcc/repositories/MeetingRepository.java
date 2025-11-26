@@ -30,4 +30,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
     List<Meeting> findAllByScheduleDateBetweenAndStatus(LocalDate startDate, LocalDate endDate, MeetingStatusEnum status);
 
     long countMeetingsByScheduleDate(LocalDate scheduleDate);
+
+    List<Meeting> findAllByProfessor_IdOrderByScheduleDateAsc(UUID professorId);
 }

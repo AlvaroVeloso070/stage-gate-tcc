@@ -247,4 +247,11 @@ public class MeetingService {
             throw new IllegalArgumentException("Cannot schedule meeting because the time slot is already scheduled");
         }
     }
+
+    public List<MeetingDTO> findMeetingsByProfessorId(String id) {
+        List<Meeting> meetings = meetingRepository.findAllByProfessor_IdOrderByScheduleDateAsc(UUID.fromString(id));
+        return meetings.stream()
+                .map(MeetingDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
 }

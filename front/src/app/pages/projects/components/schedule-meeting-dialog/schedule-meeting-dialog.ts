@@ -52,7 +52,7 @@ export class ScheduleMeetingDialog implements OnInit {
 
     private getTimeSlots(startDate: string, endDate: string) {
         this.meetingsService.getTimeSlots(startDate, endDate).subscribe((response) => {
-            this.timeSlots = response;
+            this.timeSlots = response.filter((ts) => ts.available);
             this.daysWithAvailableSchedules = this.getUniqueScheduleDates(this.timeSlots);
         });
     }
@@ -62,7 +62,7 @@ export class ScheduleMeetingDialog implements OnInit {
     }
 
     private getUniqueScheduleDates(timeSlots: TimeSlot[]): string[] {
-        return [...new Set(timeSlots.filter((ts) => ts.available).map((ts) => ts.scheduleDate))];
+        return [...new Set(timeSlots.map((ts) => ts.scheduleDate))];
     }
 
     protected existsPossibleSchedule(date: any): boolean {
