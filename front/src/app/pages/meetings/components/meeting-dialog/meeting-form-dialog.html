@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+        <label for="project">Projeto *</label>
+        <p-select [options]="projects"
+                  optionValue="id"
+                  optionLabel="title"
+                  id="project"
+                  appendTo="body"
+                  placeholder="Selecione um projeto"
+                  [(ngModel)]="selectedProjectId">
+        </p-select>
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label for="type">Tipo de Reunião *</label>
+        <p-select [options]="meetingTypeOptions"
+                  optionValue="value"
+                  optionLabel="label"
+                  id="type"
+                  appendTo="body"
+                  placeholder="Selecione o tipo"
+                  [(ngModel)]="meeting.type">
+        </p-select>
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label for="scheduleDate">Data *</label>
+        <p-datepicker id="scheduleDate"
+                      [(ngModel)]="selectedDate"
+                      (ngModelChange)="onDateChange()"
+                      dateFormat="dd/mm/yy"
+                      appendTo="body"
+                      placeholder="Selecione a data"
+                      [showIcon]="true"
+                      [minDate]="minDate">
+        </p-datepicker>
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label for="timeSlot">Horário Disponível *</label>
+        <p-select [options]="availableTimeSlots"
+                  optionValue="id"
+                  id="timeSlot"
+                  appendTo="body"
+                  placeholder="Selecione um horário"
+                  [(ngModel)]="meeting.timeSlotId"
+                  [disabled]="!selectedDate || availableTimeSlots.length === 0">
+            <ng-template let-slot #item>
+                <div class="flex flex-col">
+                    <span class="font-semibold">{{ slot.professor.name }}</span>
+                    <span class="text-sm text-muted-color">{{ slot.startTime }} - {{ slot.endTime }}</span>
+                </div>
+            </ng-template>
+            <ng-template #selectedItem let-slot>
+                <span *ngIf="slot">{{ getTimeSlotLabel(slot) }}</span>
+            </ng-template>
+        </p-select>
+        <small class="text-muted-color" *ngIf="selectedDate && availableTimeSlots.length === 0">
+            Nenhum horário disponível para esta data
+        </small>
+    </div>
+
+    <div class="flex flex-row justify-end gap-2 mt-2">
+        <p-button severity="secondary" label="Cancelar" (click)="close()"></p-button>
+        <p-button severity="primary" label="Incluir" (click)="save()"></p-button>
+    </div>
+</div>

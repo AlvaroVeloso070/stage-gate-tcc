@@ -1,6 +1,7 @@
 <div class="card flex flex-col gap-8">
-    <div>
+    <div class="flex flex-row justify-between">
         <p class="card-title">Reuniões</p>
+        <p-button severity="primary" label="Nova Reunião" icon="pi pi-plus" (click)="newMeeting()"></p-button>
     </div>
 
 
@@ -69,9 +70,24 @@
                 <td class="text-center!">{{ `${meeting.type} ${meeting.stageGateNumber}` }}</td>
                 <td class="text-center!"><tag-meeting-status [status]="meeting.status"></tag-meeting-status></td>
                 <td>
-                    <p-button icon="pi pi-search" severity="secondary" rounded />
+                    <div class="flex flex-row gap-3">
+                        <p-button icon="pi pi-eye" 
+                                  severity="info" 
+                                  rounded 
+                                  (click)="view(meeting)"
+                                  pTooltip="Visualizar reunião"
+                                  tooltipPosition="top" />
+                        <p-button icon="pi pi-ban" 
+                                  severity="danger" 
+                                  rounded 
+                                  (click)="delete(meeting)"
+                                  pTooltip="Cancelar reunião"
+                                  tooltipPosition="top" />
+                    </div>
                 </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
+
+<p-confirmDialog />

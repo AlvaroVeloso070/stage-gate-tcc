@@ -1,0 +1,45 @@
+<div class="flex flex-col gap-6">
+    <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Projeto</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.projectTitle }}</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Docente</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.professorName }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Data</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.scheduleDate | date:'dd/MM/yyyy' }}</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Horário</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.startTime }} - {{ meeting.endTime }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Tipo</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meetingTypeLabel }} {{ meeting.stageGateNumber }}</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Status</label>
+            <div class="flex items-start">
+                <tag-meeting-status [status]="meeting.status"></tag-meeting-status>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-4">
+        <p-button label="Fechar" 
+                  severity="secondary" 
+                  (click)="close()" />
+    </div>
+</div>
