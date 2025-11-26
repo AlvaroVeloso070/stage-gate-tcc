@@ -1,0 +1,124 @@
+<div class="card flex flex-col gap-8">
+    <div class="flex flex-row justify-between items-center">
+        <p class="card-title">Reuniões do Docente</p>
+        <div class="flex items-center gap-3">
+            <label for="professor-select" class="font-semibold">Docente:</label>
+            <p-select
+                id="professor-select"
+                [(ngModel)]="selectedProfessor"
+                [options]="professors"
+                optionLabel="name"
+                placeholder="Selecione um docente"
+                (onChange)="onProfessorChange()"
+                [filter]="true"
+                filterPlaceholder="Buscar docente"
+                class="w-80">
+            </p-select>
+        </div>
+    </div>
+
+    <p-table [value]="meetingsList"
+             #dt
+             stripedRows
+             [paginator]="true"
+             [rows]="10"
+             [rowsPerPageOptions]="[10, 20, 30]"
+             [showCurrentPageReport]="true"
+             [scrollable]="true"
+             scrollHeight="65vh"
+             currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} registros.">
+        <ng-template #header>
+            <tr>
+                <th pSortableColumn="project.title">
+                    Projeto
+                    <p-columnFilter type="text" field="project.title" display="menu" matchMode="contains" />
+                    <p-sortIcon field="project.title"/>
+                </th>
+                <th class="text-center!" pSortableColumn="scheduleDate">
+                    Data
+                    <p-columnFilter field="scheduleDate" display="menu" type="date"></p-columnFilter>
+                    <p-sortIcon field="scheduleDate"/>
+                </th>
+                <th class="text-center!">
+                    Horário
+                </th>
+                <th class="text-center!" pSortableColumn="stageGateNumber">
+                    Stage / Gate
+                    <p-sortIcon field="stageGateNumber"/>
+                </th>
+                <th class="text-center!" pSortableColumn="status">
+                    Status
+                    <p-columnFilter field="status" matchMode="equals" display="menu">
+                        <ng-template #filter let-value let-filter="filterCallback">
+                            <p-select [ngModel]="value"
+                                      [options]="statuses"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="label"
+                                      optionValue="value"
+                                      placeholder="Selecione um status"
+                                      class="w-full">
+                                <ng-template let-option #item>
+                                    <tag-meeting-status [status]="option.value"></tag-meeting-status>
+                                </ng-template>
+                            </p-select>
+                        </ng-template>
+                    </p-columnFilter>
+                    <p-sortIcon field="status"/>
+                </th>
+                <th class="text-center!">
+                    Feedback
+                </th>
+                <th style="width: 5rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-meeting>
+            <tr>
+                <td>{{ meeting.project.title }}</td>
+                <td class="text-center!">{{ meeting.scheduleDate | date:'shortDate' }}</td>
+                <td class="text-center!">{{ `${meeting.startTime} - ${meeting.endTime}` }}</td>
+                <td class="text-center!">{{ `${getMeetingTypeLabel(meeting.type)} ${meeting.stageGateNumber}` }}</td>
+                <td class="text-center!">
+                    <span *ngIf="getGateResultStatus(meeting) === 'approved'" 
+                          class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-100 rounded-full inline-flex items-center">
+                        <i class="pi pi-check-circle mr-2"></i>Aprovado
+                    </span>
+                    <span *ngIf="getGateResultStatus(meeting) === 'rejected'" 
+                          class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 rounded-full inline-flex items-center">
+                        <i class="pi pi-times-circle mr-2"></i>Rejeitado
+                    </span>
+                    <span *ngIf="getGateResultStatus(meeting) === null" class="text-gray-400">
+                        -
+                    </span>
+                </td>
+                <td class="text-center!">
+                    <span *ngIf="getFeedbackStatus(meeting) === 'submitted'" 
+                          class="text-green-600 font-semibold">
+                        <i class="pi pi-check-circle"></i> Enviado
+                    </span>
+                    <span *ngIf="getFeedbackStatus(meeting) === 'pending'" 
+                          class="text-orange-600 font-semibold">
+                        <i class="pi pi-clock"></i> Pendente
+                    </span>
+                </td>
+                <td>
+                    <div class="flex flex-row gap-3">
+                        <p-button *ngIf="canProvideFeedback(meeting)"
+                                  icon="pi pi-comment" 
+                                  severity="success" 
+                                  rounded 
+                                  (click)="provideFeedback(meeting)"
+                                  pTooltip="Fornecer feedback"
+                                  tooltipPosition="top" />
+                        <p-button *ngIf="hasReport(meeting)"
+                                  icon="pi pi-eye" 
+                                  severity="info" 
+                                  rounded 
+                                  (click)="viewReport(meeting)"
+                                  pTooltip="Visualizar feedback"
+                                  tooltipPosition="top" />
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

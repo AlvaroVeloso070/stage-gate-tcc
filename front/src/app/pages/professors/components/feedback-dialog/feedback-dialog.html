@@ -1,0 +1,99 @@
+<div class="flex flex-col gap-6">
+    <!-- Meeting Information -->
+    <div class="grid grid-cols-2 gap-4 p-4 bg-surface-50 dark:bg-surface-800 rounded-lg">
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Projeto</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.project.title }}</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Tipo</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">
+                {{ isGateMeeting ? 'Gate' : 'Stage' }} {{ meeting.stageGateNumber }}
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Data</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.scheduleDate }}</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Horário</label>
+            <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.startTime }} - {{ meeting.endTime }}</p>
+        </div>
+    </div>
+
+    <!-- Feedback Text Area -->
+    <div class="flex flex-col gap-2">
+        <label for="feedback" class="text-sm font-semibold text-surface-700 dark:text-surface-200">
+            Feedback <span class="text-red-500">*</span>
+        </label>
+        <textarea *ngIf="isEditing"
+            pTextarea
+            id="feedback"
+            name="feedback"
+            [(ngModel)]="feedback"
+            rows="6"
+            placeholder="Descreva o feedback da reunião..."
+            class="w-full">
+        </textarea>
+        <div *ngIf="!isEditing" class="p-3 bg-surface-50 dark:bg-surface-800 rounded border border-surface-200 dark:border-surface-700">
+            <p class="text-base text-surface-900 dark:text-surface-0 whitespace-pre-wrap">{{ feedback }}</p>
+        </div>
+    </div>
+
+    <!-- Gate Result (only for Gate meetings) -->
+    <div *ngIf="isGateMeeting" class="flex flex-col gap-2">
+        <label for="gateResult" class="text-sm font-semibold text-surface-700 dark:text-surface-200">
+            Resultado do Gate <span class="text-red-500">*</span>
+        </label>
+        <p-select *ngIf="isEditing"
+            id="gateResult"
+            [(ngModel)]="gateResult"
+            [options]="gateResultOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione o resultado"
+            class="w-full">
+        </p-select>
+        <div *ngIf="!isEditing" class="text-base text-surface-900 dark:text-surface-0">
+            <span *ngIf="gateResult === 'APPROVED'" class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-100 rounded-full inline-flex items-center">
+                <i class="pi pi-check-circle mr-2"></i>Aprovado
+            </span>
+            <span *ngIf="gateResult === 'REJECTED'" class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 rounded-full inline-flex items-center">
+                <i class="pi pi-times-circle mr-2"></i>Rejeitado
+            </span>
+        </div>
+    </div>
+
+    <!-- Report Date (view only) -->
+    <div *ngIf="viewOnly && meeting.report" class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-surface-600 dark:text-surface-300">Data de Envio</label>
+        <p class="text-base text-surface-900 dark:text-surface-0">{{ meeting.report.reportDate }}</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-3 mt-4">
+        <p-button 
+            label="Fechar" 
+            severity="secondary" 
+            (click)="close()" />
+        <p-button *ngIf="!isEditing && meeting.report"
+            label="Editar" 
+            severity="info"
+            icon="pi pi-pencil"
+            (click)="enableEditing()" />
+        <p-button *ngIf="isEditing && meeting.report"
+            label="Cancelar" 
+            severity="secondary"
+            (click)="cancelEditing()" />
+        <p-button *ngIf="isEditing"
+            label="Salvar Feedback" 
+            severity="primary"
+            icon="pi pi-check"
+            [disabled]="isSubmitting"
+            [loading]="isSubmitting"
+            (click)="submit()" />
+    </div>
+</div>

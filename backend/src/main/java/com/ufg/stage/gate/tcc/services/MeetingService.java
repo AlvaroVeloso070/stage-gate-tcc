@@ -86,33 +86,55 @@ public class MeetingService {
         var meeting = meetingRepository.findById(UUID.fromString(meetingId))
                 .orElseThrow(() -> new EntityNotFoundException("Meeting not found"));
 
-        if (meeting.getReport() != null) {
-            throw new IllegalStateException("This meeting already has a report.");
+        MeetingReport report;
+        boolean isNewReport = meeting.getReport() == null;
+
+        if (isNewReport) {
+            // Create new report
+            report = new MeetingReport();
+            report.setMeeting(meeting);
+        } else {
+            // Update existing report
+            report = meeting.getReport();
         }
 
-        var participants = userRepository.findAllById(reportDTO.getParticipantIds().stream().map(UUID::fromString).collect(Collectors.toList()));
-        meeting.setParticipants(Set.copyOf(participants));
-
-        MeetingReport report = new MeetingReport();
         report.setFeedback(reportDTO.getFeedback());
         report.setReportDate(LocalDateTime.now());
-        report.setMeeting(meeting);
 
         if (meeting.getType() == MeetingTypeEnum.GATE) {
             if (reportDTO.getGateResult() == null) {
                 throw new IllegalArgumentException("Gate result is required for meetings of type GATE.");
             }
+            
+            // Only update gate approval if result changed to APPROVED and it's a new report
+            // or if the result changed from REJECTED to APPROVED
+            boolean shouldApproveGate = reportDTO.getGateResult() == GateResultEnum.APPROVED && 
+                (isNewReport || report.getGateResult() != GateResultEnum.APPROVED);
+            
             report.setGateResult(reportDTO.getGateResult());
 
-            if (reportDTO.getGateResult() == GateResultEnum.APPROVED) {
+            if (shouldApproveGate) {
                 var gate = updateApprovedGate(meeting);
                 createNextGateOrFinishProject(meeting, gate);
             }
         }
 
         meetingReportRepository.save(report);
-        meeting.setStatus(MeetingStatusEnum.COMPLETED);
-        meeting.setReport(report);
+        
+        // Set status based on gate result for GATE meetings
+        if (meeting.getType() == MeetingTypeEnum.GATE) {
+            if (reportDTO.getGateResult() == GateResultEnum.APPROVED) {
+                meeting.setStatus(MeetingStatusEnum.COMPLETED);
+            } else {
+                meeting.setStatus(MeetingStatusEnum.CANCELLED); // Using CANCELLED for rejected gates
+            }
+        } else {
+            meeting.setStatus(MeetingStatusEnum.COMPLETED);
+        }
+        
+        if (isNewReport) {
+            meeting.setReport(report);
+        }
 
         Meeting updatedMeeting = meetingRepository.save(meeting);
         return MeetingDTO.fromEntity(updatedMeeting);

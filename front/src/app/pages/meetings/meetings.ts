@@ -143,7 +143,6 @@ export class Meetings implements OnInit {
             acceptLabel: 'Sim',
             rejectLabel: 'Não',
             accept: () => {
-                console.log(meeting.id);
                 this.meetingsService.cancelMeeting(meeting.id).subscribe({
                     next: () => {
                         this.toastService.success('Reunião cancelada com sucesso!');

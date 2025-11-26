@@ -1,21 +1,22 @@
 export interface MeetingListing {
-    id : string;
-    projectTitle : string;
-    professorName : string;
-    scheduleDate : Date;
-    startTime : string;
-    endTime : string;
-    type : MeetingTypeEnum;
+    id: string;
+    projectTitle: string;
+    professorName: string;
+    scheduleDate: Date;
+    startTime: string;
+    endTime: string;
+    type: MeetingTypeEnum;
     status: MeetingStatusEnum;
-    stageGateNumber : number;
+    stageGateNumber: number;
 }
 
-export enum MeetingTypeEnum{
+export enum MeetingTypeEnum {
     GATE = 'GATE',
     STAGE = 'STAGE'
 }
 
-export enum MeetingStatusEnum{
+export enum MeetingStatusEnum {
+    SCHEDULED = 'SCHEDULED',
     PENDING = 'PENDING',
     PENDING_FEEDBACK = 'PENDING_FEEDBACK',
     LATE_FEEDBACK = 'LATE_FEEDBACK',

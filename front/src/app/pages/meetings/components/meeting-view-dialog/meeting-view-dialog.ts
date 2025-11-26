@@ -36,7 +36,8 @@ export class MeetingViewDialog implements OnInit {
     }
 
     protected getStatusLabel(status: MeetingStatusEnum): string {
-        const labels = {
+        const labels: Record<MeetingStatusEnum, string> = {
+            [MeetingStatusEnum.SCHEDULED]: 'Agendada',
             [MeetingStatusEnum.PENDING]: 'Pendente',
             [MeetingStatusEnum.PENDING_FEEDBACK]: 'Feedback Pendente',
             [MeetingStatusEnum.LATE_FEEDBACK]: 'Feedback Atrasado',
