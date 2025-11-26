@@ -1,7 +1,7 @@
 import {Component, inject, input, InputSignal, OnInit} from '@angular/core';
 import {GateResultEnum, MeetingConsult, MeetingType} from '@/pages/projects/entities/project';
 import {Timeline} from 'primeng/timeline';
-import {DatePipe, NgClass, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {GATES} from '@/constants/gates';
 import {Button} from 'primeng/button';
 import {TagStatusGateApproval} from '@/pages/projects/components/tag-status-gate-approval/tag-status-gate-approval';
@@ -11,7 +11,7 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
     selector: 'project-meetings',
-    imports: [Timeline, DatePipe, Button, NgClass, TagStatusGateApproval, NgIf],
+    imports: [Timeline, DatePipe, Button, NgClass, TagStatusGateApproval, NgIf, NgForOf],
     templateUrl: './project-meetings.html',
     styleUrl: './project-meetings.scss'
 })

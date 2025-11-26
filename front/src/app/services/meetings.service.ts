@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { BaseService } from '@/services/base-service';
-import { Observable } from 'rxjs';
-import { TimeSlot } from '@/pages/projects/entities/timeSlot';
-import { Meeting, CreateMeetingRequest } from '@/pages/meetings/entities/meeting';
-import { MeetingListing } from '@/pages/meetings/entities/meetingListing';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {BaseService} from '@/services/base-service';
+import {Observable} from 'rxjs';
+import {TimeSlot} from '@/pages/projects/entities/timeSlot';
+import {CreateMeetingRequest, Meeting} from '@/pages/meetings/entities/meeting';
+import {environment} from '../../environments/environment';
+import {MeetingConsult} from "@/pages/projects/entities/project";
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +20,10 @@ export class MeetingsService extends BaseService {
 
     public cancelMeeting(meetingId: string): Observable<Meeting> {
         return this.http.patch<Meeting>(`${environment.server}/projects/meetings/${meetingId}/cancel`, {});
+    }
+
+    public getByProfessorId(id: string) : Observable<MeetingConsult[]> {
+        return this.http.get<MeetingConsult[]>(`${this.getUrlEndPoint()}/professor/${id}`)
     }
 
     protected override getPathEndPoint(): string {

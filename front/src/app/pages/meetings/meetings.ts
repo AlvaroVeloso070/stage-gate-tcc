@@ -1,28 +1,27 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { MeetingListing, MeetingStatusEnum, MeetingTypeEnum } from '@/pages/meetings/entities/meetingListing';
-import { Button } from 'primeng/button';
-import { Table, TableModule } from 'primeng/table';
-import { TagMeetingStatus } from '@/pages/meetings/components/tag-meeting-status/tag-meeting-status';
-import { DatePipe } from '@angular/common';
-import { CoordinationService } from '@/services/coordination.service';
-import { ActivatedRoute } from '@angular/router';
-import { Select } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { DatePicker } from 'primeng/datepicker';
-import { FilterOption } from '@/shared/dtos/FilterOption';
-import { parseISO, startOfDay } from 'date-fns';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { MeetingFormDialog } from '@/pages/meetings/components/meeting-dialog/meeting-form-dialog';
-import { MeetingViewDialog } from '@/pages/meetings/components/meeting-view-dialog/meeting-view-dialog';
-import { ToastService } from '@/services/toast.service';
-import { ConfirmationService } from 'primeng/api';
-import { MeetingsService } from '@/services/meetings.service';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Tooltip } from 'primeng/tooltip';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {MeetingListing, MeetingStatusEnum} from '@/pages/meetings/entities/meetingListing';
+import {Button} from 'primeng/button';
+import {Table, TableModule} from 'primeng/table';
+import {TagMeetingStatus} from '@/pages/meetings/components/tag-meeting-status/tag-meeting-status';
+import {DatePipe} from '@angular/common';
+import {CoordinationService} from '@/services/coordination.service';
+import {ActivatedRoute} from '@angular/router';
+import {Select} from 'primeng/select';
+import {FormsModule} from '@angular/forms';
+import {FilterOption} from '@/shared/dtos/FilterOption';
+import {startOfDay} from 'date-fns';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {MeetingFormDialog} from '@/pages/meetings/components/meeting-dialog/meeting-form-dialog';
+import {MeetingViewDialog} from '@/pages/meetings/components/meeting-view-dialog/meeting-view-dialog';
+import {ToastService} from '@/services/toast.service';
+import {ConfirmationService} from 'primeng/api';
+import {MeetingsService} from '@/services/meetings.service';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
     selector: 'app-meetings',
-    imports: [Button, TableModule, TagMeetingStatus, DatePipe, Select, FormsModule, DatePicker, ConfirmDialog, Tooltip],
+    imports: [Button, TableModule, TagMeetingStatus, DatePipe, Select, FormsModule, ConfirmDialog, Tooltip],
     providers: [ConfirmationService],
     templateUrl: './meetings.html',
     styleUrl: './meetings.scss'

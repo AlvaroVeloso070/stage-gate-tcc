@@ -1,0 +1,32 @@
+@if (professor) {
+    <div class="card flex flex-col gap-3">
+        <div>
+            <p class="card-title">{{professor.name}}</p>
+        </div>
+
+        <div>
+            @if (loaded){
+                <p-tabs [value]="TABS.MEETINGS">
+                    <p-tablist>
+                        <p-tab [value]="TABS.MEETINGS">
+                            <i class="pi pi-video mr-2"></i>
+                            Reuniões
+                        </p-tab>
+                        <p-tab [value]="TABS.PENDING">
+                            <i class="pi pi-calendar-clock mr-2"></i>
+                            Pendências
+                        </p-tab>
+                    </p-tablist>
+                    <p-tabpanels>
+                        <p-tabpanel [value]="TABS.MEETINGS">
+                            <professor-meetings [meetings]="meetings"></professor-meetings>
+                        </p-tabpanel>
+                        <p-tabpanel [value]="TABS.PENDING">
+                            <professor-pendencies></professor-pendencies>
+                        </p-tabpanel>
+                    </p-tabpanels>
+                </p-tabs>
+            }
+        </div>
+    </div>
+}

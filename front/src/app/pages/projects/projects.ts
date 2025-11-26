@@ -1,28 +1,25 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {Table, TableModule} from 'primeng/table';
-import { DueDateStatus, ProjectListing } from '@/pages/projects/entities/projectListing';
-import { Button } from 'primeng/button';
-import { TagProjectDueStatus } from '@/pages/projects/components/tag-project-due-status/tag-project-due-status';
+import {DueDateStatus, ProjectListing} from '@/pages/projects/entities/projectListing';
+import {Button} from 'primeng/button';
+import {TagProjectDueStatus} from '@/pages/projects/components/tag-project-due-status/tag-project-due-status';
 import {ActivatedRoute, Router} from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { CoordinationService } from '@/services/coordination.service';
-import { InputTextModule } from 'primeng/inputtext';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { FormsModule } from '@angular/forms';
-import { SelectButtonModule } from 'primeng/selectbutton';
+import {DatePipe} from '@angular/common';
+import {CoordinationService} from '@/services/coordination.service';
+import {InputTextModule} from 'primeng/inputtext';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {FormsModule} from '@angular/forms';
+import {SelectButtonModule} from 'primeng/selectbutton';
 import {Select} from "primeng/select";
 import {FilterOption} from "@/shared/dtos/FilterOption";
-import {TagMeetingStatus} from "@/pages/meetings/components/tag-meeting-status/tag-meeting-status";
 import {startOfDay} from "date-fns";
 import {ProjectFilterEnum} from "@/pages/projects/entities/ProjectFilterEnum";
-import {ProjectStatus} from "@/pages/projects/entities/project";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {UserFormDialog} from "@/pages/users/components/user-form-dialog/user-form-dialog";
 import {ProjectFormDialog} from "@/pages/projects/components/project-form-dialog/project-form-dialog";
 
 @Component({
     selector: 'app-projects',
-    imports: [TableModule, Button, TagProjectDueStatus, DatePipe, InputTextModule, MultiSelectModule, FormsModule, SelectButtonModule, Select, TagMeetingStatus],
+    imports: [TableModule, Button, TagProjectDueStatus, DatePipe, InputTextModule, MultiSelectModule, FormsModule, SelectButtonModule, Select],
     templateUrl: './projects.html',
     styleUrl: './projects.scss'
 })

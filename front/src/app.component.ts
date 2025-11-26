@@ -1,16 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BlockUI} from "primeng/blockui";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {LoaderService} from "@/services/loader.service";
-import { Toast } from 'primeng/toast';
-import { PrimeNG } from 'primeng/config';
-import { ConfirmDialog } from 'primeng/confirmdialog';
+import {Toast} from 'primeng/toast';
+import {PrimeNG} from 'primeng/config';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, BlockUI, ProgressSpinner, Toast, ConfirmDialog],
+    imports: [RouterModule, BlockUI, ProgressSpinner, Toast],
     templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
