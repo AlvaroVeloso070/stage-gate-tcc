@@ -1,3 +1,29 @@
 spring:
   application:
     name: api
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stage_gate
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/stage-gate
+          jwk-set-uri: http://localhost:8080/realms/stage-gate/protocol/openid-connect/certs
+
