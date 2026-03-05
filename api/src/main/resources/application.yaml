@@ -3,9 +3,9 @@ spring:
     name: api
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/stage_gate
-    username: postgres
-    password: password
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/stage_gate}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -24,6 +24,25 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/stage-gate
-          jwk-set-uri: http://localhost:8080/realms/stage-gate/protocol/openid-connect/certs
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/stage-gate}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8080/realms/stage-gate/protocol/openid-connect/certs}
+
+  servlet:
+    multipart:
+      enabled: true
+      resolve-lazily: true
+      max-file-size: ${MAX_FILE_SIZE:100MB}
+      max-request-size: ${MAX_REQUEST_SIZE:105MB}
+
+file:
+  storage:
+    type: ${FILE_STORAGE_TYPE:minio}
+    minio:
+      endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+      access-key: ${MINIO_ACCESS_KEY:minioadmin}
+      secret-key: ${MINIO_SECRET_KEY:minioadmin}
+      bucket: ${MINIO_BUCKET:stage-gate}
+    local:
+      base-path: ${FILE_LOCAL_BASE_PATH:/tmp/stage-gate-files}
+
 

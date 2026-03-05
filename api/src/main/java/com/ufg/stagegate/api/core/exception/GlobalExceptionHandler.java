@@ -1,6 +1,7 @@
 package com.ufg.stagegate.api.core.exception;
 
 import com.ufg.stagegate.api.core.response.ErrorResponse;
+import com.ufg.stagegate.api.file.domain.exception.FileStorageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBusiness(BusinessException ex) {
         return ResponseEntity.status(422).body(new ErrorResponse(
                 422, "Unprocessable Entity", ex.getMessage(), null, Instant.now()));
+    }
+
+    @ExceptionHandler(FileStorageException.class)
+    public ResponseEntity<ErrorResponse> handleFileStorage(FileStorageException ex) {
+        return ResponseEntity.status(503).body(new ErrorResponse(
+                503, "Service Unavailable", ex.getMessage(), null, Instant.now()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

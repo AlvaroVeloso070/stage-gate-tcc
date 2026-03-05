@@ -115,8 +115,8 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 | Elemento | Padrão | Exemplo |
 |---|---|---|
 | Tabelas | `TB_{NOME_PLURAL_MAIÚSCULO}` | `TB_USERS`, `TB_ORDERS` |
-| PK | `id_{nome_entidade}` | `id_user`, `id_order` |
-| FK | `id_{nome_entidade_referenciada}` | `id_user` (em TB_ORDERS) |
+| PK | `{nome_entidade}_id` | `user_id`, `order_id` |
+| FK | `{nome_entidade_referenciada}_id` | `user_id` (em TB_ORDERS) |
 | Colunas | `snake_case` | `created_at`, `full_name` |
 | Variáveis Java | `camelCase` | `createdAt`, `fullName` |
 
@@ -129,7 +129,7 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 ```sql
 -- Exemplo: V1__create_table_users.sql
 CREATE TABLE TB_USERS (
-    id_user     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     full_name   VARCHAR(255) NOT NULL,
     email       VARCHAR(255) NOT NULL UNIQUE,
     active      BOOLEAN NOT NULL DEFAULT TRUE,
