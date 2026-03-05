@@ -22,7 +22,7 @@ public class SecurityConfig {
             .sessionManagement(s -> s.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/health").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll() //TODO ajustar para authenticated
             )
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> {}) // Configuration for JwtAuthenticationConverter will be added later

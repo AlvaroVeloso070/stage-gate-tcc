@@ -5,19 +5,19 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/stage_gate}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:password}
+    password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
 
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
 
   security:
@@ -25,7 +25,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/stage-gate}
-          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8080/realms/stage-gate/protocol/openid-connect/certs}
 
   servlet:
     multipart:
@@ -40,9 +39,11 @@ file:
     minio:
       endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
       access-key: ${MINIO_ACCESS_KEY:minioadmin}
-      secret-key: ${MINIO_SECRET_KEY:minioadmin}
+      secret-key: ${MINIO_SECRET_KEY:minioadmin123}
       bucket: ${MINIO_BUCKET:stage-gate}
     local:
       base-path: ${FILE_LOCAL_BASE_PATH:/tmp/stage-gate-files}
-
+server:
+  servlet:
+    context-path: /api
 
