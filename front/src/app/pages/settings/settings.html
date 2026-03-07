@@ -1,0 +1,62 @@
+<div class="card flex flex-col gap-8">
+    <div>
+        <p class="card-title">Configurações</p>
+        <p class="text-muted-color">Gerenciamento de configurações do sistema</p>
+    </div>
+
+    <p-tabs value="1">
+        <p-tablist>
+            <p-tab value="0">Geral</p-tab>
+            <p-tab value="1">Gates</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+            <p-tabpanel value="0">
+                <div class="py-4">
+                    <p>Configurações gerais do sistema em breve.</p>
+                </div>
+            </p-tabpanel>
+            
+            <p-tabpanel value="1">
+                <div class="flex flex-col gap-4">
+                    <div class="table-wrapper">
+                        <p-table [value]="gates" [loading]="loading" stripedRows>
+                            <ng-template #header>
+                                <tr>
+                                    <th style="width: 5rem">Nº</th>
+                                    <th>Nome</th>
+                                    <th style="width: 12rem" class="text-center">Possui entregável?</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-gate>
+                                <tr>
+                                    <td>{{ gate.number }}</td>
+                                    <td>
+                                        <input pInputText [(ngModel)]="gate.name" placeholder="Nome do gate" class="w-full" />
+                                    </td>
+                                    <td class="text-center">
+                                        <p-toggleswitch [(ngModel)]="gate.hasDeliverable"></p-toggleswitch>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template #emptymessage>
+                                <tr>
+                                    <td colspan="3" class="text-center p-4">Nenhum gate encontrado.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+
+                    <div class="flex justify-end mt-2">
+                        <p-button 
+                                label="Salvar Alterações" 
+                                icon="pi pi-save" 
+                                (onClick)="saveGates()" 
+                                [loading]="saving"
+                                [disabled]="loading || gates.length === 0">
+                        </p-button>
+                    </div>
+                </div>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
+</div>

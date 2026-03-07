@@ -11,7 +11,7 @@ declare global {
 
 export const environment = {
     production: false,
-    server: window.env?.['SERVIDOR'] || 'http://localhost:8080'
+    server: window.env?.['SERVIDOR'] || 'http://localhost:8080/api'
 };
 
 /*

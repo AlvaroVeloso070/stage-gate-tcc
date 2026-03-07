@@ -2,6 +2,10 @@ spring:
   application:
     name: api
   
+  app:
+    cors:
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200}
+  
   datasource:
     url: ${DB_URL:jdbc:postgresql://192.168.0.101:5432/stage_gate}
     username: ${DB_USERNAME:veloso}
