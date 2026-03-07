@@ -10,7 +10,7 @@ O módulo segue o padrão de **Arquitetura Hexagonal** do projeto, garantindo o 
 
 - **`domain/`**: Define o contrato `FileManipulator`, a entidade `File` (metadados) e exceções customizadas.
 - **`application/`**: Contém os Use Cases que orquestram o upload, download, deleção e consulta de metadados.
-- **`adapter/outbound/storage`**: Implementações reais de armazenamento (**MinIO/S3** e **FileSystem Local**).
+- **`adapter/outbound/storage`**: Implementações reais de armazenamento (**S3** e **FileSystem Local**).
 - **`adapter/outbound/persistence`**: Implementação do repositório de metadados com Spring Data JPA.
 - **`adapter/inbound/rest`**: Controller REST que expõe os endpoints para o frontend/outros serviços.
 
@@ -31,9 +31,9 @@ A implementação foi projetada para minimizar o uso de memória e disco do serv
 
 O sistema suporta dois tipos de armazenamento, controlados via propriedade `file.storage.type`:
 
-### 1. MinIO (Padrão S3)
-Utilizado para ambientes de produção e homologação. É compatível com o protocolo S3 da AWS.
-- **Configuração**: `file.storage.type=minio`
+### 1. S3 (Custom/AWS)
+Utilizado para ambientes de produção e homologação. Utiliza o SDK v2 da AWS para S3.
+- **Configuração**: `file.storage.type=s3`
 - **Validação de Startup**: A aplicação verifica a existência (e cria, se necessário) do bucket `stage-gate` ao iniciar.
 
 ### 2. FileSystem Local
@@ -70,11 +70,12 @@ Abaixo as variáveis que podem ser configuradas no `application.yaml`:
 
 | Variável | Descrição | Padrão |
 |---|---|---|
-| `FILE_STORAGE_TYPE` | Define o driver (`minio` ou `local`) | `minio` |
-| `MINIO_ENDPOINT` | URL do servidor MinIO | `http://localhost:9000` |
-| `MINIO_ACCESS_KEY` | Credencial de acesso | `minioadmin` |
-| `MINIO_SECRET_KEY` | Senha de acesso | `minioadmin` |
-| `MINIO_BUCKET` | Bucket principal | `stage-gate` |
+| `FILE_STORAGE_TYPE` | Define o driver (`s3` ou `local`) | `s3` |
+| `S3_ENDPOINT` | URL do servidor (ex: RustFS/MinIO) | `https://rustfs.veloso-labs.dev` |
+| `S3_ACCESS_KEY` | Credencial de acesso | `admin` |
+| `S3_SECRET_KEY` | Senha de acesso | `*******` |
+| `S3_BUCKET` | Bucket principal | `stage-gate` |
+| `S3_REGION` | Região (ex: us-east-1) | `us-east-1` |
 | `MAX_FILE_SIZE` | Tamanho máximo por arquivo | `100MB` |
 
 ---

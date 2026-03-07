@@ -3,14 +3,14 @@ spring:
     name: api
   
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/stage_gate}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: ${DB_URL:jdbc:postgresql://192.168.0.101:5432/stage_gate}
+    username: ${DB_USERNAME:veloso}
+    password: ${DB_PASSWORD:a#m2^wCowwFYg2cjtkUV}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -24,7 +24,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/stage-gate}
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:https://keycloak.veloso-labs.dev/realms/stage-gate}
 
   servlet:
     multipart:
@@ -35,12 +35,13 @@ spring:
 
 file:
   storage:
-    type: ${FILE_STORAGE_TYPE:minio}
-    minio:
-      endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
-      access-key: ${MINIO_ACCESS_KEY:minioadmin}
-      secret-key: ${MINIO_SECRET_KEY:minioadmin123}
-      bucket: ${MINIO_BUCKET:stage-gate}
+    type: ${FILE_STORAGE_TYPE:s3}
+    s3:
+      endpoint: ${S3_ENDPOINT:http://192.168.0.101:9000}
+      access-key: ${S3_ACCESS_KEY:admin}
+      secret-key: ${S3_SECRET_KEY:6xqWE*6JviC7!fvTCeb2}
+      bucket: ${S3_BUCKET:stage-gate}
+      region: ${S3_REGION:us-east-1}
     local:
       base-path: ${FILE_LOCAL_BASE_PATH:/tmp/stage-gate-files}
 server:

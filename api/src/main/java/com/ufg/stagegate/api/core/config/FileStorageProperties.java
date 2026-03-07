@@ -5,14 +5,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "file.storage")
 public record FileStorageProperties(
         String type,
-        MinioProperties minio,
+        S3Properties s3,
         LocalProperties local) {
 
-    public record MinioProperties(
+    public record S3Properties(
             String endpoint,
             String accessKey,
             String secretKey,
-            String bucket) {
+            String bucket,
+            String region) {
     }
 
     public record LocalProperties(String basePath) {

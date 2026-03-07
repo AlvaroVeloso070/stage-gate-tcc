@@ -68,8 +68,8 @@ public class UploadFileUseCase {
     }
 
     private String resolveBucket() {
-        boolean isMinio = !"local".equalsIgnoreCase(storageProperties.type());
-        return isMinio ? storageProperties.minio().bucket() : storageProperties.local().basePath();
+        boolean isS3 = !"local".equalsIgnoreCase(storageProperties.type());
+        return isS3 ? storageProperties.s3().bucket() : storageProperties.local().basePath();
     }
 
     private File buildEntity(String originalName, String storedName, String contentType,
@@ -89,7 +89,7 @@ public class UploadFileUseCase {
     }
 
     private StorageTypeEnum resolveStorageType() {
-        return "local".equalsIgnoreCase(storageProperties.type()) ? StorageTypeEnum.LOCAL : StorageTypeEnum.MINIO;
+        return "local".equalsIgnoreCase(storageProperties.type()) ? StorageTypeEnum.LOCAL : StorageTypeEnum.S3;
     }
 
     private void tryDeleteFromStorage(String bucket, String storagePath) {
