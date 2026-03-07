@@ -44,5 +44,5 @@ public class Project {
     private Set<Meeting> meetings;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    private Set<Gate> gates;
+    private Set<ProjectGate> projectGates;
 }

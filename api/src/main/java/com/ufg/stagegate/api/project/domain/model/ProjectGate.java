@@ -1,5 +1,6 @@
 package com.ufg.stagegate.api.project.domain.model;
 
+import com.ufg.stagegate.api.gate.domain.model.Gate;
 import com.ufg.stagegate.api.user.domain.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,26 +10,23 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "TB_GATES")
+@Table(name = "TB_PROJECT_GATE", uniqueConstraints = {@UniqueConstraint(columnNames = {"project_id", "gate_id"})})
 @Getter
 @Setter
-public class Gate {
+public class ProjectGate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "gate_id")
+    @Column(name = "project_gate_id")
     private UUID id;
-
-    @Column(name = "number")
-    private short number;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "name")
-    private GateNameEnum name;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gate_id")
+    private Gate gate;
 
     @Column(name = "is_approved")
     private boolean isApproved = false;

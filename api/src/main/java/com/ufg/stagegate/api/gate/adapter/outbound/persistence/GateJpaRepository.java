@@ -1,11 +1,13 @@
-package com.ufg.stagegate.api.project.adapter.outbound.persistence;
+package com.ufg.stagegate.api.gate.adapter.outbound.persistence;
 
-import com.ufg.stagegate.api.project.domain.model.Gate;
+import com.ufg.stagegate.api.gate.domain.model.Gate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface GateJpaRepository extends JpaRepository<Gate, UUID> {
+    List<Gate> findAllByOrderByNumberAsc();
 }

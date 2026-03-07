@@ -1,4 +1,4 @@
 package com.ufg.stagegate.api.project.domain.port.outbound;
 
-public interface GateRepository {
+public interface ProjectGateRepository {
 }
