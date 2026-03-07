@@ -7,7 +7,7 @@ CREATE TABLE TB_FILES
     size_bytes      BIGINT       NOT NULL,
     bucket          VARCHAR(255) NOT NULL,
     storage_path    VARCHAR(1000) NOT NULL,
-    storage_type    VARCHAR(20)  NOT NULL DEFAULT 'MINIO',
+    storage_type    VARCHAR(20)  NOT NULL DEFAULT 'S3',
     checksum_sha256 VARCHAR(64),
     uploaded_by     UUID,
     created_at      TIMESTAMP    NOT NULL DEFAULT NOW(),
